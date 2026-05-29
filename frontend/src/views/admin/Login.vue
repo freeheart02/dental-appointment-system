@@ -74,6 +74,7 @@ const handleSubmit = async () => {
   console.log('handleSubmit called')
   console.log('username:', username.value)
   console.log('password:', password.value)
+  console.log('authStore:', authStore)
   
   if (!username.value || !password.value) {
     errorMessage.value = '请填写完整信息'
@@ -85,15 +86,20 @@ const handleSubmit = async () => {
   errorMessage.value = ''
   
   console.log('Calling authStore.adminLogin...')
-  const result = await authStore.adminLogin(username.value, password.value)
-  console.log('adminLogin result:', result)
-  
-  if (result.success) {
-    console.log('Login success, redirecting to dashboard...')
-    router.push('/admin/dashboard')
-  } else {
-    errorMessage.value = result.message
-    console.log('Login failed:', result.message)
+  try {
+    const result = await authStore.adminLogin(username.value, password.value)
+    console.log('adminLogin result:', result)
+    
+    if (result.success) {
+      console.log('Login success, redirecting to dashboard...')
+      router.push('/admin/dashboard')
+    } else {
+      errorMessage.value = result.message
+      console.log('Login failed:', result.message)
+    }
+  } catch (error) {
+    console.error('Login error:', error)
+    errorMessage.value = '登录失败'
   }
   
   isLoading.value = false
