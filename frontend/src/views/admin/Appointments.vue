@@ -237,10 +237,11 @@ const filteredAppointments = computed(() => {
   let result = appointments.value
   if (searchQuery.value) {
     const query = searchQuery.value.toLowerCase()
-    result = result.filter(a => 
-      (getPatientName(a).toLowerCase().includes(query)) || 
-      (getPatientPhone(a).includes(query)))
-    )
+    result = result.filter(a => {
+      const patientName = getPatientName(a).toLowerCase()
+      const patientPhone = getPatientPhone(a)
+      return patientName.includes(query) || patientPhone.includes(query)
+    })
   }
   if (filterDate.value) {
     result = result.filter(a => a.date === filterDate.value)
