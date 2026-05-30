@@ -29,11 +29,11 @@
           <div class="w-80 flex-shrink-0">
             <div class="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
               <div class="flex items-center justify-between mb-4">
-                <button @click="prevMonth" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                <button @click="navMonth(currentDate, -1)" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
                   <ChevronLeft class="w-5 h-5" />
                 </button>
-                <h3 class="text-lg font-semibold">{{ currentMonthName }} {{ currentYear }}</h3>
-                <button @click="nextMonth" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                <h3 class="text-lg font-semibold">{{ monthNames[currentDate.getMonth()] }} {{ currentDate.getFullYear() }}</h3>
+                <button @click="navMonth(currentDate, 1)" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
                   <ChevronRight class="w-5 h-5" />
                 </button>
               </div>
@@ -44,9 +44,9 @@
               </div>
               <div class="grid grid-cols-7 gap-1">
                 <div
-                  v-for="(day, index) in calendarDays"
+                  v-for="(day, index) in calendarDays(currentDate, filterDate)"
                   :key="index"
-                  @click="day.date && selectDate(day.date)"
+                  @click="day.date && (filterDate = day.date)"
                   :class="[
                     'text-center py-2 cursor-pointer rounded-lg transition-all text-sm',
                     day.isToday ? 'bg-blue-100 font-bold' : '',
@@ -58,10 +58,10 @@
                 </div>
               </div>
               <div class="mt-4 flex gap-2">
-                <button @click="clearDate" class="flex-1 px-3 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-all text-sm">
+                <button @click="filterDate = ''" class="flex-1 px-3 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-all text-sm">
                   清除日期
                 </button>
-                <button @click="selectToday" class="flex-1 px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all text-sm">
+                <button @click="filterDate = today" class="flex-1 px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all text-sm">
                   回到今天
                 </button>
               </div>
@@ -83,7 +83,11 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="appointment in filteredAppointments" :key="appointment._id" class="border-b border-gray-100 hover:bg-gray-50">
+                <tr
+                  v-for="appointment in filteredAppointments"
+                  :key="appointment._id"
+                  class="border-b border-gray-100 hover:bg-gray-50"
+                >
                   <td class="px-6 py-4 text-sm">
                     <div>
                       <span class="text-gray-800">{{ getPatientName(appointment) }}</span>
@@ -183,17 +187,15 @@ import { appointmentAPI } from '../../utils/api'
 const appointments = ref([])
 const searchQuery = ref('')
 const filterStatus = ref('')
-const filterDate = ref(new Date().toISOString().split('T')[0])
+const currentDate = ref(new Date())
+const today = new Date().toISOString().split('T')[0]
+const filterDate = ref(today)
 const showStatusModalFlag = ref(false)
 const editingAppointment = ref(null)
 const selectedStatus = ref('')
-const currentDate = ref(new Date())
 
 const weekDays = ['日', '一', '二', '三', '四', '五', '六']
 const monthNames = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
-
-const currentYear = computed(() => currentDate.value.getFullYear())
-const currentMonthName = computed(() => monthNames[currentDate.value.getMonth()])
 
 const statusOptions = [
   { value: 'pending', label: '未就诊', class: 'text-yellow-700' },
@@ -203,35 +205,29 @@ const statusOptions = [
   { value: 'canceled', label: '已取消', class: 'text-gray-500' }
 ]
 
-const generateCalendarDays = (date, selectedDate) => {
+const navMonth = (dateRef, delta) => {
+  const d = dateRef.value
+  dateRef.value = new Date(d.getFullYear(), d.getMonth() + delta, 1)
+}
+
+const calendarDays = (date, selected) => {
   const year = date.getFullYear()
   const month = date.getMonth()
   const firstDay = new Date(year, month, 1).getDay()
   const daysInMonth = new Date(year, month + 1, 0).getDate()
-  const today = new Date()
-  const todayStr = today.toISOString().split('T')[0]
-  const selectedStr = selectedDate || null
-
+  const todayStr = today
+  const selectedStr = selected || null
   const days = []
-
+  
   for (let i = 0; i < firstDay; i++) {
     days.push({ day: '', date: null, isToday: false, isSelected: false })
   }
-
   for (let i = 1; i <= daysInMonth; i++) {
-    const currentDateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`
-    days.push({
-      day: i,
-      date: currentDateStr,
-      isToday: currentDateStr === todayStr,
-      isSelected: currentDateStr === selectedStr
-    })
+    const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`
+    days.push({ day: i, date: dateStr, isToday: dateStr === todayStr, isSelected: dateStr === selectedStr })
   }
-
   return days
 }
-
-const calendarDays = computed(() => generateCalendarDays(currentDate.value, filterDate.value))
 
 const filteredAppointments = computed(() => {
   let result = appointments.value
@@ -254,43 +250,23 @@ const filteredAppointments = computed(() => {
 
 const getPatientName = (appointment) => {
   if (appointment.patientId && typeof appointment.patientId === 'object') {
-    return appointment.patientId.name || appointment.patientId.patientName || ''
+    return appointment.patientId?.name || appointment.patientName || ''
   }
   return appointment.patientName || ''
 }
 
 const getPatientPhone = (appointment) => {
   if (appointment.patientId && typeof appointment.patientId === 'object') {
-    return appointment.patientId.phone || ''
+    return appointment.patientId?.phone || ''
   }
   return appointment.phone || ''
 }
 
 const getDoctorName = (appointment) => {
   if (appointment.doctorId && typeof appointment.doctorId === 'object') {
-    return appointment.doctorId.name || ''
+    return appointment.doctorId?.name || ''
   }
   return appointment.doctorName || ''
-}
-
-const selectDate = (date) => {
-  filterDate.value = date
-}
-
-const selectToday = () => {
-  filterDate.value = new Date().toISOString().split('T')[0]
-}
-
-const clearDate = () => {
-  filterDate.value = ''
-}
-
-const prevMonth = () => {
-  currentDate.value = new Date(currentDate.value.getFullYear(), currentDate.value.getMonth() - 1, 1)
-}
-
-const nextMonth = () => {
-  currentDate.value = new Date(currentDate.value.getFullYear(), currentDate.value.getMonth() + 1, 1)
 }
 
 const getStatusText = (status) => {

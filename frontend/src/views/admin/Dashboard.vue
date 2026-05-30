@@ -5,26 +5,24 @@
         <div class="bg-white rounded-xl shadow-md">
           <div class="p-4 border-b border-gray-200">
             <div class="flex items-center justify-between">
-              <button @click="prevMonth" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+              <button @click="navMonth(currentDate, -1)" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
                 <ChevronLeft class="w-5 h-5" />
               </button>
-              <h3 class="text-lg font-semibold">{{ currentMonthName }} {{ currentYear }}</h3>
-              <button @click="nextMonth" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+              <h3 class="text-lg font-semibold">{{ monthNames[currentDate.getMonth()] }} {{ currentDate.getFullYear() }}</h3>
+              <button @click="navMonth(currentDate, 1)" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
                 <ChevronRight class="w-5 h-5" />
               </button>
             </div>
           </div>
-          
           <div class="p-4">
             <div class="grid grid-cols-7 gap-1 mb-2">
               <div v-for="day in weekDays" :key="day" class="text-center text-sm font-medium text-gray-600 py-2">
                 {{ day }}
               </div>
             </div>
-            
             <div class="grid grid-cols-7 gap-1">
               <div
-                v-for="(day, index) in calendarDays"
+                v-for="(day, index) in calendarDays(currentDate, selectedDate)"
                 :key="index"
                 @click="day.date && selectDate(day)"
                 :class="[
@@ -186,20 +184,37 @@ const doctors = ref([])
 const sortField = ref('date')
 const sortOrder = ref('desc')
 const currentDate = ref(new Date())
+const today = new Date().toISOString().split('T')[0]
+const selectedDate = ref({
+  day: new Date().getDate(),
+  date: today,
+  isToday: true
+})
 
 const weekDays = ['日', '一', '二', '三', '四', '五', '六']
 const monthNames = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
 
-const currentYear = computed(() => currentDate.value.getFullYear())
-const currentMonthName = computed(() => monthNames[currentDate.value.getMonth()])
+const navMonth = (dateRef, delta) => {
+  const d = dateRef.value
+  dateRef.value = new Date(d.getFullYear(), d.getMonth() + delta, 1)
+}
 
-const now = new Date()
-const today = now.toISOString().split('T')[0]
-const selectedDate = ref({
-  day: now.getDate(),
-  date: today,
-  isToday: true
-})
+const calendarDays = (date, selected) => {
+  const year = date.getFullYear()
+  const month = date.getMonth()
+  const firstDay = new Date(year, month, 1).getDay()
+  const daysInMonth = new Date(year, month + 1, 0).getDate()
+  const todayStr = today
+  const selectedStr = selected?.date || null
+  const days = []
+  
+  for (let i = 0; i < firstDay; i++) days.push({ day: '', date: null, isToday: false, isSelected: false })
+  for (let i = 1; i <= daysInMonth; i++) {
+    const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`
+    days.push({ day: i, date: dateStr, isToday: dateStr === todayStr, isSelected: dateStr === selectedStr })
+  }
+  return days
+}
 
 const handleSort = (field) => {
   if (sortField.value === field) {
@@ -209,33 +224,6 @@ const handleSort = (field) => {
     sortOrder.value = 'asc'
   }
 }
-
-const calendarDays = computed(() => {
-  const year = currentDate.value.getFullYear()
-  const month = currentDate.value.getMonth()
-  const firstDay = new Date(year, month, 1).getDay()
-  const daysInMonth = new Date(year, month + 1, 0).getDate()
-  const todayStr = today
-  const selectedStr = selectedDate.value?.date || null
-
-  const days = []
-
-  for (let i = 0; i < firstDay; i++) {
-    days.push({ day: '', date: null, isToday: false, isSelected: false })
-  }
-
-  for (let i = 1; i <= daysInMonth; i++) {
-    const currentDateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`
-    days.push({
-      day: i,
-      date: currentDateStr,
-      isToday: currentDateStr === todayStr,
-      isSelected: currentDateStr === selectedStr
-    })
-  }
-
-  return days
-})
 
 const selectedDateDisplay = computed(() => {
   if (!selectedDate.value) return ''
@@ -291,24 +279,6 @@ const selectedDateAppointments = computed(() => {
   })
 })
 
-const selectedDateSchedules = computed(() => {
-  if (!selectedDate.value) return []
-  return schedules.value.filter(s => s.date === selectedDate.value.date)
-})
-
-const selectedDateDoctors = computed(() => {
-  const doctorIds = [...new Set(selectedDateSchedules.value.map(s => s.doctorId))]
-  return doctors.value.filter(d => doctorIds.includes(d._id))
-})
-
-const prevMonth = () => {
-  currentDate.value = new Date(currentDate.value.getFullYear(), currentDate.value.getMonth() - 1, 1)
-}
-
-const nextMonth = () => {
-  currentDate.value = new Date(currentDate.value.getFullYear(), currentDate.value.getMonth() + 1, 1)
-}
-
 const selectDate = (day) => {
   if (selectedDate.value?.date === day.date) {
     selectedDate.value = null
@@ -317,60 +287,33 @@ const selectDate = (day) => {
   }
 }
 
-const loadStats = async () => {
+const loadData = async () => {
   try {
-    const response = await statisticsAPI.getDashboardStats()
-    stats.value = response.data
+    const [s, a, sc, d] = await Promise.all([
+      statisticsAPI.getDashboardStats(),
+      appointmentAPI.getAll(),
+      scheduleAPI.getAll(),
+      doctorAPI.getAll()
+    ])
+    stats.value = s.data
+    appointments.value = a.data
+    schedules.value = sc.data
+    doctors.value = d.data
   } catch (error) {
-    console.error('Failed to load dashboard stats')
+    console.error('Failed to load data')
   }
 }
 
-const loadAppointments = async () => {
-  try {
-    const response = await appointmentAPI.getAll()
-    console.log('Appointments loaded:', response.data)
-    appointments.value = response.data
-  } catch (error) {
-    console.error('Failed to load appointments:', error)
-  }
-}
-
-const loadSchedules = async () => {
-  try {
-    const response = await scheduleAPI.getAll()
-    schedules.value = response.data
-  } catch (error) {
-    console.error('Failed to load schedules')
-  }
-}
-
-const loadDoctors = async () => {
-  try {
-    const response = await doctorAPI.getAll()
-    doctors.value = response.data
-  } catch (error) {
-    console.error('Failed to load doctors')
-  }
-}
-
-const refreshAll = async () => {
-  await loadStats()
-  await loadAppointments()
-  await loadSchedules()
-  await loadDoctors()
-}
+let refreshInterval = null
 
 onMounted(() => {
-  loadStats()
-  loadAppointments()
-  loadSchedules()
-  loadDoctors()
-  
-  setInterval(() => {
-    refreshAll()
-  }, 30000)
+  loadData()
+  refreshInterval = setInterval(loadData, 30000)
 })
 
-onUnmounted(() => {})
+onUnmounted(() => {
+  if (refreshInterval) {
+    clearInterval(refreshInterval)
+  }
+})
 </script>
