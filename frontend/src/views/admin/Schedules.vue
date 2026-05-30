@@ -17,144 +17,126 @@
           <input
             v-model="filterDate"
             type="date"
+            @change="loadSchedulesByDate"
             class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
           />
         </div>
       </div>
       
       <div class="p-4">
-        <div v-for="(daySchedules, date) in schedulesByDate" :key="date" class="mb-6">
-          <div class="bg-blue-50 px-4 py-3 rounded-t-lg border border-blue-200">
-            <h3 class="font-semibold text-blue-800">{{ formatDate(date) }}</h3>
-          </div>
-          <div class="border border-t-0 border-blue-200 rounded-b-lg divide-y divide-gray-200">
-            <div v-for="schedule in daySchedules" :key="schedule._id" class="p-4 flex items-center justify-between hover:bg-gray-50">
-              <div class="flex items-center gap-4">
-                <div class="flex flex-col">
-                  <span class="font-medium text-gray-800">{{ schedule.doctorId?.name || schedule.doctorId }}</span>
-                  <span class="text-sm text-gray-500">{{ schedule.doctorId?.department || schedule.doctorId?.specialty || '口腔科' }}</span>
-                </div>
-                <div class="flex flex-wrap gap-1">
-                  <button
-                    v-for="slot in schedule.timeSlots"
-                    :key="slot.time"
-                    @click="openSlotModal(schedule, slot)"
-                    :class="[
-                      'px-2 py-0.5 rounded text-xs cursor-pointer transition-all',
-                      slot.available > 0 ? 'bg-green-100 text-green-700 hover:bg-green-200' : 'bg-gray-100 text-gray-500'
-                    ]"
-                  >
-                    {{ slot.time }}
-                    <span v-if="getSlotAppointment(schedule._id, slot.time)" class="ml-1">(已约)</span>
-                  </button>
-                </div>
-              </div>
-              <div class="flex gap-2">
-                <button @click="editSchedule(schedule)" class="text-blue-500 hover:text-blue-600">
-                  <Edit class="w-4 h-4" />
-                </button>
-                <button @click="deleteSchedule(schedule._id)" class="text-red-500 hover:text-red-600">
-                  <Trash2 class="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-          </div>
+        <div v-if="filteredSchedules.length > 0" class="overflow-x-auto">
+          <table class="w-full border-collapse">
+            <thead>
+              <tr class="bg-gradient-to-r from-blue-50 to-blue-100">
+                <th class="border border-gray-300 px-4 py-3 text-left font-semibold text-gray-700 bg-blue-50 sticky left-0 z-10 min-w-[100px]">
+                  时间
+                </th>
+                <th 
+                  v-for="doctor in doctorsInSchedule" 
+                  :key="doctor._id"
+                  class="border border-gray-300 px-4 py-3 text-center font-semibold text-gray-700 min-w-[180px]"
+                >
+                  <div class="flex flex-col items-center">
+                    <span class="font-bold">{{ doctor.name }}</span>
+                    <span class="text-xs text-gray-500 font-normal">{{ doctor.department || doctor.specialty || '口腔科' }}</span>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr 
+                v-for="timeSlot in timeSlots" 
+                :key="timeSlot"
+                class="hover:bg-gray-50"
+              >
+                <td class="border border-gray-300 px-4 py-3 font-medium text-gray-700 bg-gray-50 sticky left-0 z-10">
+                  {{ timeSlot }}
+                </td>
+                <td 
+                  v-for="doctor in doctorsInSchedule" 
+                  :key="`${doctor._id}-${timeSlot}`"
+                  class="border border-gray-300 px-2 py-2 text-center"
+                >
+                  <div v-if="getAppointmentForSlot(doctor._id, timeSlot)" 
+                       class="p-2 bg-green-50 rounded-lg border border-green-200 cursor-pointer hover:bg-green-100 transition-all"
+                       @click="viewAppointment(getAppointmentForSlot(doctor._id, timeSlot))">
+                    <div class="font-medium text-green-800 text-sm">
+                      {{ getAppointmentForSlot(doctor._id, timeSlot).patientName }}
+                    </div>
+                    <div class="text-xs text-green-600">
+                      {{ getAppointmentForSlot(doctor._id, timeSlot).phone }}
+                    </div>
+                  </div>
+                  <div v-else class="p-2 bg-gray-100 rounded-lg border border-gray-200 opacity-50">
+                    <span class="text-xs text-gray-400">空闲</span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
         
-        <div v-if="schedules.length === 0" class="p-12 text-center">
+        <div v-else class="p-12 text-center">
           <Calendar class="w-12 h-12 mx-auto mb-4 text-gray-300" />
-          <p class="text-gray-500">暂无排班数据</p>
+          <p class="text-gray-500">当天暂无排班数据</p>
+          <button @click="showAddModal = true" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all">
+            添加排班
+          </button>
         </div>
       </div>
     </div>
 
-    <div v-if="showSlotModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <!-- 预约详情弹窗 -->
+    <div v-if="showAppointmentModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div class="bg-white rounded-xl p-6 w-full max-w-md">
         <div class="flex justify-between items-center mb-4">
-          <h3 class="text-lg font-semibold text-gray-800">
-            {{ currentSlot?.time }} - {{ currentSchedule?.doctorId?.name }}
-          </h3>
-          <button @click="closeSlotModal" class="text-gray-400 hover:text-gray-600">
+          <h3 class="text-lg font-semibold text-gray-800">预约详情</h3>
+          <button @click="closeAppointmentModal" class="text-gray-400 hover:text-gray-600">
             <X class="w-5 h-5" />
           </button>
         </div>
         
-        <div v-if="currentSlotAppointment" class="mb-4 p-4 bg-yellow-50 rounded-lg">
-          <div class="flex justify-between items-center">
-            <div>
-              <p class="font-medium text-gray-800">{{ currentSlotAppointment.patientId?.name || '未知患者' }}</p>
-              <p class="text-sm text-gray-500">{{ currentSlotAppointment.patientId?.phone }}</p>
-            </div>
-            <div class="text-right">
-              <p class="text-sm text-gray-500">预约类型</p>
-              <p class="font-medium text-gray-800">{{ currentSlotAppointment.type || '初诊' }}</p>
-            </div>
-          </div>
-          <button 
-            @click="cancelAppointment(currentSlotAppointment._id)" 
-            class="mt-3 w-full py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-all"
-          >
-            取消预约
-          </button>
-        </div>
-        
-        <div v-else class="space-y-4">
-          <p class="text-gray-500 text-sm">该时段尚未预约，选择患者进行预约：</p>
-          
-          <div class="relative">
-            <Search class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-            <input
-              v-model="patientSearchQuery"
-              type="text"
-              placeholder="搜索患者姓名或手机号"
-              class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none w-full"
-            />
-          </div>
-          
-          <div class="max-h-60 overflow-y-auto border border-gray-200 rounded-lg">
-            <div
-              v-for="patient in filteredPatientsForSlot"
-              :key="patient._id"
-              @click="selectPatientForSlot(patient)"
-              class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0"
-            >
-              <div class="flex justify-between items-center">
-                <div>
-                  <p class="font-medium text-gray-800">{{ patient.name }}</p>
-                  <p class="text-sm text-gray-500">{{ patient.phone }}</p>
-                </div>
-                <ChevronRight class="w-4 h-4 text-gray-400" />
+        <div v-if="selectedAppointment" class="space-y-4">
+          <div class="p-4 bg-blue-50 rounded-lg">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <p class="text-sm text-gray-500">患者姓名</p>
+                <p class="font-semibold text-gray-800">{{ selectedAppointment.patientName }}</p>
+              </div>
+              <div>
+                <p class="text-sm text-gray-500">联系电话</p>
+                <p class="font-semibold text-gray-800">{{ selectedAppointment.phone }}</p>
+              </div>
+              <div>
+                <p class="text-sm text-gray-500">预约医生</p>
+                <p class="font-semibold text-gray-800">{{ selectedAppointment.doctorName }}</p>
+              </div>
+              <div>
+                <p class="text-sm text-gray-500">预约时间</p>
+                <p class="font-semibold text-gray-800">{{ selectedAppointment.date }} {{ selectedAppointment.timeSlot }}</p>
               </div>
             </div>
-            <div v-if="filteredPatientsForSlot.length === 0" class="px-4 py-8 text-center text-gray-500">
-              暂无患者，可在患者管理中添加
-            </div>
-          </div>
-          
-          <div v-if="selectedPatient" class="p-3 bg-blue-50 rounded-lg">
-            <p class="text-sm text-gray-600">已选择：</p>
-            <p class="font-medium text-blue-800">{{ selectedPatient.name }} - {{ selectedPatient.phone }}</p>
           </div>
           
           <div class="flex gap-3">
             <button
-              @click="closeSlotModal"
+              @click="closeAppointmentModal"
               class="flex-1 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-all"
             >
-              取消
+              关闭
             </button>
             <button
-              @click="bookSlot"
-              :disabled="!selectedPatient"
-              class="flex-1 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all"
+              @click="cancelAppointment(selectedAppointment._id)"
+              class="flex-1 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-all"
             >
-              确认预约
+              取消预约
             </button>
           </div>
         </div>
       </div>
     </div>
 
+    <!-- 添加排班弹窗 -->
     <div v-if="showAddModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div class="bg-white rounded-xl p-6 w-full max-w-lg">
         <div class="flex justify-between items-center mb-4">
@@ -226,6 +208,7 @@
       </div>
     </div>
 
+    <!-- 批量排班弹窗 -->
     <div v-if="showBatchModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div class="bg-white rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         <div class="flex justify-between items-center mb-4">
@@ -351,16 +334,28 @@ const patients = ref([])
 const appointments = ref([])
 const showAddModal = ref(false)
 const showBatchModal = ref(false)
-const showSlotModal = ref(false)
+const showAppointmentModal = ref(false)
 const today = new Date().toISOString().split('T')[0]
 const filterDate = ref(today)
 const isEditing = ref(false)
 const editingId = ref(null)
-const currentSchedule = ref(null)
-const currentSlot = ref(null)
-const patientSearchQuery = ref('')
-const selectedPatient = ref(null)
+const selectedAppointment = ref(null)
 const editingTimeSlots = ref([])
+
+const timeSlots = [
+  '08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30',
+  '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00'
+]
+
+const weekdays = [
+  { value: 0, label: '周日' },
+  { value: 1, label: '周一' },
+  { value: 2, label: '周二' },
+  { value: 3, label: '周三' },
+  { value: 4, label: '周四' },
+  { value: 5, label: '周五' },
+  { value: 6, label: '周六' }
+]
 
 const generateTimeSlots = (interval = 30) => {
   const slots = []
@@ -385,16 +380,6 @@ const generateTimeSlots = (interval = 30) => {
 }
 
 const defaultTimeSlots = generateTimeSlots(30)
-
-const weekdays = [
-  { value: 0, label: '周日' },
-  { value: 1, label: '周一' },
-  { value: 2, label: '周二' },
-  { value: 3, label: '周三' },
-  { value: 4, label: '周四' },
-  { value: 5, label: '周五' },
-  { value: 6, label: '周六' }
-]
 
 const currentTimeSlots = computed(() => {
   if (!formData.value.doctorId) {
@@ -437,15 +422,39 @@ const batchFormData = ref({
   selectedSlots: []
 })
 
-const formatDate = (dateStr) => {
-  const date = new Date(dateStr)
-  return date.toLocaleDateString('zh-CN', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    weekday: 'long'
+const filteredSchedules = computed(() => {
+  if (!filterDate.value) return schedules.value
+  return schedules.value.filter(schedule => {
+    const scheduleDate = new Date(schedule.date).toISOString().split('T')[0]
+    return scheduleDate === filterDate.value
   })
-}
+})
+
+const doctorsInSchedule = computed(() => {
+  const doctorIds = [...new Set(filteredSchedules.value.map(s => s.doctorId._id || s.doctorId))]
+  return doctors.value.filter(d => doctorIds.includes(d._id))
+})
+
+const getAppointmentForSlot = (doctorId, timeSlot) => {
+  const appointment = appointments.value.find(a => {
+    const appointmentDoctorId = a.doctorId._id || a.doctorId
+    const scheduleDate = a.date ? new Date(a.date).toISOString().split('T')[0] : null
+    return appointmentDoctorId === doctorId && 
+           a.timeSlot === timeSlot && 
+           scheduleDate === filterDate.value &&
+           a.status !== 'cancelled'
+  })
+  
+  if (appointment) {
+    return {
+      ...appointment,
+      patientName: appointment.patientId?.name || appointment.patientName || '未知',
+      phone: appointment.patientId?.phone || appointment.phone || '-',
+      doctorName: appointment.doctorId?.name || '未知'
+    }
+  }
+  return null
+})
 
 const doctorsByDepartment = computed(() => {
   const grouped = {}
@@ -455,27 +464,6 @@ const doctorsByDepartment = computed(() => {
       grouped[department] = []
     }
     grouped[department].push(doctor)
-  })
-  return grouped
-})
-
-const schedulesByDate = computed(() => {
-  const grouped = {}
-  let filteredSchedules = [...schedules.value]
-  
-  if (filterDate.value) {
-    filteredSchedules = filteredSchedules.filter(schedule => {
-      return schedule.date >= filterDate.value
-    })
-  }
-  
-  const sortedSchedules = filteredSchedules.sort((a, b) => new Date(a.date) - new Date(b.date))
-  sortedSchedules.forEach(schedule => {
-    const date = schedule.date
-    if (!grouped[date]) {
-      grouped[date] = []
-    }
-    grouped[date].push(schedule)
   })
   return grouped
 })
@@ -493,6 +481,10 @@ const toggleAllSlots = (formType) => {
   } else {
     targetForm.selectedSlots = [...targetSlots]
   }
+}
+
+const loadSchedulesByDate = () => {
+  loadSchedules()
 }
 
 const loadSchedules = async () => {
@@ -531,74 +523,14 @@ const loadAppointments = async () => {
   }
 }
 
-const getSlotAppointment = (scheduleId, timeSlot) => {
-  return appointments.value.find(a => 
-    a.scheduleId === scheduleId && 
-    a.timeSlot === timeSlot &&
-    a.status !== 'cancelled'
-  )
+const viewAppointment = (appointment) => {
+  selectedAppointment.value = appointment
+  showAppointmentModal.value = true
 }
 
-const openSlotModal = (schedule, slot) => {
-  currentSchedule.value = schedule
-  currentSlot.value = slot
-  patientSearchQuery.value = ''
-  selectedPatient.value = null
-  showSlotModal.value = true
-}
-
-const closeSlotModal = () => {
-  showSlotModal.value = false
-  currentSchedule.value = null
-  currentSlot.value = null
-  selectedPatient.value = null
-  patientSearchQuery.value = ''
-}
-
-const filteredPatientsForSlot = computed(() => {
-  let result = patients.value
-  if (patientSearchQuery.value) {
-    const query = patientSearchQuery.value.toLowerCase()
-    result = result.filter(p => 
-      p.name.toLowerCase().includes(query) || 
-      p.phone.includes(query)
-    )
-  }
-  return result
-})
-
-const currentSlotAppointment = computed(() => {
-  if (!currentSchedule.value || !currentSlot.value) return null
-  return appointments.value.find(a =>
-    a.doctorId === currentSchedule.value.doctorId._id &&
-    a.date === currentSchedule.value.date &&
-    a.timeSlot === currentSlot.value.time &&
-    a.status !== 'cancelled'
-  )
-})
-
-const selectPatientForSlot = (patient) => {
-  selectedPatient.value = patient
-}
-
-const bookSlot = async () => {
-  if (!selectedPatient.value || !currentSchedule.value || !currentSlot.value) return
-  
-  try {
-    await appointmentAPI.create({
-      patientId: selectedPatient.value._id,
-      doctorId: currentSchedule.value.doctorId._id,
-      date: currentSchedule.value.date,
-      timeSlot: currentSlot.value.time,
-      type: '初诊'
-    })
-    alert('预约成功')
-    await loadAppointments()
-    await loadSchedules()
-    closeSlotModal()
-  } catch (error) {
-    alert(error.response?.data?.message || '预约失败')
-  }
+const closeAppointmentModal = () => {
+  showAppointmentModal.value = false
+  selectedAppointment.value = null
 }
 
 const cancelAppointment = async (appointmentId) => {
@@ -608,8 +540,7 @@ const cancelAppointment = async (appointmentId) => {
     await appointmentAPI.update(appointmentId, { status: 'cancelled' })
     alert('取消成功')
     await loadAppointments()
-    await loadSchedules()
-    closeSlotModal()
+    closeAppointmentModal()
   } catch (error) {
     alert(error.response?.data?.message || '取消失败')
   }
@@ -748,3 +679,22 @@ onMounted(() => {
   loadAppointments()
 })
 </script>
+
+<style scoped>
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+th, td {
+  border: 1px solid #e5e7eb;
+}
+
+.sticky {
+  position: sticky;
+}
+
+.sticky.left-0 {
+  left: 0;
+}
+</style>
