@@ -86,11 +86,11 @@
                 <tr v-for="appointment in filteredAppointments" :key="appointment._id" class="border-b border-gray-100 hover:bg-gray-50">
                   <td class="px-6 py-4 text-sm">
                     <div>
-                      <span class="text-gray-800">{{ appointment.patientId?.name }}</span>
-                      <p class="text-gray-500 text-xs">{{ appointment.patientId?.phone }}</p>
+                      <span class="text-gray-800">{{ getPatientName(appointment) }}</span>
+                      <p class="text-gray-500 text-xs">{{ getPatientPhone(appointment) }}</p>
                     </div>
                   </td>
-                  <td class="px-6 py-4 text-sm text-gray-600">{{ appointment.doctorId?.name }}</td>
+                  <td class="px-6 py-4 text-sm text-gray-600">{{ getDoctorName(appointment) }}</td>
                   <td class="px-6 py-4 text-sm text-gray-600">{{ formatDate(appointment.date) }}</td>
                   <td class="px-6 py-4 text-sm text-gray-600">{{ appointment.timeSlot }}</td>
                   <td class="px-6 py-4 text-sm text-gray-600">{{ appointment.type }}</td>
@@ -238,8 +238,8 @@ const filteredAppointments = computed(() => {
   if (searchQuery.value) {
     const query = searchQuery.value.toLowerCase()
     result = result.filter(a => 
-      (a.patientId?.name?.toLowerCase().includes(query)) || 
-      (a.patientId?.phone?.includes(query))
+      (getPatientName(a).toLowerCase().includes(query)) || 
+      (getPatientPhone(a).includes(query)))
     )
   }
   if (filterDate.value) {
@@ -250,6 +250,27 @@ const filteredAppointments = computed(() => {
   }
   return result.sort((a, b) => new Date(a.date) - new Date(b.date))
 })
+
+const getPatientName = (appointment) => {
+  if (appointment.patientId && typeof appointment.patientId === 'object') {
+    return appointment.patientId.name || appointment.patientId.patientName || ''
+  }
+  return appointment.patientName || ''
+}
+
+const getPatientPhone = (appointment) => {
+  if (appointment.patientId && typeof appointment.patientId === 'object') {
+    return appointment.patientId.phone || ''
+  }
+  return appointment.phone || ''
+}
+
+const getDoctorName = (appointment) => {
+  if (appointment.doctorId && typeof appointment.doctorId === 'object') {
+    return appointment.doctorId.name || ''
+  }
+  return appointment.doctorName || ''
+}
 
 const selectDate = (date) => {
   filterDate.value = date
