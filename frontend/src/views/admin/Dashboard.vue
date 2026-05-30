@@ -3,53 +3,38 @@
     <div class="grid grid-cols-3 gap-6">
       <div class="col-span-1 flex flex-col gap-6">
         <div class="bg-white rounded-xl shadow-md">
-          <div class="p-4 border-b border-gray-200 flex items-center justify-between">
-            <h3 class="text-base font-semibold text-gray-800">日程月历</h3>
-            <div class="flex items-center gap-2">
-              <button @click="prevMonth" class="p-1 hover:bg-gray-100 rounded transition-colors">
-                <ChevronLeft class="w-4 h-4 text-gray-600" />
+          <div class="p-4 border-b border-gray-200">
+            <div class="flex items-center justify-between">
+              <button @click="prevMonth" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                <ChevronLeft class="w-5 h-5" />
               </button>
-              <span class="text-sm font-medium text-gray-800">{{ currentYear }}年{{ currentMonth + 1 }}月</span>
-              <button @click="nextMonth" class="p-1 hover:bg-gray-100 rounded transition-colors">
-                <ChevronRight class="w-4 h-4 text-gray-600" />
+              <h3 class="text-lg font-semibold">{{ currentMonthName }} {{ currentYear }}</h3>
+              <button @click="nextMonth" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                <ChevronRight class="w-5 h-5" />
               </button>
             </div>
           </div>
           
           <div class="p-4">
-            <div class="grid grid-cols-7 gap-0.5 mb-1">
-              <div
-                v-for="day in weekDays"
-                :key="day"
-                class="text-center text-xs font-medium text-gray-500 py-1"
-              >
+            <div class="grid grid-cols-7 gap-1 mb-2">
+              <div v-for="day in weekDays" :key="day" class="text-center text-sm font-medium text-gray-600 py-2">
                 {{ day }}
               </div>
             </div>
             
-            <div class="grid grid-cols-7 gap-0.5">
+            <div class="grid grid-cols-7 gap-1">
               <div
                 v-for="(day, index) in calendarDays"
                 :key="index"
                 @click="day.date && selectDate(day)"
                 :class="[
-                  'aspect-square rounded flex flex-col items-center justify-center cursor-pointer transition-all relative text-xs',
-                  !day.date ? 'bg-gray-50' : 
-                  selectedDate?.date === day.date ? 'bg-blue-200 ring-1 ring-blue-400' :
-                  day.isToday ? 'bg-blue-100 ring-1 ring-blue-300' :
-                  day.hasAppointment ? 'bg-green-50 hover:bg-green-100' :
-                  'hover:bg-gray-100'
+                  'text-center py-2 cursor-pointer rounded-lg transition-all text-sm',
+                  day.isToday ? 'bg-blue-100 font-bold' : '',
+                  day.isSelected ? 'bg-blue-500 text-white hover:bg-blue-600' : 'hover:bg-gray-100',
+                  !day.date ? 'text-gray-300 cursor-default' : 'text-gray-700'
                 ]"
               >
-                <span :class="[
-                  'font-medium',
-                  !day.date ? 'text-transparent' :
-                  selectedDate?.date === day.date ? 'text-blue-700' :
-                  day.isToday ? 'text-blue-600' :
-                  day.hasAppointment ? 'text-green-700' :
-                  'text-gray-700'
-                ]">{{ day.day }}</span>
-                <span v-if="day.hasAppointment" class="absolute bottom-0.5 w-1 h-1 bg-green-500 rounded-full"></span>
+                {{ day.day }}
               </div>
             </div>
           </div>
@@ -200,10 +185,15 @@ const schedules = ref([])
 const doctors = ref([])
 const sortField = ref('date')
 const sortOrder = ref('desc')
+const currentDate = ref(new Date())
+
+const weekDays = ['日', '一', '二', '三', '四', '五', '六']
+const monthNames = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
+
+const currentYear = computed(() => currentDate.value.getFullYear())
+const currentMonthName = computed(() => monthNames[currentDate.value.getMonth()])
 
 const now = new Date()
-const currentYear = ref(now.getFullYear())
-const currentMonth = ref(now.getMonth())
 const today = now.toISOString().split('T')[0]
 const selectedDate = ref({
   day: now.getDate(),
@@ -220,29 +210,30 @@ const handleSort = (field) => {
   }
 }
 
-const weekDays = ['日', '一', '二', '三', '四', '五', '六']
-
 const calendarDays = computed(() => {
+  const year = currentDate.value.getFullYear()
+  const month = currentDate.value.getMonth()
+  const firstDay = new Date(year, month, 1).getDay()
+  const daysInMonth = new Date(year, month + 1, 0).getDate()
+  const todayStr = today
+  const selectedStr = selectedDate.value?.date || null
+
   const days = []
-  const firstDay = new Date(currentYear.value, currentMonth.value, 1)
-  const lastDay = new Date(currentYear.value, currentMonth.value + 1, 0)
-  const startPadding = firstDay.getDay()
-  
-  for (let i = 0; i < startPadding; i++) {
-    days.push({ day: null, date: null, isToday: false, hasAppointment: false })
+
+  for (let i = 0; i < firstDay; i++) {
+    days.push({ day: '', date: null, isToday: false, isSelected: false })
   }
-  
-  for (let day = 1; day <= lastDay.getDate(); day++) {
-    const date = `${currentYear.value}-${String(currentMonth.value + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
-    const hasAppointment = appointments.value.some(a => a.date === date)
+
+  for (let i = 1; i <= daysInMonth; i++) {
+    const currentDateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`
     days.push({
-      day,
-      date,
-      isToday: date === today,
-      hasAppointment
+      day: i,
+      date: currentDateStr,
+      isToday: currentDateStr === todayStr,
+      isSelected: currentDateStr === selectedStr
     })
   }
-  
+
   return days
 })
 
@@ -311,21 +302,11 @@ const selectedDateDoctors = computed(() => {
 })
 
 const prevMonth = () => {
-  if (currentMonth.value === 0) {
-    currentMonth.value = 11
-    currentYear.value--
-  } else {
-    currentMonth.value--
-  }
+  currentDate.value = new Date(currentDate.value.getFullYear(), currentDate.value.getMonth() - 1, 1)
 }
 
 const nextMonth = () => {
-  if (currentMonth.value === 11) {
-    currentMonth.value = 0
-    currentYear.value++
-  } else {
-    currentMonth.value++
-  }
+  currentDate.value = new Date(currentDate.value.getFullYear(), currentDate.value.getMonth() + 1, 1)
 }
 
 const selectDate = (day) => {
