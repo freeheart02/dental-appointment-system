@@ -22,7 +22,7 @@
           />
         </div>
       </div>
-      
+
       <div class="p-4">
         <div v-if="filteredSchedules.length > 0" class="overflow-x-auto">
           <table class="w-full border-collapse">
@@ -31,8 +31,8 @@
                 <th class="border border-gray-300 px-4 py-3 text-left font-semibold text-gray-700 bg-blue-50 sticky left-0 z-10 min-w-[100px]">
                   时间
                 </th>
-                <th 
-                  v-for="doctor in doctorsInSchedule" 
+                <th
+                  v-for="doctor in doctorsInSchedule"
                   :key="doctor._id"
                   class="border border-gray-300 px-4 py-3 text-center font-semibold text-gray-700 min-w-[180px]"
                 >
@@ -44,20 +44,20 @@
               </tr>
             </thead>
             <tbody>
-              <tr 
-                v-for="timeSlot in timeSlots" 
+              <tr
+                v-for="timeSlot in timeSlots"
                 :key="timeSlot"
                 class="hover:bg-gray-50"
               >
                 <td class="border border-gray-300 px-4 py-3 font-medium text-gray-700 bg-gray-50 sticky left-0 z-10">
                   {{ timeSlot }}
                 </td>
-                <td 
-                  v-for="doctor in doctorsInSchedule" 
+                <td
+                  v-for="doctor in doctorsInSchedule"
                   :key="`${doctor._id}-${timeSlot}`"
                   class="border border-gray-300 px-2 py-2 text-center"
                 >
-                  <div v-if="getAppointmentForSlot(doctor._id, timeSlot)" 
+                  <div v-if="getAppointmentForSlot(doctor._id, timeSlot)"
                        class="p-2 bg-green-50 rounded-lg border border-green-200 cursor-pointer hover:bg-green-100 transition-all"
                        @click="viewAppointment(getAppointmentForSlot(doctor._id, timeSlot))">
                     <div class="font-medium text-green-800 text-sm">
@@ -75,7 +75,7 @@
             </tbody>
           </table>
         </div>
-        
+
         <div v-else class="p-12 text-center">
           <Calendar class="w-12 h-12 mx-auto mb-4 text-gray-300" />
           <p class="text-gray-500">当天暂无排班数据</p>
@@ -86,7 +86,6 @@
       </div>
     </div>
 
-    <!-- 预约详情弹窗 -->
     <div v-if="showAppointmentModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div class="bg-white rounded-xl p-6 w-full max-w-md">
         <div class="flex justify-between items-center mb-4">
@@ -95,7 +94,7 @@
             <X class="w-5 h-5" />
           </button>
         </div>
-        
+
         <div v-if="selectedAppointment" class="space-y-4">
           <div class="p-4 bg-blue-50 rounded-lg">
             <div class="grid grid-cols-2 gap-4">
@@ -117,7 +116,7 @@
               </div>
             </div>
           </div>
-          
+
           <div class="flex gap-3">
             <button
               @click="closeAppointmentModal"
@@ -136,7 +135,6 @@
       </div>
     </div>
 
-    <!-- 添加排班弹窗 -->
     <div v-if="showAddModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div class="bg-white rounded-xl p-6 w-full max-w-lg">
         <div class="flex justify-between items-center mb-4">
@@ -145,7 +143,7 @@
             <X class="w-5 h-5" />
           </button>
         </div>
-        
+
         <form @submit.prevent="saveSchedule" class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">医生</label>
@@ -197,7 +195,7 @@
               </label>
             </div>
           </div>
-          
+
           <button
             type="submit"
             class="w-full py-3 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 transition-all"
@@ -208,7 +206,6 @@
       </div>
     </div>
 
-    <!-- 批量排班弹窗 -->
     <div v-if="showBatchModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div class="bg-white rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         <div class="flex justify-between items-center mb-4">
@@ -217,7 +214,7 @@
             <X class="w-5 h-5" />
           </button>
         </div>
-        
+
         <form @submit.prevent="saveBatchSchedule" class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">医生</label>
@@ -234,7 +231,7 @@
               </template>
             </select>
           </div>
-          
+
           <div class="grid grid-cols-2 gap-4">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">开始日期</label>
@@ -253,7 +250,7 @@
               />
             </div>
           </div>
-          
+
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">选择出诊星期</label>
             <div class="flex flex-wrap gap-2">
@@ -272,7 +269,7 @@
               </label>
             </div>
           </div>
-          
+
           <div>
             <div class="flex justify-between items-center mb-2">
               <label class="block text-sm font-medium text-gray-700">时间段</label>
@@ -300,7 +297,7 @@
               </label>
             </div>
           </div>
-          
+
           <div class="p-3 bg-blue-50 rounded-lg">
             <p class="text-sm text-blue-700">
               <Info class="w-4 h-4 inline mr-1" />
@@ -309,7 +306,7 @@
               已存在排班的日期将被跳过。
             </p>
           </div>
-          
+
           <button
             type="submit"
             class="w-full py-3 bg-green-500 text-white rounded-lg font-semibold hover:bg-green-600 transition-all"
@@ -363,19 +360,19 @@ const generateTimeSlots = (interval = 30) => {
   const morningEnd = 11 * 60 + 30
   const afternoonStart = 13 * 60 + 30
   const afternoonEnd = 16 * 60 + 30
-  
+
   for (let time = morningStart; time <= morningEnd; time += interval) {
     const hours = Math.floor(time / 60)
     const minutes = time % 60
     slots.push(`${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`)
   }
-  
+
   for (let time = afternoonStart; time <= afternoonEnd; time += interval) {
     const hours = Math.floor(time / 60)
     const minutes = time % 60
     slots.push(`${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`)
   }
-  
+
   return slots
 }
 
@@ -385,11 +382,11 @@ const currentTimeSlots = computed(() => {
   if (!formData.value.doctorId) {
     return defaultTimeSlots
   }
-  
+
   if (isEditing.value && editingTimeSlots.value.length > 0) {
     return editingTimeSlots.value
   }
-  
+
   const doctor = doctors.value.find(d => d._id === formData.value.doctorId)
   if (doctor && doctor.slotInterval) {
     return generateTimeSlots(doctor.slotInterval)
@@ -439,12 +436,12 @@ const getAppointmentForSlot = (doctorId, timeSlot) => {
   const appointment = appointments.value.find(a => {
     const appointmentDoctorId = a.doctorId._id || a.doctorId
     const scheduleDate = a.date ? new Date(a.date).toISOString().split('T')[0] : null
-    return appointmentDoctorId === doctorId && 
-           a.timeSlot === timeSlot && 
+    return appointmentDoctorId === doctorId &&
+           a.timeSlot === timeSlot &&
            scheduleDate === filterDate.value &&
            a.status !== 'cancelled'
   })
-  
+
   if (appointment) {
     return {
       ...appointment,
@@ -454,7 +451,7 @@ const getAppointmentForSlot = (doctorId, timeSlot) => {
     }
   }
   return null
-})
+}
 
 const doctorsByDepartment = computed(() => {
   const grouped = {}
@@ -535,7 +532,7 @@ const closeAppointmentModal = () => {
 
 const cancelAppointment = async (appointmentId) => {
   if (!confirm('确定要取消该预约吗？')) return
-  
+
   try {
     await appointmentAPI.update(appointmentId, { status: 'cancelled' })
     alert('取消成功')
@@ -571,12 +568,12 @@ const addBatchSchedule = async () => {
     alert('请填写医生和日期范围')
     return
   }
-  
+
   if (batchFormData.value.selectedSlots.length === 0) {
     alert('请选择至少一个时间段')
     return
   }
-  
+
   try {
     const response = await scheduleAPI.batchCreate({
       doctorId: batchFormData.value.doctorId,
@@ -585,10 +582,10 @@ const addBatchSchedule = async () => {
       weekdays: batchFormData.value.weekdays,
       timeSlots: batchFormData.value.selectedSlots
     })
-    
+
     loadSchedules()
     closeBatchModal()
-    
+
     const msg = response.data.message
     if (response.data.errors && response.data.errors.length > 0) {
       alert(`${msg}\n已跳过的日期：${response.data.errors.join('\n')}`)
@@ -604,13 +601,13 @@ const editSchedule = (schedule) => {
   isEditing.value = true
   editingId.value = schedule._id
   const existingSlots = schedule.timeSlots.map(s => s.time)
-  
+
   const doctor = doctors.value.find(d => d._id === schedule.doctorId._id)
   let allTimeSlots = defaultTimeSlots
   if (doctor && doctor.slotInterval) {
     allTimeSlots = generateTimeSlots(doctor.slotInterval)
   }
-  
+
   editingTimeSlots.value = allTimeSlots
   formData.value = {
     doctorId: schedule.doctorId._id,
