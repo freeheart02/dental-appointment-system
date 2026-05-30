@@ -178,7 +178,7 @@
               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
             >
               <option value="">请选择医生</option>
-              <template v-for="(deptDoctors, department) in doctorsByDepartment" :key="department">
+              <template v-for="(deptDoctors, department) in filteredDoctorsByDepartment" :key="department">
                 <option disabled class="text-gray-400 font-semibold">--- {{ department }} ---</option>
                 <option v-for="doctor in deptDoctors" :key="doctor._id" :value="doctor._id">
                   {{ doctor.name }} - {{ doctor.specialty }}
@@ -249,7 +249,7 @@
               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
             >
               <option value="">请选择医生</option>
-              <template v-for="(deptDoctors, department) in doctorsByDepartment" :key="department">
+              <template v-for="(deptDoctors, department) in filteredDoctorsByDepartment" :key="department">
                 <option disabled class="text-gray-400 font-semibold">--- {{ department }} ---</option>
                 <option v-for="doctor in deptDoctors" :key="doctor._id" :value="doctor._id">
                   {{ doctor.name }} - {{ doctor.specialty }}
@@ -475,6 +475,27 @@ const doctorsInSchedule = computed(() => {
   }
   
   return filteredDoctors
+})
+
+const filteredDoctorsByDepartment = computed(() => {
+  const grouped = {}
+  let filteredDoctors = [...doctors.value]
+  
+  if (filterDepartment.value) {
+    filteredDoctors = filteredDoctors.filter(d => {
+      const dept = d.department || d.specialty || '未分类'
+      return dept === filterDepartment.value
+    })
+  }
+  
+  filteredDoctors.forEach(doctor => {
+    const department = doctor.department || doctor.specialty || '未分类'
+    if (!grouped[department]) {
+      grouped[department] = []
+    }
+    grouped[department].push(doctor)
+  })
+  return grouped
 })
 
 const doctorsByDepartment = computed(() => {

@@ -25004,6 +25004,89 @@
         }
       ],
       "createdAt": "2026-05-30T03:45:43.432Z"
+    },
+    {
+      "_id": "u6ii3k2suf",
+      "doctorId": "hifz9wwzbl",
+      "date": "2026-06-01",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-05-30T11:12:37.658Z"
     }
   ],
   "appointments": [
