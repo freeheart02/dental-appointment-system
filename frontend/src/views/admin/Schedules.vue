@@ -1,8 +1,8 @@
 <template>
   <AdminLayout title="排班管理">
     <div class="bg-white rounded-xl shadow-md">
-      <div class="p-4 border-b border-gray-200 flex justify-between items-center">
-        <div class="flex gap-3">
+      <div class="p-4 border-b border-gray-200 flex justify-between items-center flex-wrap gap-3">
+        <div class="flex gap-3 flex-wrap">
           <button @click="showAddModal = true" class="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all">
             <Plus class="w-5 h-5" />
             <span>添加排班</span>
@@ -12,19 +12,32 @@
             <span>批量排班</span>
           </button>
         </div>
-        <div class="flex items-center gap-2">
-          <span class="text-sm text-gray-600">筛选日期:</span>
-          <input
-            v-model="filterDate"
-            type="date"
-            @change="loadSchedulesByDate"
-            class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-          />
+        <div class="flex items-center gap-3 flex-wrap">
+          <div class="flex items-center gap-2">
+            <span class="text-sm text-gray-600">筛选科室:</span>
+            <select
+              v-model="filterDepartment"
+              @change="filterDoctors"
+              class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+            >
+              <option value="">全部科室</option>
+              <option v-for="dept in departments" :key="dept" :value="dept">{{ dept }}</option>
+            </select>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-sm text-gray-600">筛选日期:</span>
+            <input
+              v-model="filterDate"
+              type="date"
+              @change="loadSchedulesByDate"
+              class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+            />
+          </div>
         </div>
       </div>
 
       <div class="p-4">
-        <div v-if="filteredSchedules.length > 0" class="overflow-x-auto">
+        <div v-if="filteredSchedules.length > 0 && doctorsInSchedule.length > 0" class="overflow-x-auto">
           <table class="w-full border-collapse">
             <thead>
               <tr class="bg-gradient-to-r from-blue-50 to-blue-100">
@@ -67,13 +80,26 @@
                       {{ getAppointmentForSlot(doctor._id, timeSlot).phone }}
                     </div>
                   </div>
-                  <div v-else class="p-2 bg-gray-100 rounded-lg border border-gray-200 opacity-50">
+                  <div v-else-if="isDoctorOnSchedule(doctor._id, timeSlot)"
+                       class="p-2 bg-gray-100 rounded-lg border border-gray-200 opacity-50">
                     <span class="text-xs text-gray-400">空闲</span>
+                  </div>
+                  <div v-else class="p-2 bg-gray-50 rounded-lg border border-gray-100 opacity-30">
+                    <span class="text-xs text-gray-300">未排班</span>
                   </div>
                 </td>
               </tr>
             </tbody>
           </table>
+        </div>
+
+        <div v-else-if="filteredSchedules.length > 0 && doctorsInSchedule.length === 0" class="p-12 text-center">
+          <Calendar class="w-12 h-12 mx-auto mb-4 text-gray-300" />
+          <p class="text-gray-500 mb-2">当天有排班数据，但当前筛选科室无医生排班</p>
+          <p class="text-gray-400 text-sm mb-4">请尝试选择其他科室查看</p>
+          <button @click="filterDepartment = ''" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all">
+            显示全部科室
+          </button>
         </div>
 
         <div v-else class="p-12 text-center">
@@ -334,6 +360,7 @@ const showBatchModal = ref(false)
 const showAppointmentModal = ref(false)
 const today = new Date().toISOString().split('T')[0]
 const filterDate = ref(today)
+const filterDepartment = ref('')
 const isEditing = ref(false)
 const editingId = ref(null)
 const selectedAppointment = ref(null)
@@ -419,6 +446,15 @@ const batchFormData = ref({
   selectedSlots: []
 })
 
+const departments = computed(() => {
+  const deptSet = new Set()
+  doctors.value.forEach(doctor => {
+    const dept = doctor.department || doctor.specialty || '未分类'
+    deptSet.add(dept)
+  })
+  return Array.from(deptSet).sort()
+})
+
 const filteredSchedules = computed(() => {
   if (!filterDate.value) return schedules.value
   return schedules.value.filter(schedule => {
@@ -428,8 +464,29 @@ const filteredSchedules = computed(() => {
 })
 
 const doctorsInSchedule = computed(() => {
-  const doctorIds = [...new Set(filteredSchedules.value.map(s => s.doctorId._id || s.doctorId))]
-  return doctors.value.filter(d => doctorIds.includes(d._id))
+  const doctorIds = new Set(filteredSchedules.value.map(s => s.doctorId._id || s.doctorId))
+  let filteredDoctors = doctors.value.filter(d => doctorIds.has(d._id))
+  
+  if (filterDepartment.value) {
+    filteredDoctors = filteredDoctors.filter(d => {
+      const dept = d.department || d.specialty || '未分类'
+      return dept === filterDepartment.value
+    })
+  }
+  
+  return filteredDoctors
+})
+
+const doctorsByDepartment = computed(() => {
+  const grouped = {}
+  doctors.value.forEach(doctor => {
+    const department = doctor.department || doctor.specialty || '未分类'
+    if (!grouped[department]) {
+      grouped[department] = []
+    }
+    grouped[department].push(doctor)
+  })
+  return grouped
 })
 
 const getAppointmentForSlot = (doctorId, timeSlot) => {
@@ -453,17 +510,16 @@ const getAppointmentForSlot = (doctorId, timeSlot) => {
   return null
 }
 
-const doctorsByDepartment = computed(() => {
-  const grouped = {}
-  doctors.value.forEach(doctor => {
-    const department = doctor.department || '未分类'
-    if (!grouped[department]) {
-      grouped[department] = []
-    }
-    grouped[department].push(doctor)
+const isDoctorOnSchedule = (doctorId, timeSlot) => {
+  const schedule = filteredSchedules.value.find(s => {
+    const sDoctorId = s.doctorId._id || s.doctorId
+    return sDoctorId === doctorId
   })
-  return grouped
-})
+  
+  if (!schedule) return false
+  
+  return schedule.timeSlots.some(slot => slot.time === timeSlot)
+}
 
 const getSelectedWeekdaysText = () => {
   const selected = batchFormData.value.weekdays.map(v => weekdays.find(d => d.value === v)?.label).filter(Boolean)
@@ -478,6 +534,10 @@ const toggleAllSlots = (formType) => {
   } else {
     targetForm.selectedSlots = [...targetSlots]
   }
+}
+
+const filterDoctors = () => {
+  // 筛选逻辑已在 computed 属性中处理
 }
 
 const loadSchedulesByDate = () => {
