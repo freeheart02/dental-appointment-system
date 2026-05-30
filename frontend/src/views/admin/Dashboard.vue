@@ -93,7 +93,7 @@
       <div class="col-span-2">
         <div class="bg-white rounded-xl p-5 shadow-md h-full">
           <div class="flex items-center justify-between mb-4">
-            <h4 class="text-base font-semibold text-gray-800">{{ selectedDateDisplay || '所有预约列表' }}</h4>
+            <h4 class="text-base font-semibold text-gray-800">{{ selectedDateDisplay || '今日预约列表' }}</h4>
             <button v-if="selectedDate" @click="selectedDate = null" class="text-gray-500 hover:text-gray-700">
               <X class="w-5 h-5" />
             </button>
@@ -204,7 +204,12 @@ const sortOrder = ref('desc')
 const now = new Date()
 const currentYear = ref(now.getFullYear())
 const currentMonth = ref(now.getMonth())
-const selectedDate = ref(null)
+const today = now.toISOString().split('T')[0]
+const selectedDate = ref({
+  day: now.getDate(),
+  date: today,
+  isToday: true
+})
 
 const handleSort = (field) => {
   if (sortField.value === field) {
@@ -216,8 +221,6 @@ const handleSort = (field) => {
 }
 
 const weekDays = ['日', '一', '二', '三', '四', '五', '六']
-
-const today = now.toISOString().split('T')[0]
 
 const calendarDays = computed(() => {
   const days = []
