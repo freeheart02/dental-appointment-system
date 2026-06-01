@@ -36,7 +36,7 @@ app.get('/', (req, res) => {
   res.json({ message: '口腔诊所患者预约登记系统 API' })
 })
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`)
   console.log('Using file-based storage (data is persisted)')
 })
