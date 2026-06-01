@@ -5,11 +5,11 @@
         <div class="bg-white rounded-xl shadow-md">
           <div class="p-4 border-b border-gray-200">
             <div class="flex items-center justify-between">
-              <button @click="navMonth(currentDate, -1)" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+              <button @click="navMonthPrev" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
                 <ChevronLeft class="w-5 h-5" />
               </button>
               <h3 class="text-lg font-semibold">{{ monthNames[currentDate.getMonth()] }} {{ currentDate.getFullYear() }}</h3>
-              <button @click="navMonth(currentDate, 1)" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+              <button @click="navMonthNext" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
                 <ChevronRight class="w-5 h-5" />
               </button>
             </div>
@@ -33,6 +33,9 @@
                 ]"
               >
                 {{ day.day }}
+                <div v-if="day.hasData" class="flex justify-center mt-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                </div>
               </div>
             </div>
           </div>
@@ -194,9 +197,14 @@ const selectedDate = ref({
 const weekDays = ['日', '一', '二', '三', '四', '五', '六']
 const monthNames = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
 
-const navMonth = (dateRef, delta) => {
-  const d = dateRef.value
-  dateRef.value = new Date(d.getFullYear(), d.getMonth() + delta, 1)
+const navMonthPrev = () => {
+  const d = new Date(currentDate.value)
+  currentDate.value = new Date(d.getFullYear(), d.getMonth() - 1, 1)
+}
+
+const navMonthNext = () => {
+  const d = new Date(currentDate.value)
+  currentDate.value = new Date(d.getFullYear(), d.getMonth() + 1, 1)
 }
 
 const calendarDays = (date, selected) => {
@@ -208,10 +216,23 @@ const calendarDays = (date, selected) => {
   const selectedStr = selected?.date || null
   const days = []
   
-  for (let i = 0; i < firstDay; i++) days.push({ day: '', date: null, isToday: false, isSelected: false })
+  const datesWithAppointments = new Set(
+    appointments.value.map(a => {
+      const apptDate = typeof a.date === 'string' ? a.date.split('T')[0] : new Date(a.date).toISOString().split('T')[0]
+      return apptDate
+    })
+  )
+  
+  for (let i = 0; i < firstDay; i++) days.push({ day: '', date: null, isToday: false, isSelected: false, hasData: false })
   for (let i = 1; i <= daysInMonth; i++) {
     const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`
-    days.push({ day: i, date: dateStr, isToday: dateStr === todayStr, isSelected: dateStr === selectedStr })
+    days.push({ 
+      day: i, 
+      date: dateStr, 
+      isToday: dateStr === todayStr, 
+      isSelected: dateStr === selectedStr,
+      hasData: datesWithAppointments.has(dateStr)
+    })
   }
   return days
 }
