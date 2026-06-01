@@ -209,7 +209,7 @@ const statusOptions = [
 ]
 
 const navMonth = (dateRef, delta) => {
-  const d = dateRef.value
+  const d = new Date(dateRef.value)
   dateRef.value = new Date(d.getFullYear(), d.getMonth() + delta, 1)
 }
 

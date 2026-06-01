@@ -441,7 +441,7 @@ const formData = ref({ doctorId: '', date: '', selectedSlots: [] })
 const batchData = ref({ doctorId: '', startDate: '', endDate: '', weekdays: [1, 2, 3, 4, 5], selectedSlots: [] })
 
 const navMonth = (dateRef, delta) => {
-  const d = dateRef.value
+  const d = new Date(dateRef.value)
   dateRef.value = new Date(d.getFullYear(), d.getMonth() + delta, 1)
 }
 
