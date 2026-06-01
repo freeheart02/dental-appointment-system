@@ -30,11 +30,11 @@
         <div class="w-80 flex-shrink-0">
           <div class="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
             <div class="flex items-center justify-between mb-4">
-              <button @click="navMonth(currentDate, -1)" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+              <button @click="navMonthPrev(currentDate)" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
                 <ChevronLeft class="w-5 h-5" />
               </button>
               <h3 class="text-lg font-semibold">{{ monthNames[currentDate.getMonth()] }} {{ currentDate.getFullYear() }}</h3>
-              <button @click="navMonth(currentDate, 1)" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+              <button @click="navMonthNext(currentDate)" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
                 <ChevronRight class="w-5 h-5" />
               </button>
             </div>
@@ -211,11 +211,11 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">选择日期</label>
             <div class="bg-gray-50 rounded-lg p-4">
               <div class="flex items-center justify-between mb-4">
-                <button type="button" @click="navMonth(formDate, -1)" class="p-2 hover:bg-gray-200 rounded-lg transition-colors">
+                <button type="button" @click="navMonthPrev(formDate)" class="p-2 hover:bg-gray-200 rounded-lg transition-colors">
                   <ChevronLeft class="w-5 h-5" />
                 </button>
                 <h4 class="text-base font-semibold">{{ monthNames[formDate.getMonth()] }} {{ formDate.getFullYear() }}</h4>
-                <button type="button" @click="navMonth(formDate, 1)" class="p-2 hover:bg-gray-200 rounded-lg transition-colors">
+                <button type="button" @click="navMonthNext(formDate)" class="p-2 hover:bg-gray-200 rounded-lg transition-colors">
                   <ChevronRight class="w-5 h-5" />
                 </button>
               </div>
@@ -290,11 +290,11 @@
               <label class="block text-sm font-medium text-gray-700 mb-2">开始日期</label>
               <div class="bg-gray-50 rounded-lg p-4">
                 <div class="flex items-center justify-between mb-4">
-                  <button type="button" @click="navMonth(batchStart, -1)" class="p-2 hover:bg-gray-200 rounded-lg transition-colors">
+                  <button type="button" @click="navMonthPrev(batchStart)" class="p-2 hover:bg-gray-200 rounded-lg transition-colors">
                     <ChevronLeft class="w-5 h-5" />
                   </button>
                   <h4 class="text-base font-semibold">{{ monthNames[batchStart.getMonth()] }} {{ batchStart.getFullYear() }}</h4>
-                  <button type="button" @click="navMonth(batchStart, 1)" class="p-2 hover:bg-gray-200 rounded-lg transition-colors">
+                  <button type="button" @click="navMonthNext(batchStart)" class="p-2 hover:bg-gray-200 rounded-lg transition-colors">
                     <ChevronRight class="w-5 h-5" />
                   </button>
                 </div>
@@ -323,11 +323,11 @@
               <label class="block text-sm font-medium text-gray-700 mb-2">结束日期</label>
               <div class="bg-gray-50 rounded-lg p-4">
                 <div class="flex items-center justify-between mb-4">
-                  <button type="button" @click="navMonth(batchEnd, -1)" class="p-2 hover:bg-gray-200 rounded-lg transition-colors">
+                  <button type="button" @click="navMonthPrev(batchEnd)" class="p-2 hover:bg-gray-200 rounded-lg transition-colors">
                     <ChevronLeft class="w-5 h-5" />
                   </button>
                   <h4 class="text-base font-semibold">{{ monthNames[batchEnd.getMonth()] }} {{ batchEnd.getFullYear() }}</h4>
-                  <button type="button" @click="navMonth(batchEnd, 1)" class="p-2 hover:bg-gray-200 rounded-lg transition-colors">
+                  <button type="button" @click="navMonthNext(batchEnd)" class="p-2 hover:bg-gray-200 rounded-lg transition-colors">
                     <ChevronRight class="w-5 h-5" />
                   </button>
                 </div>
@@ -440,9 +440,14 @@ const weekdays = [
 const formData = ref({ doctorId: '', date: '', selectedSlots: [] })
 const batchData = ref({ doctorId: '', startDate: '', endDate: '', weekdays: [1, 2, 3, 4, 5], selectedSlots: [] })
 
-const navMonth = (dateRef, delta) => {
+const navMonthPrev = (dateRef) => {
   const d = new Date(dateRef.value)
-  dateRef.value = new Date(d.getFullYear(), d.getMonth() + delta, 1)
+  dateRef.value = new Date(d.getFullYear(), d.getMonth() - 1, 1)
+}
+
+const navMonthNext = (dateRef) => {
+  const d = new Date(dateRef.value)
+  dateRef.value = new Date(d.getFullYear(), d.getMonth() + 1, 1)
 }
 
 const calendarDays = (date, selected) => {

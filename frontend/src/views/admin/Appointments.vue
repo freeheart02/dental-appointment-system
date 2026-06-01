@@ -29,14 +29,14 @@
           <div class="w-80 flex-shrink-0">
             <div class="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
               <div class="flex items-center justify-between mb-4">
-                <button @click="navMonth(currentDate, -1)" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-                  <ChevronLeft class="w-5 h-5" />
-                </button>
-                <h3 class="text-lg font-semibold">{{ monthNames[currentDate.getMonth()] }} {{ currentDate.getFullYear() }}</h3>
-                <button @click="navMonth(currentDate, 1)" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-                  <ChevronRight class="w-5 h-5" />
-                </button>
-              </div>
+              <button @click="navMonthPrev" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                <ChevronLeft class="w-5 h-5" />
+              </button>
+              <h3 class="text-lg font-semibold">{{ monthNames[currentDate.getMonth()] }} {{ currentDate.getFullYear() }}</h3>
+              <button @click="navMonthNext" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                <ChevronRight class="w-5 h-5" />
+              </button>
+            </div>
               <div class="grid grid-cols-7 gap-1 mb-2">
                 <div v-for="day in weekDays" :key="day" class="text-center text-sm font-medium text-gray-600 py-2">
                   {{ day }}
@@ -208,9 +208,14 @@ const statusOptions = [
   { value: 'canceled', label: '已取消', class: 'text-gray-500' }
 ]
 
-const navMonth = (dateRef, delta) => {
-  const d = new Date(dateRef.value)
-  dateRef.value = new Date(d.getFullYear(), d.getMonth() + delta, 1)
+const navMonthPrev = () => {
+  const d = new Date(currentDate.value)
+  currentDate.value = new Date(d.getFullYear(), d.getMonth() - 1, 1)
+}
+
+const navMonthNext = () => {
+  const d = new Date(currentDate.value)
+  currentDate.value = new Date(d.getFullYear(), d.getMonth() + 1, 1)
 }
 
 const calendarDays = (date, selected) => {

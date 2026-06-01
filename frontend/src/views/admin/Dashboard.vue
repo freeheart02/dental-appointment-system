@@ -5,11 +5,11 @@
         <div class="bg-white rounded-xl shadow-md">
           <div class="p-4 border-b border-gray-200">
             <div class="flex items-center justify-between">
-              <button @click="navMonth(currentDate, -1)" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+              <button @click="navMonthPrev" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
                 <ChevronLeft class="w-5 h-5" />
               </button>
               <h3 class="text-lg font-semibold">{{ monthNames[currentDate.getMonth()] }} {{ currentDate.getFullYear() }}</h3>
-              <button @click="navMonth(currentDate, 1)" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+              <button @click="navMonthNext" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
                 <ChevronRight class="w-5 h-5" />
               </button>
             </div>
@@ -197,9 +197,14 @@ const selectedDate = ref({
 const weekDays = ['日', '一', '二', '三', '四', '五', '六']
 const monthNames = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
 
-const navMonth = (dateRef, delta) => {
-  const d = new Date(dateRef.value)
-  dateRef.value = new Date(d.getFullYear(), d.getMonth() + delta, 1)
+const navMonthPrev = () => {
+  const d = new Date(currentDate.value)
+  currentDate.value = new Date(d.getFullYear(), d.getMonth() - 1, 1)
+}
+
+const navMonthNext = () => {
+  const d = new Date(currentDate.value)
+  currentDate.value = new Date(d.getFullYear(), d.getMonth() + 1, 1)
 }
 
 const calendarDays = (date, selected) => {
