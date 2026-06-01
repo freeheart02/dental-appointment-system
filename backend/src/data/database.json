@@ -128,8 +128,9 @@
       "name": "周吴郑",
       "specialty": "牙周科",
       "description": "毕业于牛闪闪大学口腔医学院",
-      "slotInterval": 40,
-      "createdAt": "2026-05-29T15:14:59.942Z"
+      "slotInterval": 60,
+      "createdAt": "2026-05-29T15:14:59.942Z",
+      "updatedAt": "2026-06-01T15:31:28.048Z"
     },
     {
       "_id": "7p5t3t90g09",
@@ -25087,6 +25088,94 @@
         }
       ],
       "createdAt": "2026-05-30T11:12:37.658Z"
+    },
+    {
+      "_id": "02p9pupfr724",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-06-17",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "17:00",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-01T15:31:05.580Z"
     }
   ],
   "appointments": [
