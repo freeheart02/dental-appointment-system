@@ -44,18 +44,21 @@
               </div>
               <div class="grid grid-cols-7 gap-1">
                 <div
-                  v-for="(day, index) in calendarDays(currentDate, filterDate)"
-                  :key="index"
-                  @click="day.date && (filterDate = day.date)"
-                  :class="[
-                    'text-center py-2 cursor-pointer rounded-lg transition-all text-sm',
-                    day.isToday ? 'bg-blue-100 font-bold' : '',
-                    day.isSelected ? 'bg-blue-500 text-white hover:bg-blue-600' : 'hover:bg-gray-100',
-                    !day.date ? 'text-gray-300 cursor-default' : 'text-gray-700'
-                  ]"
-                >
-                  {{ day.day }}
+                v-for="(day, index) in calendarDays(currentDate, filterDate)"
+                :key="index"
+                @click="day.date && (filterDate = day.date)"
+                :class="[
+                  'text-center py-2 cursor-pointer rounded-lg transition-all text-sm',
+                  day.isToday ? 'bg-blue-100 font-bold' : '',
+                  day.isSelected ? 'bg-blue-500 text-white hover:bg-blue-600' : 'hover:bg-gray-100',
+                  !day.date ? 'text-gray-300 cursor-default' : 'text-gray-700'
+                ]"
+              >
+                {{ day.day }}
+                <div v-if="day.hasAppointment" class="flex justify-center mt-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
                 </div>
+              </div>
               </div>
               <div class="mt-4 flex gap-2">
                 <button @click="filterDate = ''" class="flex-1 px-3 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-all text-sm">
@@ -219,12 +222,24 @@ const calendarDays = (date, selected) => {
   const selectedStr = selected || null
   const days = []
   
+  const datesWithAppointments = new Set(
+    appointments.value.map(a => {
+      return new Date(a.date).toISOString().split('T')[0]
+    })
+  )
+  
   for (let i = 0; i < firstDay; i++) {
-    days.push({ day: '', date: null, isToday: false, isSelected: false })
+    days.push({ day: '', date: null, isToday: false, isSelected: false, hasAppointment: false })
   }
   for (let i = 1; i <= daysInMonth; i++) {
     const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`
-    days.push({ day: i, date: dateStr, isToday: dateStr === todayStr, isSelected: dateStr === selectedStr })
+    days.push({ 
+      day: i, 
+      date: dateStr, 
+      isToday: dateStr === todayStr, 
+      isSelected: dateStr === selectedStr,
+      hasAppointment: datesWithAppointments.has(dateStr)
+    })
   }
   return days
 }

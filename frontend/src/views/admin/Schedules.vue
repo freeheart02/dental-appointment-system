@@ -56,6 +56,10 @@
                 ]"
               >
                 {{ day.day }}
+                <div v-if="day.hasSchedule || day.hasAppointment" class="flex justify-center mt-1 gap-1">
+                  <span v-if="day.hasSchedule" class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                  <span v-if="day.hasAppointment" class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                </div>
               </div>
             </div>
           </div>
@@ -228,6 +232,10 @@
                   ]"
                 >
                   {{ day.day }}
+                  <div v-if="day.hasSchedule || day.hasAppointment" class="flex justify-center mt-1 gap-1">
+                    <span v-if="day.hasSchedule" class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                    <span v-if="day.hasAppointment" class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -292,18 +300,22 @@
                 </div>
                 <div class="grid grid-cols-7 gap-1">
                   <div
-                    v-for="(day, index) in calendarDays(batchStart, batchData.startDate)"
-                    :key="index"
-                    @click="day.date && (batchData.startDate = day.date)"
-                    :class="[
-                      'text-center py-2 cursor-pointer rounded-lg transition-all text-sm',
-                      day.isToday ? 'bg-blue-100 font-bold' : '',
-                      day.isSelected ? 'bg-blue-500 text-white hover:bg-blue-600' : 'hover:bg-gray-100',
-                      !day.date ? 'text-gray-300 cursor-default' : 'text-gray-700'
-                    ]"
-                  >
-                    {{ day.day }}
+                  v-for="(day, index) in calendarDays(batchStart, batchData.startDate)"
+                  :key="index"
+                  @click="day.date && (batchData.startDate = day.date)"
+                  :class="[
+                    'text-center py-2 cursor-pointer rounded-lg transition-all text-sm',
+                    day.isToday ? 'bg-blue-100 font-bold' : '',
+                    day.isSelected ? 'bg-blue-500 text-white hover:bg-blue-600' : 'hover:bg-gray-100',
+                    !day.date ? 'text-gray-300 cursor-default' : 'text-gray-700'
+                  ]"
+                >
+                  {{ day.day }}
+                  <div v-if="day.hasSchedule || day.hasAppointment" class="flex justify-center mt-1 gap-1">
+                    <span v-if="day.hasSchedule" class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                    <span v-if="day.hasAppointment" class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
                   </div>
+                </div>
                 </div>
               </div>
             </div>
@@ -321,18 +333,22 @@
                 </div>
                 <div class="grid grid-cols-7 gap-1">
                   <div
-                    v-for="(day, index) in calendarDays(batchEnd, batchData.endDate)"
-                    :key="index"
-                    @click="day.date && (batchData.endDate = day.date)"
-                    :class="[
-                      'text-center py-2 cursor-pointer rounded-lg transition-all text-sm',
-                      day.isToday ? 'bg-blue-100 font-bold' : '',
-                      day.isSelected ? 'bg-blue-500 text-white hover:bg-blue-600' : 'hover:bg-gray-100',
-                      !day.date ? 'text-gray-300 cursor-default' : 'text-gray-700'
-                    ]"
-                  >
-                    {{ day.day }}
+                  v-for="(day, index) in calendarDays(batchEnd, batchData.endDate)"
+                  :key="index"
+                  @click="day.date && (batchData.endDate = day.date)"
+                  :class="[
+                    'text-center py-2 cursor-pointer rounded-lg transition-all text-sm',
+                    day.isToday ? 'bg-blue-100 font-bold' : '',
+                    day.isSelected ? 'bg-blue-500 text-white hover:bg-blue-600' : 'hover:bg-gray-100',
+                    !day.date ? 'text-gray-300 cursor-default' : 'text-gray-700'
+                  ]"
+                >
+                  {{ day.day }}
+                  <div v-if="day.hasSchedule || day.hasAppointment" class="flex justify-center mt-1 gap-1">
+                    <span v-if="day.hasSchedule" class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                    <span v-if="day.hasAppointment" class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
                   </div>
+                </div>
                 </div>
               </div>
             </div>
@@ -438,10 +454,29 @@ const calendarDays = (date, selected) => {
   const selectedStr = selected || null
   const days = []
   
-  for (let i = 0; i < firstDay; i++) days.push({ day: '', date: null, isToday: false, isSelected: false })
+  const datesWithSchedules = new Set(
+    schedules.value.map(s => {
+      return new Date(s.date).toISOString().split('T')[0]
+    })
+  )
+  
+  const datesWithAppointments = new Set(
+    appointments.value.map(a => {
+      return new Date(a.date).toISOString().split('T')[0]
+    })
+  )
+  
+  for (let i = 0; i < firstDay; i++) days.push({ day: '', date: null, isToday: false, isSelected: false, hasSchedule: false, hasAppointment: false })
   for (let i = 1; i <= daysInMonth; i++) {
     const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`
-    days.push({ day: i, date: dateStr, isToday: dateStr === todayStr, isSelected: dateStr === selectedStr })
+    days.push({ 
+      day: i, 
+      date: dateStr, 
+      isToday: dateStr === todayStr, 
+      isSelected: dateStr === selectedStr,
+      hasSchedule: datesWithSchedules.has(dateStr),
+      hasAppointment: datesWithAppointments.has(dateStr)
+    })
   }
   return days
 }
