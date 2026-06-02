@@ -3,7 +3,7 @@
     <div class="header">
       <h1>叫号管理</h1>
       <button @click="goToDashboard" class="btn btn-secondary">
-        返回仪表盘
+        返回控制台
       </button>
     </div>
 
