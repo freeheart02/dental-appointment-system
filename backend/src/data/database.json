@@ -25260,5 +25260,9 @@
       "createdAt": "2026-05-30T03:29:47.207Z"
     }
   ],
-  "verificationCodes": {}
+  "verificationCodes": {},
+  "queue": [],
+  "calledPatients": [],
+  "currentCalling": null,
+  "callHistory": []
 }
