@@ -55,6 +55,29 @@
         </div>
       </div>
 
+      <div class="grid md:grid-cols-2 gap-6 mb-12">
+        <button 
+          @click="goToCheckin"
+          class="bg-white rounded-xl p-8 shadow-md hover:shadow-lg transition-all text-center group"
+        >
+          <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-dental-500 rounded-full flex items-center justify-center mb-4 mx-auto group-hover:scale-110 transition-transform">
+            <CheckCircle class="w-8 h-8 text-white" />
+          </div>
+          <h3 class="text-xl font-bold text-gray-800 mb-2">患者签到</h3>
+          <p class="text-gray-600">已预约的患者可在此签到，进入候诊队列</p>
+        </button>
+        <button 
+          @click="goToQueueDisplay"
+          class="bg-white rounded-xl p-8 shadow-md hover:shadow-lg transition-all text-center group"
+        >
+          <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center mb-4 mx-auto group-hover:scale-110 transition-transform">
+            <Clock class="w-8 h-8 text-white" />
+          </div>
+          <h3 class="text-xl font-bold text-gray-800 mb-2">候诊大屏幕</h3>
+          <p class="text-gray-600">查看当前叫号状态和各医生的候诊队列</p>
+        </button>
+      </div>
+
       <div class="bg-white rounded-xl p-8 shadow-md text-center">
         <h2 class="text-2xl font-bold text-gray-800 mb-4">立即预约就诊</h2>
         <p class="text-gray-600 mb-6">只需简单几步，即可完成预约登记</p>
@@ -138,6 +161,14 @@ const goToAppointment = () => {
 
 const goToAdmin = () => {
   router.push('/admin/login')
+}
+
+const goToCheckin = () => {
+  router.push('/checkin')
+}
+
+const goToQueueDisplay = () => {
+  router.push('/queue-display')
 }
 
 const logout = () => {

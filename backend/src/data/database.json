@@ -25196,8 +25196,10 @@
       "doctorId": "hifz9wwzbl",
       "date": "2026-05-22",
       "timeSlot": "16:30",
-      "status": "pending",
-      "createdAt": "2026-05-22T01:11:53.522Z"
+      "status": "checked_in",
+      "createdAt": "2026-05-22T01:11:53.522Z",
+      "checkedInAt": "2026-06-02T14:28:22.932Z",
+      "updatedAt": "2026-06-02T14:28:23.762Z"
     },
     {
       "_id": "nu09eatufa",
@@ -25225,10 +25227,10 @@
       "doctorId": "b33zik5vn5",
       "date": "2026-05-22",
       "timeSlot": "15:00",
-      "status": "pending",
+      "status": "checked_in",
       "createdAt": "2026-05-22T05:21:21.515Z",
-      "checkedInAt": "2026-05-22T05:42:40.136Z",
-      "updatedAt": "2026-05-22T05:54:14.008Z"
+      "checkedInAt": "2026-06-02T14:28:20.212Z",
+      "updatedAt": "2026-06-02T14:28:21.040Z"
     },
     {
       "_id": "oeuco3rkkce",
@@ -25247,8 +25249,10 @@
       "doctorId": "ibgzcil6s69",
       "date": "2026-05-22",
       "timeSlot": "13:30",
-      "status": "pending",
-      "createdAt": "2026-05-22T08:57:59.914Z"
+      "status": "checked_in",
+      "createdAt": "2026-05-22T08:57:59.914Z",
+      "checkedInAt": "2026-06-02T14:28:17.588Z",
+      "updatedAt": "2026-06-02T14:28:18.417Z"
     },
     {
       "_id": "0iy5p7jvcdp8",
@@ -25260,5 +25264,9 @@
       "createdAt": "2026-05-30T03:29:47.207Z"
     }
   ],
-  "verificationCodes": {}
+  "verificationCodes": {},
+  "queue": [],
+  "calledPatients": [],
+  "currentCalling": null,
+  "callHistory": []
 }
