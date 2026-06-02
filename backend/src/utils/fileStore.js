@@ -10,7 +10,11 @@ let store = {
   doctors: [],
   schedules: [],
   appointments: [],
-  verificationCodes: {}
+  verificationCodes: {},
+  queue: [],
+  calledPatients: [],
+  currentCalling: null,
+  callHistory: []
 }
 
 const ensureDataDir = () => {
@@ -286,6 +290,160 @@ exports.deletePatient = (id) => {
     return store.patients.splice(index, 1)[0]
   }
   return null
+}
+
+exports.maskName = (name) => {
+  if (!name || name.length < 2) return name
+  return name[0] + '*' + name.slice(2)
+}
+
+exports.checkInPatient = (appointmentId, patientId, doctorId) => {
+  const appointment = store.appointments.find(a => a._id === appointmentId)
+  const patient = store.patients.find(p => p._id === patientId)
+  const doctor = store.doctors.find(d => d._id === doctorId)
+  
+  if (!appointment || !patient || !doctor) {
+    return null
+  }
+
+  const checkInTime = new Date()
+  const isLate = checkIfLate(appointment.date, appointment.timeSlot, checkInTime)
+
+  const queueItem = {
+    _id: generateId(),
+    appointmentId,
+    patientId,
+    doctorId,
+    patientName: patient.name,
+    patientMaskedName: exports.maskName(patient.name),
+    doctorName: doctor.name,
+    appointmentDate: appointment.date,
+    appointmentTimeSlot: appointment.timeSlot,
+    checkInTime: checkInTime.toISOString(),
+    isLate,
+    status: 'waiting',
+    priority: calculatePriority(appointment.timeSlot, isLate, checkInTime)
+  }
+
+  store.queue.push(queueItem)
+
+  exports.updateAppointment(appointmentId, { status: 'checked-in' })
+  
+  saveData()
+  return queueItem
+}
+
+const checkIfLate = (appointmentDate, timeSlot, checkInTime) => {
+  const [hours, minutes] = timeSlot.split(':').map(Number)
+  const appointmentDateTime = new Date(appointmentDate)
+  appointmentDateTime.setHours(hours, minutes, 0, 0)
+  
+  const diffMinutes = (checkInTime - appointmentDateTime) / (1000 * 60)
+  return diffMinutes > 15
+}
+
+const calculatePriority = (timeSlot, isLate, checkInTime) => {
+  const [hours, minutes] = timeSlot.split(':').map(Number)
+  const timeValue = hours * 60 + minutes
+  
+  if (isLate) {
+    return 10000 + timeValue
+  }
+  return timeValue
+}
+
+exports.getQueueByDoctor = (doctorId) => {
+  return store.queue
+    .filter(item => item.doctorId === doctorId && item.status === 'waiting')
+    .sort((a, b) => a.priority - b.priority)
+}
+
+exports.getCompleteQueue = () => {
+  return store.queue
+    .filter(item => item.status === 'waiting')
+    .sort((a, b) => a.priority - b.priority)
+}
+
+exports.getDoctorCurrentPatient = (doctorId) => {
+  return store.queue.find(
+    item => item.doctorId === doctorId && item.status === 'in-progress'
+  )
+}
+
+exports.callNextPatient = (doctorId) => {
+  const queue = exports.getQueueByDoctor(doctorId)
+  
+  if (queue.length === 0) {
+    return null
+  }
+
+  const nextPatient = queue[0]
+  nextPatient.status = 'in-progress'
+  nextPatient.callTime = new Date().toISOString()
+
+  store.currentCalling = {
+    patientName: nextPatient.patientMaskedName,
+    doctorName: nextPatient.doctorName,
+    doctorId: doctorId,
+    time: new Date().toISOString()
+  }
+
+  store.callHistory.unshift({
+    _id: generateId(),
+    ...nextPatient,
+    calledAt: new Date().toISOString()
+  })
+
+  saveData()
+  return nextPatient
+}
+
+exports.completePatientVisit = (queueItemId) => {
+  const index = store.queue.findIndex(item => item._id === queueItemId)
+  if (index !== -1) {
+    const completed = store.queue[index]
+    completed.status = 'completed'
+    completed.completedAt = new Date().toISOString()
+    store.calledPatients.push(completed)
+    store.queue.splice(index, 1)
+
+    if (store.currentCalling && store.currentCalling.doctorId === completed.doctorId) {
+      store.currentCalling = null
+    }
+
+    saveData()
+    return completed
+  }
+  return null
+}
+
+exports.skipPatient = (queueItemId) => {
+  const index = store.queue.findIndex(item => item._id === queueItemId)
+  if (index !== -1) {
+    const item = store.queue[index]
+    item.priority += 1000
+    saveData()
+    return item
+  }
+  return null
+}
+
+exports.removeFromQueue = (queueItemId) => {
+  const index = store.queue.findIndex(item => item._id === queueItemId)
+  if (index !== -1) {
+    const removed = store.queue.splice(index, 1)[0]
+    saveData()
+    return removed
+  }
+  return null
+}
+
+exports.getCurrentCalling = () => {
+  return store.currentCalling
+}
+
+exports.getCallHistory = () => {
+  return store.callHistory
 }
 
 exports.saveData = saveData

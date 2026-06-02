@@ -74,4 +74,17 @@ export const statisticsAPI = {
   getDashboardStats: () => api.get('/statistics/dashboard')
 }
 
+export const queueAPI = {
+  checkIn: (data) => api.post('/queue/checkin', data),
+  getByDoctor: (doctorId) => api.get(`/queue/doctor/${doctorId}`),
+  getComplete: () => api.get('/queue/complete'),
+  getPublic: () => api.get('/queue/public'),
+  callNext: (doctorId) => api.post('/queue/call-next', { doctorId }),
+  completeVisit: (queueItemId) => api.post('/queue/complete', { queueItemId }),
+  skipPatient: (queueItemId) => api.post('/queue/skip', { queueItemId }),
+  removeFromQueue: (queueItemId) => api.delete(`/queue/${queueItemId}`),
+  getCurrentCalling: () => api.get('/queue/current-calling'),
+  getHistory: () => api.get('/queue/history')
+}
+
 export default api

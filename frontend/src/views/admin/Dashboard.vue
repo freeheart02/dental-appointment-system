@@ -73,6 +73,22 @@
               <ChevronRight class="w-3 h-3" />
             </div>
           </router-link>
+          
+          <router-link to="/admin/queue" class="bg-white rounded-xl p-4 shadow-md cursor-pointer hover:shadow-lg transition-all flex flex-col col-span-2">
+            <div class="flex items-center justify-between flex-1">
+              <div>
+                <p class="text-gray-500 text-xs">叫号管理</p>
+                <p class="text-2xl font-bold text-gray-800 mt-1">管理候诊队列</p>
+              </div>
+              <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
+                <Clock class="w-5 h-5 text-purple-600" />
+              </div>
+            </div>
+            <div class="mt-3 text-purple-500 text-xs flex items-center gap-1">
+              <span>进入叫号管理</span>
+              <ChevronRight class="w-3 h-3" />
+            </div>
+          </router-link>
         </div>
       </div>
       

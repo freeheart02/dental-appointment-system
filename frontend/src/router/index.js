@@ -25,6 +25,11 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/checkin',
+    name: 'Checkin',
+    component: () => import('../views/patient/Checkin.vue')
+  },
+  {
     path: '/admin/login',
     name: 'AdminLogin',
     component: () => import('../views/admin/Login.vue')
@@ -69,6 +74,17 @@ const routes = [
     name: 'AdminStatistics',
     component: () => import('../views/admin/Statistics.vue'),
     meta: { requiresAuth: true, requiresAdmin: true }
+  },
+  {
+    path: '/admin/queue',
+    name: 'QueueManagement',
+    component: () => import('../views/admin/QueueManagement.vue'),
+    meta: { requiresAuth: true, requiresAdmin: true }
+  },
+  {
+    path: '/queue-display',
+    name: 'QueueDisplay',
+    component: () => import('../views/public/QueueDisplay.vue')
   }
 ]
 
