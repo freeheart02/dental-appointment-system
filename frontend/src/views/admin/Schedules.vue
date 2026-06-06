@@ -527,9 +527,9 @@ const getAppointment = (doctorId, timeSlot) => {
   if (appt) {
     return {
       ...appt,
-      patientName: appt.patientId?.name || appt.patientName || '未知',
-      phone: appt.patientId?.phone || appt.phone || '-',
-      doctorName: appt.doctorId?.name || '未知'
+      patientName: appt.patientName || appt.patientId?.name || '未知',
+      phone: appt.phone || appt.patientId?.phone || '-',
+      doctorName: appt.doctorName || appt.doctorId?.name || '未知'
     }
   }
   return null
