@@ -291,7 +291,7 @@
                   <button type="button" @click="navMonthPrev(batchStart)" class="p-2 hover:bg-gray-200 rounded-lg transition-colors">
                     <ChevronLeft class="w-5 h-5" />
                   </button>
-                  <h4 class="text-base font-semibold">{{ monthNames[batchStart.getMonth()] }} {{ batchStart.getFullYear() }}</h4>
+                  <h4 class="text-base font-semibold">{{ monthNames[batchStart.value.getMonth()] }} {{ batchStart.value.getFullYear() }}</h4>
                   <button type="button" @click="navMonthNext(batchStart)" class="p-2 hover:bg-gray-200 rounded-lg transition-colors">
                     <ChevronRight class="w-5 h-5" />
                   </button>
@@ -324,7 +324,7 @@
                   <button type="button" @click="navMonthPrev(batchEnd)" class="p-2 hover:bg-gray-200 rounded-lg transition-colors">
                     <ChevronLeft class="w-5 h-5" />
                   </button>
-                  <h4 class="text-base font-semibold">{{ monthNames[batchEnd.getMonth()] }} {{ batchEnd.getFullYear() }}</h4>
+                  <h4 class="text-base font-semibold">{{ monthNames[batchEnd.value.getMonth()] }} {{ batchEnd.value.getFullYear() }}</h4>
                   <button type="button" @click="navMonthNext(batchEnd)" class="p-2 hover:bg-gray-200 rounded-lg transition-colors">
                     <ChevronRight class="w-5 h-5" />
                   </button>
