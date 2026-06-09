@@ -30,11 +30,11 @@
         <div class="w-80 flex-shrink-0">
           <div class="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
             <div class="flex items-center justify-between mb-4">
-              <button @click="navMonthPrev(currentDate)" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+              <button @click="navMonthPrev" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
                 <ChevronLeft class="w-5 h-5" />
               </button>
-              <h3 class="text-lg font-semibold">{{ currentMonthText }}</h3>
-              <button @click="navMonthNext(currentDate)" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+              <h3 class="text-lg font-semibold">{{ getMonthText(currentDate.value) }}</h3>
+              <button @click="navMonthNext" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
                 <ChevronRight class="w-5 h-5" />
               </button>
             </div>
@@ -45,7 +45,7 @@
             </div>
             <div class="grid grid-cols-7 gap-1">
               <div
-                v-for="(day, index) in mainCalendarDays"
+                v-for="(day, index) in getCalendarDays(currentDate.value, filterDate.value)"
                 :key="index"
                 @click="day.date && (filterDate = day.date)"
                 :class="[
@@ -210,17 +210,17 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">选择日期</label>
             <div class="bg-gray-50 rounded-lg p-4">
               <div class="flex items-center justify-between mb-4">
-                <button type="button" @click="navMonthPrev(formDate)" class="p-2 hover:bg-gray-200 rounded-lg transition-colors">
+                <button type="button" @click="navMonthPrevForm" class="p-2 hover:bg-gray-200 rounded-lg transition-colors">
                   <ChevronLeft class="w-5 h-5" />
                 </button>
-                <h4 class="text-base font-semibold">{{ formMonthText }}</h4>
-                <button type="button" @click="navMonthNext(formDate)" class="p-2 hover:bg-gray-200 rounded-lg transition-colors">
+                <h4 class="text-base font-semibold">{{ getMonthText(formDate.value) }}</h4>
+                <button type="button" @click="navMonthNextForm" class="p-2 hover:bg-gray-200 rounded-lg transition-colors">
                   <ChevronRight class="w-5 h-5" />
                 </button>
               </div>
               <div class="grid grid-cols-7 gap-1">
                 <div
-                  v-for="(day, index) in formCalendarDays"
+                  v-for="(day, index) in getCalendarDays(formDate.value, formData.value.date)"
                   :key="index"
                   @click="day.date && (formData.date = day.date)"
                   :class="[
@@ -288,17 +288,17 @@
               <label class="block text-sm font-medium text-gray-700 mb-2">开始日期</label>
               <div class="bg-gray-50 rounded-lg p-4">
                 <div class="flex items-center justify-between mb-4">
-                  <button type="button" @click="navMonthPrev(batchStart)" class="p-2 hover:bg-gray-200 rounded-lg transition-colors">
+                  <button type="button" @click="navMonthPrevBatchStart" class="p-2 hover:bg-gray-200 rounded-lg transition-colors">
                     <ChevronLeft class="w-5 h-5" />
                   </button>
-                  <h4 class="text-base font-semibold">{{ batchStartMonthText }}</h4>
-                  <button type="button" @click="navMonthNext(batchStart)" class="p-2 hover:bg-gray-200 rounded-lg transition-colors">
+                  <h4 class="text-base font-semibold">{{ getMonthText(batchStart.value) }}</h4>
+                  <button type="button" @click="navMonthNextBatchStart" class="p-2 hover:bg-gray-200 rounded-lg transition-colors">
                     <ChevronRight class="w-5 h-5" />
                   </button>
                 </div>
                 <div class="grid grid-cols-7 gap-1">
                   <div
-                  v-for="(day, index) in batchStartCalendarDays"
+                  v-for="(day, index) in getCalendarDays(batchStart.value, batchData.value.startDate)"
                   :key="index"
                   @click="day.date && (batchData.startDate = day.date)"
                   :class="[
@@ -321,17 +321,17 @@
               <label class="block text-sm font-medium text-gray-700 mb-2">结束日期</label>
               <div class="bg-gray-50 rounded-lg p-4">
                 <div class="flex items-center justify-between mb-4">
-                  <button type="button" @click="navMonthPrev(batchEnd)" class="p-2 hover:bg-gray-200 rounded-lg transition-colors">
+                  <button type="button" @click="navMonthPrevBatchEnd" class="p-2 hover:bg-gray-200 rounded-lg transition-colors">
                     <ChevronLeft class="w-5 h-5" />
                   </button>
-                  <h4 class="text-base font-semibold">{{ batchEndMonthText }}</h4>
-                  <button type="button" @click="navMonthNext(batchEnd)" class="p-2 hover:bg-gray-200 rounded-lg transition-colors">
+                  <h4 class="text-base font-semibold">{{ getMonthText(batchEnd.value) }}</h4>
+                  <button type="button" @click="navMonthNextBatchEnd" class="p-2 hover:bg-gray-200 rounded-lg transition-colors">
                     <ChevronRight class="w-5 h-5" />
                   </button>
                 </div>
                 <div class="grid grid-cols-7 gap-1">
                   <div
-                  v-for="(day, index) in batchEndCalendarDays"
+                  v-for="(day, index) in getCalendarDays(batchEnd.value, batchData.value.endDate)"
                   :key="index"
                   @click="day.date && (batchData.endDate = day.date)"
                   :class="[
@@ -438,7 +438,7 @@ const weekdays = [
 const formData = ref({ doctorId: '', date: '', selectedSlots: [] })
 const batchData = ref({ doctorId: '', startDate: '', endDate: '', weekdays: [1, 2, 3, 4, 5], selectedSlots: [] })
 
-// 优化显示逻辑，避免在模板中重复计算
+// 优化weekdays显示逻辑
 const weekdaysLabel = computed(() => {
   const labels = batchData.value.weekdays
     .map(v => weekdays.find(d => d.value === v)?.label)
@@ -446,90 +446,87 @@ const weekdaysLabel = computed(() => {
   return labels.length > 0 ? labels.join('、') : '所有天'
 })
 
-// 主日历月份显示
-const currentMonthText = computed(() => {
-  const date = currentDate.value instanceof Date ? currentDate.value : new Date(currentDate.value)
+// 获取月份文本（纯函数，不依赖ref）
+const getMonthText = (dateValue) => {
+  const date = dateValue instanceof Date ? dateValue : new Date(dateValue)
   return `${monthNames[date.getMonth()]} ${date.getFullYear()}`
-})
-
-// 添加排班日历月份显示
-const formMonthText = computed(() => {
-  const date = formDate.value instanceof Date ? formDate.value : new Date(formDate.value)
-  return `${monthNames[date.getMonth()]} ${date.getFullYear()}`
-})
-
-// 批量排班开始日期显示
-const batchStartMonthText = computed(() => {
-  const date = batchStart.value instanceof Date ? batchStart.value : new Date(batchStart.value)
-  return `${monthNames[date.getMonth()]} ${date.getFullYear()}`
-})
-
-// 批量排班结束日期显示
-const batchEndMonthText = computed(() => {
-  const date = batchEnd.value instanceof Date ? batchEnd.value : new Date(batchEnd.value)
-  return `${monthNames[date.getMonth()]} ${date.getFullYear()}`
-})
-
-// 生成主日历数据
-const mainCalendarDays = computed(() => calendarDays(currentDate, filterDate.value))
-
-// 添加排班日历数据
-const formCalendarDays = computed(() => calendarDays(formDate, formData.value.date))
-
-// 批量排班开始日期日历
-const batchStartCalendarDays = computed(() => calendarDays(batchStart, batchData.value.startDate))
-
-// 批量排班结束日期日历
-const batchEndCalendarDays = computed(() => calendarDays(batchEnd, batchData.value.endDate))
-
-const navMonthPrev = (dateRef) => {
-  // 传入的是ref对象，直接修改其value
-  const currentDate = dateRef.value instanceof Date ? dateRef.value : new Date(dateRef)
-  dateRef.value = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1)
 }
 
-const navMonthNext = (dateRef) => {
-  // 传入的是ref对象，直接修改其value
-  const currentDate = dateRef.value instanceof Date ? dateRef.value : new Date(dateRef)
-  dateRef.value = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1)
-}
-
-const calendarDays = (date, selected) => {
-  // 处理ref对象或直接传入Date对象
-  const dateObj = date.value !== undefined ? date.value : date
-  const year = dateObj.getFullYear()
-  const month = dateObj.getMonth()
+// 生成日历天数（纯函数）
+const getCalendarDays = (dateValue, selectedValue) => {
+  const date = dateValue instanceof Date ? dateValue : new Date(dateValue)
+  const year = date.getFullYear()
+  const month = date.getMonth()
   const firstDay = new Date(year, month, 1).getDay()
   const daysInMonth = new Date(year, month + 1, 0).getDate()
   const todayStr = today
-  const selectedStr = selected || null
+  const selectedStr = selectedValue || null
   const days = []
   
+  // 计算排班和预约日期缓存
   const datesWithSchedules = new Set(
-    schedules.value.map(s => {
-      return new Date(s.date).toISOString().split('T')[0]
-    })
+    schedules.value.map(s => new Date(s.date).toISOString().split('T')[0])
   )
-  
   const datesWithAppointments = new Set(
-    appointments.value.map(a => {
-      return new Date(a.date).toISOString().split('T')[0]
-    })
+    appointments.value.map(a => new Date(a.date).toISOString().split('T')[0])
   )
   
-  for (let i = 0; i < firstDay; i++) days.push({ day: '', date: null, isToday: false, isSelected: false, hasSchedule: false, hasAppointment: false })
+  for (let i = 0; i < firstDay; i++) {
+    days.push({ day: '', date: null, isToday: false, isSelected: false, hasSchedule: false, hasAppointment: false })
+  }
   for (let i = 1; i <= daysInMonth; i++) {
     const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`
-    days.push({ 
-      day: i, 
-      date: dateStr, 
-      isToday: dateStr === todayStr, 
+    days.push({
+      day: i,
+      date: dateStr,
+      isToday: dateStr === todayStr,
       isSelected: dateStr === selectedStr,
       hasSchedule: datesWithSchedules.has(dateStr),
       hasAppointment: datesWithAppointments.has(dateStr)
     })
   }
   return days
+}
+
+// 月份导航函数
+const navMonthPrev = () => {
+  const d = new Date(currentDate.value)
+  currentDate.value = new Date(d.getFullYear(), d.getMonth() - 1, 1)
+}
+
+const navMonthNext = () => {
+  const d = new Date(currentDate.value)
+  currentDate.value = new Date(d.getFullYear(), d.getMonth() + 1, 1)
+}
+
+const navMonthPrevForm = () => {
+  const d = new Date(formDate.value)
+  formDate.value = new Date(d.getFullYear(), d.getMonth() - 1, 1)
+}
+
+const navMonthNextForm = () => {
+  const d = new Date(formDate.value)
+  formDate.value = new Date(d.getFullYear(), d.getMonth() + 1, 1)
+}
+
+const navMonthPrevBatchStart = () => {
+  const d = new Date(batchStart.value)
+  batchStart.value = new Date(d.getFullYear(), d.getMonth() - 1, 1)
+}
+
+const navMonthNextBatchStart = () => {
+  const d = new Date(batchStart.value)
+  batchStart.value = new Date(d.getFullYear(), d.getMonth() + 1, 1)
+}
+
+const navMonthPrevBatchEnd = () => {
+  const d = new Date(batchEnd.value)
+  batchEnd.value = new Date(d.getFullYear(), d.getMonth() - 1, 1)
+}
+
+const navMonthNextBatchEnd = () => {
+  const d = new Date(batchEnd.value)
+  batchEnd.value = new Date(d.getFullYear(), d.getMonth() + 1, 1)
 }
 
 const departments = computed(() => [...new Set(doctors.value.map(d => d.department || d.specialty || '未分类'))].sort())
