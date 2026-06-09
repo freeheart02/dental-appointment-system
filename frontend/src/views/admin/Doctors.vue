@@ -6,6 +6,7 @@
           <Search class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
           <input
             v-model="searchQuery"
+            @input="onSearchInput"
             type="text"
             placeholder="搜索医生姓名"
             class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
@@ -124,12 +125,13 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { Search, Plus, Edit, Trash2, User, X } from 'lucide-vue-next'
 import AdminLayout from '../../components/AdminLayout.vue'
 import { doctorAPI } from '../../utils/api'
 
 const doctors = ref([])
+const filteredDoctors = ref([])
 const searchQuery = ref('')
 const showAddModal = ref(false)
 const isEditing = ref(false)
@@ -144,51 +146,46 @@ const formData = ref({
   slotInterval: 30
 })
 
-const filteredDoctors = computed(() => {
-  let result = doctors.value
-  
+function rebuildFiltered() {
+  let result = doctors.value.slice()
   if (searchQuery.value) {
-    const query = searchQuery.value.toLowerCase()
-    result = result.filter(d => d.name.toLowerCase().includes(query))
+    const q = searchQuery.value.toLowerCase()
+    result = result.filter(d => d.name.toLowerCase().includes(q))
   }
-  
-  result = [...result].sort((a, b) => {
-    const field = sortField.value
-    let aVal = field === 'department' ? (a.department || a.specialty) : a[field]
-    let bVal = field === 'department' ? (b.department || b.specialty) : b[field]
-    
-    // 使用 localeCompare 按汉语拼音排序
-    const comparison = String(aVal || '').localeCompare(String(bVal || ''), 'zh-CN')
-    return sortOrder.value === 'asc' ? comparison : -comparison
+  const field = sortField.value
+  const getVal = (d) => field === 'department' ? (d.department || d.specialty) : d[field]
+  result.sort((a, b) => {
+    const cmp = String(getVal(a) || '').localeCompare(String(getVal(b) || ''), 'zh-CN')
+    return sortOrder.value === 'asc' ? cmp : -cmp
   })
-  
-  return result
-})
+  filteredDoctors.value = result
+}
 
-const sortBy = (field) => {
+function sortBy(field) {
   if (sortField.value === field) {
     sortOrder.value = sortOrder.value === 'asc' ? 'desc' : 'asc'
   } else {
     sortField.value = field
     sortOrder.value = 'asc'
   }
+  rebuildFiltered()
 }
 
-const formatDate = (dateStr) => {
-  const date = new Date(dateStr)
-  return date.toLocaleDateString('zh-CN')
+function onSearchInput() {
+  rebuildFiltered()
 }
 
-const loadDoctors = async () => {
+async function loadDoctors() {
   try {
     const response = await doctorAPI.getAll()
     doctors.value = response.data
+    rebuildFiltered()
   } catch (error) {
     console.error('Failed to load doctors')
   }
 }
 
-const addDoctor = async () => {
+async function addDoctor() {
   try {
     await doctorAPI.create({
       ...formData.value,
@@ -202,7 +199,7 @@ const addDoctor = async () => {
   }
 }
 
-const editDoctor = (doctor) => {
+function editDoctor(doctor) {
   isEditing.value = true
   editingId.value = doctor._id
   formData.value = {
@@ -214,7 +211,7 @@ const editDoctor = (doctor) => {
   showAddModal.value = true
 }
 
-const updateDoctor = async () => {
+async function updateDoctor() {
   try {
     await doctorAPI.update(editingId.value, {
       ...formData.value,
@@ -228,7 +225,7 @@ const updateDoctor = async () => {
   }
 }
 
-const saveDoctor = () => {
+function saveDoctor() {
   if (isEditing.value) {
     updateDoctor()
   } else {
@@ -236,7 +233,7 @@ const saveDoctor = () => {
   }
 }
 
-const deleteDoctor = async (id) => {
+async function deleteDoctor(id) {
   if (!confirm('确定要删除该医生吗？')) return
   try {
     await doctorAPI.delete(id)
@@ -247,11 +244,11 @@ const deleteDoctor = async (id) => {
   }
 }
 
-const closeModal = () => {
+function closeModal() {
   showAddModal.value = false
   isEditing.value = false
   editingId.value = null
-  formData.value = { name: '', specialty: '', description: '' }
+  formData.value = { name: '', specialty: '', description: '', slotInterval: 30 }
 }
 
 onMounted(() => {
