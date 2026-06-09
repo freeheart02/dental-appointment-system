@@ -122,7 +122,7 @@
                 <div
                   v-for="(cell, idx) in addCalCells"
                   :key="'add-cal-' + idx"
-                  @click="cell.day && (addForm.date = cell.dateStr)"
+                  @click="if(cell.day){addForm.date = cell.dateStr; refreshAddCal();}"
                   :class="cellClass(cell)"
                 >
                   <span>{{ cell.day || '' }}</span>
@@ -176,7 +176,7 @@
                   <div v-for="w in weekLabels" :key="'bs-w-' + w" class="text-center text-xs text-gray-500 py-0.5">{{ w }}</div>
                 </div>
                 <div class="grid grid-cols-7 gap-1">
-                  <div v-for="(cell, idx) in batchStartCells" :key="'bstart-' + idx" @click="cell.day && (batchForm.startDate = cell.dateStr)" :class="cellClass(cell)">
+                  <div v-for="(cell, idx) in batchStartCells" :key="'bstart-' + idx" @click="if(cell.day){batchForm.startDate=cell.dateStr;refreshBatchStart();}" :class="cellClass(cell)">
                     <span class="text-xs">{{ cell.day || '' }}</span>
                   </div>
                 </div>
@@ -195,7 +195,7 @@
                   <div v-for="w in weekLabels" :key="'be-w-' + w" class="text-center text-xs text-gray-500 py-0.5">{{ w }}</div>
                 </div>
                 <div class="grid grid-cols-7 gap-1">
-                  <div v-for="(cell, idx) in batchEndCells" :key="'bend-' + idx" @click="cell.day && (batchForm.endDate = cell.dateStr)" :class="cellClass(cell)">
+                  <div v-for="(cell, idx) in batchEndCells" :key="'bend-' + idx" @click="if(cell.day){batchForm.endDate=cell.dateStr;refreshBatchEnd();}" :class="cellClass(cell)">
                     <span class="text-xs">{{ cell.day || '' }}</span>
                   </div>
                 </div>
