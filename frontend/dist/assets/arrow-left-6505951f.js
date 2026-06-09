@@ -1,1 +1,0 @@
-import{c as e}from"./createVueComponent-35fdf9ab.js";var o=e("ArrowLeftIcon",[["line",{x1:"19",y1:"12",x2:"5",y2:"12",key:"17g05t"}],["polyline",{points:"12 19 5 12 12 5",key:"1ksm0z"}]]);const t=o;export{t as A};

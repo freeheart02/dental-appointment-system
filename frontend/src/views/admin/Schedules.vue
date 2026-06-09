@@ -45,8 +45,8 @@
             </div>
             <div class="grid grid-cols-7 gap-1">
               <div
-                v-for="(day, index) in calendarDays"
-                :key="index"
+                v-for="(day, idx) in mainCalendarDays"
+                :key="idx"
                 @click="day.date && (filterDate = day.date)"
                 :class="[
                   'text-center py-2 cursor-pointer rounded-lg transition-all text-sm',
@@ -66,7 +66,7 @@
         </div>
 
         <div class="flex-1">
-          <div v-if="filteredSchedules.length > 0 && doctorsInSchedule.length > 0" class="overflow-x-auto">
+          <div v-if="filteredSchedules.length > 0 && visibleDoctors.length > 0" class="overflow-x-auto">
             <table class="w-full border-collapse">
               <thead>
                 <tr class="bg-gradient-to-r from-blue-50 to-blue-100">
@@ -74,7 +74,7 @@
                     时间
                   </th>
                   <th
-                    v-for="doctor in doctorsInSchedule"
+                    v-for="doctor in visibleDoctors"
                     :key="doctor._id"
                     class="border border-gray-300 px-4 py-3 text-center font-semibold text-gray-700 min-w-[180px]"
                   >
@@ -91,21 +91,21 @@
                     {{ timeSlot }}
                   </td>
                   <td
-                    v-for="doctor in doctorsInSchedule"
-                    :key="`${doctor._id}-${timeSlot}`"
+                    v-for="doctor in visibleDoctors"
+                    :key="doctor._id + '-' + timeSlot"
                     class="border border-gray-300 px-2 py-2 text-center"
                   >
-                    <div v-if="getAppointment(doctor._id, timeSlot)"
+                    <div v-if="getAppt(doctor._id, timeSlot)"
                          class="p-2 bg-green-50 rounded-lg border border-green-200 cursor-pointer hover:bg-green-100 transition-all"
-                         @click="viewAppointment(getAppointment(doctor._id, timeSlot))">
+                         @click="viewAppt(doctor._id, timeSlot)">
                       <div class="font-medium text-green-800 text-sm">
-                        {{ getAppointment(doctor._id, timeSlot).patientName }}
+                        {{ getAppt(doctor._id, timeSlot).patientName }}
                       </div>
                       <div class="text-xs text-green-600">
-                        {{ getAppointment(doctor._id, timeSlot).phone }}
+                        {{ getAppt(doctor._id, timeSlot).phone }}
                       </div>
                     </div>
-                    <div v-else-if="isOnSchedule(doctor._id, timeSlot)"
+                    <div v-else-if="isDoctorHasSlot(doctor._id, timeSlot)"
                          class="p-2 bg-gray-100 rounded-lg border border-gray-200 opacity-50">
                       <span class="text-xs text-gray-400">空闲</span>
                     </div>
@@ -117,7 +117,7 @@
               </tbody>
             </table>
           </div>
-          <div v-else-if="filteredSchedules.length > 0 && doctorsInSchedule.length === 0" class="p-12 text-center">
+          <div v-else-if="filteredSchedules.length > 0 && visibleDoctors.length === 0" class="p-12 text-center">
             <Calendar class="w-12 h-12 mx-auto mb-4 text-gray-300" />
             <p class="text-gray-500 mb-2">当天有排班数据，但当前筛选科室无医生排班</p>
             <p class="text-gray-400 text-sm mb-4">请尝试选择其他科室查看</p>
@@ -173,7 +173,7 @@
               关闭
             </button>
             <button
-              @click="cancelAppointment(selectedAppointment._id)"
+              @click="cancelSelectedAppointment"
               class="flex-1 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-all"
             >
               取消预约
@@ -199,13 +199,11 @@
               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
             >
               <option value="">请选择医生</option>
-              <template v-for="(deptDoctors, department) in groupedDoctors" :key="department">
-                <optgroup :label="department">
-                  <option v-for="doctor in deptDoctors" :key="doctor._id" :value="doctor._id">
-                    {{ doctor.name }} - {{ doctor.specialty }}
-                  </option>
-                </optgroup>
-              </template>
+              <optgroup v-for="dept in groupedDepartments" :key="dept" :label="dept">
+                <option v-for="doc in getDoctorsByDept(dept)" :key="doc._id" :value="doc._id">
+                  {{ doc.name }} - {{ doc.specialty }}
+                </option>
+              </optgroup>
             </select>
           </div>
           <div>
@@ -222,8 +220,8 @@
               </div>
               <div class="grid grid-cols-7 gap-1">
                 <div
-                  v-for="(day, index) in formCalendarDays"
-                  :key="index"
+                  v-for="(day, idx) in formCalendarDays"
+                  :key="idx"
                   @click="day.date && (formData.date = day.date)"
                   :class="[
                     'text-center py-2 cursor-pointer rounded-lg transition-all text-sm',
@@ -244,7 +242,7 @@
           <div>
             <div class="flex justify-between items-center mb-2">
               <label class="block text-sm font-medium text-gray-700">时间段</label>
-              <button type="button" @click="toggleAllSlots(formData, timeSlots)" class="text-sm text-blue-500 hover:text-blue-600">
+              <button type="button" @click="toggleAllFormSlots" class="text-sm text-blue-500 hover:text-blue-600">
                 {{ formData.selectedSlots.length === timeSlots.length ? '取消全选' : '全选' }}
               </button>
             </div>
@@ -278,13 +276,11 @@
               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
             >
               <option value="">请选择医生</option>
-              <template v-for="(deptDoctors, department) in groupedDoctors" :key="department">
-                <optgroup :label="department">
-                  <option v-for="doctor in deptDoctors" :key="doctor._id" :value="doctor._id">
-                    {{ doctor.name }} - {{ doctor.specialty }}
-                  </option>
-                </optgroup>
-              </template>
+              <optgroup v-for="dept in groupedDepartments" :key="dept" :label="dept">
+                <option v-for="doc in getDoctorsByDept(dept)" :key="doc._id" :value="doc._id">
+                  {{ doc.name }} - {{ doc.specialty }}
+                </option>
+              </optgroup>
             </select>
           </div>
           <div class="grid grid-cols-2 gap-4">
@@ -302,8 +298,8 @@
                 </div>
                 <div class="grid grid-cols-7 gap-1">
                   <div
-                    v-for="(day, index) in batchStartCalendarDays"
-                    :key="index"
+                    v-for="(day, idx) in batchStartCalendarDays"
+                    :key="idx"
                     @click="day.date && (batchData.startDate = day.date)"
                     :class="[
                       'text-center py-2 cursor-pointer rounded-lg transition-all text-sm',
@@ -335,8 +331,8 @@
                 </div>
                 <div class="grid grid-cols-7 gap-1">
                   <div
-                    v-for="(day, index) in batchEndCalendarDays"
-                    :key="index"
+                    v-for="(day, idx) in batchEndCalendarDays"
+                    :key="idx"
                     @click="day.date && (batchData.endDate = day.date)"
                     :class="[
                       'text-center py-2 cursor-pointer rounded-lg transition-all text-sm',
@@ -371,7 +367,7 @@
           <div>
             <div class="flex justify-between items-center mb-2">
               <label class="block text-sm font-medium text-gray-700">时间段</label>
-              <button type="button" @click="toggleAllSlots(batchData, timeSlots)" class="text-sm text-blue-500 hover:text-blue-600">
+              <button type="button" @click="toggleAllBatchSlots" class="text-sm text-blue-500 hover:text-blue-600">
                 {{ batchData.selectedSlots.length === timeSlots.length ? '取消全选' : '全选' }}
               </button>
             </div>
@@ -400,7 +396,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { Plus, Calendar, X, List, Info, ChevronRight, ChevronLeft } from 'lucide-vue-next'
 import AdminLayout from '../../components/AdminLayout.vue'
 import { scheduleAPI, doctorAPI, appointmentAPI } from '../../utils/api'
@@ -418,10 +414,10 @@ const isEditing = ref(false)
 const editingId = ref(null)
 const selectedAppointment = ref(null)
 
-const currentDate = ref(new Date())
-const formDate = ref(new Date())
-const batchStart = ref(new Date())
-const batchEnd = ref(new Date())
+const currentNavDate = ref(new Date())
+const formNavDate = ref(new Date())
+const batchStartNavDate = ref(new Date())
+const batchEndNavDate = ref(new Date())
 
 const weekDays = ['日', '一', '二', '三', '四', '五', '六']
 const monthNames = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
@@ -442,137 +438,51 @@ const weekdays = [
 const formData = ref({ doctorId: '', date: '', selectedSlots: [] })
 const batchData = ref({ doctorId: '', startDate: '', endDate: '', weekdays: [1, 2, 3, 4, 5], selectedSlots: [] })
 
-const groupedDoctors = ref({})
+const buildCalendar = (navDate, selectedDate) => {
+  const year = navDate.getFullYear()
+  const month = navDate.getMonth()
+  const firstDay = new Date(year, month, 1).getDay()
+  const daysInMonth = new Date(year, month + 1, 0).getDate()
+  const days = []
 
-const calendarDays = ref([])
-const formCalendarDays = ref([])
-const batchStartCalendarDays = ref([])
-const batchEndCalendarDays = ref([])
+  const datesWithSchedules = new Set(
+    schedules.value.map(s => new Date(s.date).toISOString().split('T')[0])
+  )
+  const datesWithAppointments = new Set(
+    appointments.value.map(a => new Date(a.date).toISOString().split('T')[0])
+  )
 
-const weekdaysLabel = computed(() => {
-  const labels = batchData.value.weekdays
-    .map(v => weekdays.find(d => d.value === v)?.label)
-    .filter(Boolean)
-  return labels.length > 0 ? labels.join('、') : '所有天'
-})
-
-const currentMonthText = computed(() => getMonthText(currentDate.value))
-const formMonthText = computed(() => getMonthText(formDate.value))
-const batchStartMonthText = computed(() => getMonthText(batchStart.value))
-const batchEndMonthText = computed(() => getMonthText(batchEnd.value))
-
-const getMonthText = (dateValue) => {
-  try {
-    if (!dateValue) return `${monthNames[new Date().getMonth()]} ${new Date().getFullYear()}`
-    const date = dateValue instanceof Date ? dateValue : new Date(dateValue)
-    if (isNaN(date.getTime())) return `${monthNames[new Date().getMonth()]} ${new Date().getFullYear()}`
-    return `${monthNames[date.getMonth()]} ${date.getFullYear()}`
-  } catch (e) {
-    return `${monthNames[new Date().getMonth()]} ${new Date().getFullYear()}`
+  for (let i = 0; i < firstDay; i++) {
+    days.push({ day: '', date: null, isToday: false, isSelected: false, hasSchedule: false, hasAppointment: false })
   }
-}
-
-const generateCalendarDays = (dateValue, selectedValue) => {
-  try {
-    if (!dateValue) dateValue = new Date()
-    const date = dateValue instanceof Date ? dateValue : new Date(dateValue)
-    if (isNaN(date.getTime())) dateValue = new Date()
-
-    const year = date.getFullYear()
-    const month = date.getMonth()
-    const firstDay = new Date(year, month, 1).getDay()
-    const daysInMonth = new Date(year, month + 1, 0).getDate()
-    const todayStr = today
-    const selectedStr = selectedValue || null
-    const days = []
-
-    const datesWithSchedules = new Set(
-      schedules.value.map(s => new Date(s.date).toISOString().split('T')[0])
-    )
-    const datesWithAppointments = new Set(
-      appointments.value.map(a => new Date(a.date).toISOString().split('T')[0])
-    )
-
-    for (let i = 0; i < firstDay; i++) {
-      days.push({ day: '', date: null, isToday: false, isSelected: false, hasSchedule: false, hasAppointment: false })
-    }
-    for (let i = 1; i <= daysInMonth; i++) {
-      const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`
-      days.push({
-        day: i,
-        date: dateStr,
-        isToday: dateStr === todayStr,
-        isSelected: dateStr === selectedStr,
-        hasSchedule: datesWithSchedules.has(dateStr),
-        hasAppointment: datesWithAppointments.has(dateStr)
-      })
-    }
-    return days
-  } catch (e) {
-    console.error('generateCalendarDays error:', e)
-    return []
+  for (let i = 1; i <= daysInMonth; i++) {
+    const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`
+    days.push({
+      day: i,
+      date: dateStr,
+      isToday: dateStr === today,
+      isSelected: dateStr === selectedDate,
+      hasSchedule: datesWithSchedules.has(dateStr),
+      hasAppointment: datesWithAppointments.has(dateStr)
+    })
   }
+  return days
 }
 
-const updateAllCalendars = () => {
-  calendarDays.value = generateCalendarDays(currentDate.value, filterDate.value)
-  formCalendarDays.value = generateCalendarDays(formDate.value, formData.value.date)
-  batchStartCalendarDays.value = generateCalendarDays(batchStart.value, batchData.value.startDate)
-  batchEndCalendarDays.value = generateCalendarDays(batchEnd.value, batchData.value.endDate)
+const mainCalendarDays = computed(() => buildCalendar(currentNavDate.value, filterDate.value))
+const formCalendarDays = computed(() => buildCalendar(formNavDate.value, formData.value.date))
+const batchStartCalendarDays = computed(() => buildCalendar(batchStartNavDate.value, batchData.value.startDate))
+const batchEndCalendarDays = computed(() => buildCalendar(batchEndNavDate.value, batchData.value.endDate))
+
+const getMonthText = (date) => {
+  const y = date.getFullYear()
+  return `${monthNames[date.getMonth()]} ${y}`
 }
 
-const updateGroupedDoctors = () => {
-  const grouped = {}
-  const filtered = filterDepartment.value
-    ? doctors.value.filter(d => (d.department || d.specialty || '未分类') === filterDepartment.value)
-    : doctors.value
-  filtered.forEach(doctor => {
-    const dept = doctor.department || doctor.specialty || '未分类'
-    if (!grouped[dept]) grouped[dept] = []
-    grouped[dept].push(doctor)
-  })
-  groupedDoctors.value = grouped
-}
-
-const navMonthPrev = () => {
-  const d = new Date(currentDate.value)
-  currentDate.value = new Date(d.getFullYear(), d.getMonth() - 1, 1)
-}
-
-const navMonthNext = () => {
-  const d = new Date(currentDate.value)
-  currentDate.value = new Date(d.getFullYear(), d.getMonth() + 1, 1)
-}
-
-const navMonthPrevForm = () => {
-  const d = new Date(formDate.value)
-  formDate.value = new Date(d.getFullYear(), d.getMonth() - 1, 1)
-}
-
-const navMonthNextForm = () => {
-  const d = new Date(formDate.value)
-  formDate.value = new Date(d.getFullYear(), d.getMonth() + 1, 1)
-}
-
-const navMonthPrevBatchStart = () => {
-  const d = new Date(batchStart.value)
-  batchStart.value = new Date(d.getFullYear(), d.getMonth() - 1, 1)
-}
-
-const navMonthNextBatchStart = () => {
-  const d = new Date(batchStart.value)
-  batchStart.value = new Date(d.getFullYear(), d.getMonth() + 1, 1)
-}
-
-const navMonthPrevBatchEnd = () => {
-  const d = new Date(batchEnd.value)
-  batchEnd.value = new Date(d.getFullYear(), d.getMonth() - 1, 1)
-}
-
-const navMonthNextBatchEnd = () => {
-  const d = new Date(batchEnd.value)
-  batchEnd.value = new Date(d.getFullYear(), d.getMonth() + 1, 1)
-}
+const currentMonthText = computed(() => getMonthText(currentNavDate.value))
+const formMonthText = computed(() => getMonthText(formNavDate.value))
+const batchStartMonthText = computed(() => getMonthText(batchStartNavDate.value))
+const batchEndMonthText = computed(() => getMonthText(batchEndNavDate.value))
 
 const departments = computed(() => [...new Set(doctors.value.map(d => d.department || d.specialty || '未分类'))].sort())
 
@@ -582,7 +492,7 @@ const filteredSchedules = computed(() =>
   ) : schedules.value
 )
 
-const doctorsInSchedule = computed(() => {
+const visibleDoctors = computed(() => {
   const doctorIds = new Set(filteredSchedules.value.map(s => s.doctorId._id || s.doctorId))
   return doctors.value.filter(d => {
     if (!doctorIds.has(d._id)) return false
@@ -593,30 +503,108 @@ const doctorsInSchedule = computed(() => {
   })
 })
 
-const getAppointment = (doctorId, timeSlot) => {
-  const appt = appointments.value.find(a => {
-    const apptDoctorId = a.doctorId._id || a.doctorId
-    const apptDate = a.date ? new Date(a.date).toISOString().split('T')[0] : null
-    return apptDoctorId === doctorId && a.timeSlot === timeSlot && apptDate === filterDate.value && a.status !== 'cancelled'
+const groupedDepartments = computed(() => {
+  const depts = new Set()
+  doctors.value.forEach(doctor => {
+    depts.add(doctor.department || doctor.specialty || '未分类')
   })
-  if (appt) {
-    return {
-      ...appt,
-      patientName: appt.patientName || appt.patientId?.name || '未知',
-      phone: appt.phone || appt.patientId?.phone || '-',
-      doctorName: appt.doctorName || appt.doctorId?.name || '未知'
+  return [...depts].sort()
+})
+
+const getDoctorsByDept = (dept) => {
+  return doctors.value.filter(d => (d.department || d.specialty || '未分类') === dept)
+}
+
+const appointmentMap = computed(() => {
+  const map = {}
+  appointments.value.forEach(appt => {
+    const apptDate = appt.date ? new Date(appt.date).toISOString().split('T')[0] : null
+    if (apptDate === filterDate.value && appt.status !== 'cancelled') {
+      const key = `${appt.doctorId._id || appt.doctorId}-${appt.timeSlot}`
+      map[key] = {
+        _id: appt._id,
+        patientName: appt.patientName || appt.patientId?.name || '未知',
+        phone: appt.phone || appt.patientId?.phone || '-',
+        doctorName: appt.doctorName || appt.doctorId?.name || '未知',
+        date: apptDate,
+        timeSlot: appt.timeSlot
+      }
     }
-  }
-  return null
+  })
+  return map
+})
+
+const getAppt = (doctorId, slot) => {
+  return appointmentMap.value[`${doctorId}-${slot}`] || null
 }
 
-const isOnSchedule = (doctorId, timeSlot) => {
-  const schedule = filteredSchedules.value.find(s => (s.doctorId._id || s.doctorId) === doctorId)
-  return schedule ? schedule.timeSlots.some(slot => slot.time === timeSlot) : false
+const scheduleMap = computed(() => {
+  const map = {}
+  filteredSchedules.value.forEach(s => {
+    const id = s.doctorId._id || s.doctorId
+    if (!map[id]) map[id] = new Set()
+    s.timeSlots.forEach(ts => map[id].add(ts.time))
+  })
+  return map
+})
+
+const isDoctorHasSlot = (doctorId, slot) => {
+  return scheduleMap.value[doctorId]?.has(slot) || false
 }
 
-const toggleAllSlots = (form, slots) => {
-  form.selectedSlots = form.selectedSlots.length === slots.length ? [] : [...slots]
+const weekdaysLabel = computed(() => {
+  const labels = batchData.value.weekdays
+    .map(v => weekdays.find(d => d.value === v)?.label)
+    .filter(Boolean)
+  return labels.length > 0 ? labels.join('、') : '所有天'
+})
+
+const toggleAllFormSlots = () => {
+  formData.value.selectedSlots = formData.value.selectedSlots.length === timeSlots.length ? [] : [...timeSlots]
+}
+
+const toggleAllBatchSlots = () => {
+  batchData.value.selectedSlots = batchData.value.selectedSlots.length === timeSlots.length ? [] : [...timeSlots]
+}
+
+const navMonthPrev = () => {
+  const d = new Date(currentNavDate.value)
+  currentNavDate.value = new Date(d.getFullYear(), d.getMonth() - 1, 1)
+}
+
+const navMonthNext = () => {
+  const d = new Date(currentNavDate.value)
+  currentNavDate.value = new Date(d.getFullYear(), d.getMonth() + 1, 1)
+}
+
+const navMonthPrevForm = () => {
+  const d = new Date(formNavDate.value)
+  formNavDate.value = new Date(d.getFullYear(), d.getMonth() - 1, 1)
+}
+
+const navMonthNextForm = () => {
+  const d = new Date(formNavDate.value)
+  formNavDate.value = new Date(d.getFullYear(), d.getMonth() + 1, 1)
+}
+
+const navMonthPrevBatchStart = () => {
+  const d = new Date(batchStartNavDate.value)
+  batchStartNavDate.value = new Date(d.getFullYear(), d.getMonth() - 1, 1)
+}
+
+const navMonthNextBatchStart = () => {
+  const d = new Date(batchStartNavDate.value)
+  batchStartNavDate.value = new Date(d.getFullYear(), d.getMonth() + 1, 1)
+}
+
+const navMonthPrevBatchEnd = () => {
+  const d = new Date(batchEndNavDate.value)
+  batchEndNavDate.value = new Date(d.getFullYear(), d.getMonth() - 1, 1)
+}
+
+const navMonthNextBatchEnd = () => {
+  const d = new Date(batchEndNavDate.value)
+  batchEndNavDate.value = new Date(d.getFullYear(), d.getMonth() + 1, 1)
 }
 
 const loadData = async () => {
@@ -629,16 +617,17 @@ const loadData = async () => {
     schedules.value = s.data
     doctors.value = d.data
     appointments.value = a.data
-    updateGroupedDoctors()
-    updateAllCalendars()
   } catch (err) {
     console.error('Failed to load data')
   }
 }
 
-const viewAppointment = (appt) => {
-  selectedAppointment.value = appt
-  showAppointmentModal.value = true
+const viewAppt = (doctorId, slot) => {
+  const appt = getAppt(doctorId, slot)
+  if (appt) {
+    selectedAppointment.value = appt
+    showAppointmentModal.value = true
+  }
 }
 
 const closeAppointmentModal = () => {
@@ -646,10 +635,11 @@ const closeAppointmentModal = () => {
   selectedAppointment.value = null
 }
 
-const cancelAppointment = async (id) => {
+const cancelSelectedAppointment = async () => {
+  if (!selectedAppointment.value?._id) return
   if (!confirm('确定要取消该预约吗？')) return
   try {
-    await appointmentAPI.update(id, { status: 'cancelled' })
+    await appointmentAPI.update(selectedAppointment.value._id, { status: 'cancelled' })
     alert('取消成功')
     loadData()
     closeAppointmentModal()
@@ -718,16 +708,6 @@ const saveBatch = async () => {
     alert(err.response?.data?.message || '批量创建失败')
   }
 }
-
-watch(currentDate, updateAllCalendars)
-watch(formDate, updateAllCalendars)
-watch(batchStart, updateAllCalendars)
-watch(batchEnd, updateAllCalendars)
-watch(filterDate, updateAllCalendars)
-watch(formData, updateAllCalendars, { deep: true })
-watch(batchData, updateAllCalendars, { deep: true })
-watch(filterDepartment, updateGroupedDoctors)
-watch(doctors, updateGroupedDoctors, { deep: true })
 
 onMounted(loadData)
 </script>
