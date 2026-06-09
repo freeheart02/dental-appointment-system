@@ -33,7 +33,7 @@
               <button @click="navMonthPrev(currentDate)" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
                 <ChevronLeft class="w-5 h-5" />
               </button>
-              <h3 class="text-lg font-semibold">{{ monthNames[currentDate.getMonth()] }} {{ currentDate.getFullYear() }}</h3>
+              <h3 class="text-lg font-semibold">{{ currentMonthText }}</h3>
               <button @click="navMonthNext(currentDate)" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
                 <ChevronRight class="w-5 h-5" />
               </button>
@@ -45,7 +45,7 @@
             </div>
             <div class="grid grid-cols-7 gap-1">
               <div
-                v-for="(day, index) in calendarDays(currentDate, filterDate)"
+                v-for="(day, index) in mainCalendarDays"
                 :key="index"
                 @click="day.date && (filterDate = day.date)"
                 :class="[
@@ -213,14 +213,14 @@
                 <button type="button" @click="navMonthPrev(formDate)" class="p-2 hover:bg-gray-200 rounded-lg transition-colors">
                   <ChevronLeft class="w-5 h-5" />
                 </button>
-                <h4 class="text-base font-semibold">{{ monthNames[formDate.getMonth()] }} {{ formDate.getFullYear() }}</h4>
+                <h4 class="text-base font-semibold">{{ formMonthText }}</h4>
                 <button type="button" @click="navMonthNext(formDate)" class="p-2 hover:bg-gray-200 rounded-lg transition-colors">
                   <ChevronRight class="w-5 h-5" />
                 </button>
               </div>
               <div class="grid grid-cols-7 gap-1">
                 <div
-                  v-for="(day, index) in calendarDays(formDate, formData.date)"
+                  v-for="(day, index) in formCalendarDays"
                   :key="index"
                   @click="day.date && (formData.date = day.date)"
                   :class="[
@@ -291,14 +291,14 @@
                   <button type="button" @click="navMonthPrev(batchStart)" class="p-2 hover:bg-gray-200 rounded-lg transition-colors">
                     <ChevronLeft class="w-5 h-5" />
                   </button>
-                  <h4 class="text-base font-semibold">{{ monthNames[batchStart.value.getMonth()] }} {{ batchStart.value.getFullYear() }}</h4>
+                  <h4 class="text-base font-semibold">{{ batchStartMonthText }}</h4>
                   <button type="button" @click="navMonthNext(batchStart)" class="p-2 hover:bg-gray-200 rounded-lg transition-colors">
                     <ChevronRight class="w-5 h-5" />
                   </button>
                 </div>
                 <div class="grid grid-cols-7 gap-1">
                   <div
-                  v-for="(day, index) in calendarDays(batchStart, batchData.startDate)"
+                  v-for="(day, index) in batchStartCalendarDays"
                   :key="index"
                   @click="day.date && (batchData.startDate = day.date)"
                   :class="[
@@ -324,14 +324,14 @@
                   <button type="button" @click="navMonthPrev(batchEnd)" class="p-2 hover:bg-gray-200 rounded-lg transition-colors">
                     <ChevronLeft class="w-5 h-5" />
                   </button>
-                  <h4 class="text-base font-semibold">{{ monthNames[batchEnd.value.getMonth()] }} {{ batchEnd.value.getFullYear() }}</h4>
+                  <h4 class="text-base font-semibold">{{ batchEndMonthText }}</h4>
                   <button type="button" @click="navMonthNext(batchEnd)" class="p-2 hover:bg-gray-200 rounded-lg transition-colors">
                     <ChevronRight class="w-5 h-5" />
                   </button>
                 </div>
                 <div class="grid grid-cols-7 gap-1">
                   <div
-                  v-for="(day, index) in calendarDays(batchEnd, batchData.endDate)"
+                  v-for="(day, index) in batchEndCalendarDays"
                   :key="index"
                   @click="day.date && (batchData.endDate = day.date)"
                   :class="[
@@ -438,13 +438,49 @@ const weekdays = [
 const formData = ref({ doctorId: '', date: '', selectedSlots: [] })
 const batchData = ref({ doctorId: '', startDate: '', endDate: '', weekdays: [1, 2, 3, 4, 5], selectedSlots: [] })
 
-// 优化weekdays显示逻辑，避免在模板中重复计算
+// 优化显示逻辑，避免在模板中重复计算
 const weekdaysLabel = computed(() => {
   const labels = batchData.value.weekdays
     .map(v => weekdays.find(d => d.value === v)?.label)
     .filter(Boolean)
   return labels.length > 0 ? labels.join('、') : '所有天'
 })
+
+// 主日历月份显示
+const currentMonthText = computed(() => {
+  const date = currentDate.value instanceof Date ? currentDate.value : new Date(currentDate.value)
+  return `${monthNames[date.getMonth()]} ${date.getFullYear()}`
+})
+
+// 添加排班日历月份显示
+const formMonthText = computed(() => {
+  const date = formDate.value instanceof Date ? formDate.value : new Date(formDate.value)
+  return `${monthNames[date.getMonth()]} ${date.getFullYear()}`
+})
+
+// 批量排班开始日期显示
+const batchStartMonthText = computed(() => {
+  const date = batchStart.value instanceof Date ? batchStart.value : new Date(batchStart.value)
+  return `${monthNames[date.getMonth()]} ${date.getFullYear()}`
+})
+
+// 批量排班结束日期显示
+const batchEndMonthText = computed(() => {
+  const date = batchEnd.value instanceof Date ? batchEnd.value : new Date(batchEnd.value)
+  return `${monthNames[date.getMonth()]} ${date.getFullYear()}`
+})
+
+// 生成主日历数据
+const mainCalendarDays = computed(() => calendarDays(currentDate, filterDate.value))
+
+// 添加排班日历数据
+const formCalendarDays = computed(() => calendarDays(formDate, formData.value.date))
+
+// 批量排班开始日期日历
+const batchStartCalendarDays = computed(() => calendarDays(batchStart, batchData.value.startDate))
+
+// 批量排班结束日期日历
+const batchEndCalendarDays = computed(() => calendarDays(batchEnd, batchData.value.endDate))
 
 const navMonthPrev = (dateRef) => {
   // 传入的是ref对象，直接修改其value
