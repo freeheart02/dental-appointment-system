@@ -384,7 +384,7 @@
             <p class="text-sm text-blue-700">
               <Info class="w-4 h-4 inline mr-1" />
               将为选中的医生在 <span class="font-semibold">{{ batchData.startDate }}</span> 至 <span class="font-semibold">{{ batchData.endDate }}</span> 期间，
-              每周的 <span class="font-semibold">{{ batchData.weekdays.map(v => weekdays.find(d => d.value === v)?.label).filter(Boolean).join('、') || '所有天' }}</span> 创建排班。
+              每周的 <span class="font-semibold">{{ weekdaysLabel }}</span> 创建排班。
               已存在排班的日期将被跳过。
             </p>
           </div>
@@ -440,14 +440,26 @@ const weekdays = [
 const formData = ref({ doctorId: '', date: '', selectedSlots: [] })
 const batchData = ref({ doctorId: '', startDate: '', endDate: '', weekdays: [1, 2, 3, 4, 5], selectedSlots: [] })
 
+// 优化weekdays显示逻辑，避免在模板中重复计算
+const weekdaysLabel = computed(() => {
+  const labels = batchData.value.weekdays
+    .map(v => weekdays.find(d => d.value === v)?.label)
+    .filter(Boolean)
+  return labels.length > 0 ? labels.join('、') : '所有天'
+})
+
 const navMonthPrev = (dateRef) => {
-  const d = new Date(dateRef.value)
-  dateRef.value = new Date(d.getFullYear(), d.getMonth() - 1, 1)
+  if (dateRef.value instanceof Date) {
+    const d = new Date(dateRef.value)
+    dateRef.value = new Date(d.getFullYear(), d.getMonth() - 1, 1)
+  }
 }
 
 const navMonthNext = (dateRef) => {
-  const d = new Date(dateRef.value)
-  dateRef.value = new Date(d.getFullYear(), d.getMonth() + 1, 1)
+  if (dateRef.value instanceof Date) {
+    const d = new Date(dateRef.value)
+    dateRef.value = new Date(d.getFullYear(), d.getMonth() + 1, 1)
+  }
 }
 
 const calendarDays = (date, selected) => {
