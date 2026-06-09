@@ -33,7 +33,7 @@
               <button @click="navMonthPrev" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
                 <ChevronLeft class="w-5 h-5" />
               </button>
-              <h3 class="text-lg font-semibold">{{ getMonthText(currentDate.value) }}</h3>
+              <h3 class="text-lg font-semibold">{{ getMonthText(currentDate) }}</h3>
               <button @click="navMonthNext" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
                 <ChevronRight class="w-5 h-5" />
               </button>
@@ -45,7 +45,7 @@
             </div>
             <div class="grid grid-cols-7 gap-1">
               <div
-                v-for="(day, index) in getCalendarDays(currentDate.value, filterDate.value)"
+                v-for="(day, index) in getCalendarDays(currentDate, filterDate)"
                 :key="index"
                 @click="day.date && (filterDate = day.date)"
                 :class="[
@@ -213,14 +213,14 @@
                 <button type="button" @click="navMonthPrevForm" class="p-2 hover:bg-gray-200 rounded-lg transition-colors">
                   <ChevronLeft class="w-5 h-5" />
                 </button>
-                <h4 class="text-base font-semibold">{{ getMonthText(formDate.value) }}</h4>
+                <h4 class="text-base font-semibold">{{ getMonthText(formDate) }}</h4>
                 <button type="button" @click="navMonthNextForm" class="p-2 hover:bg-gray-200 rounded-lg transition-colors">
                   <ChevronRight class="w-5 h-5" />
                 </button>
               </div>
               <div class="grid grid-cols-7 gap-1">
                 <div
-                  v-for="(day, index) in getCalendarDays(formDate.value, formData.value.date)"
+                  v-for="(day, index) in getCalendarDays(formDate, formData.date)"
                   :key="index"
                   @click="day.date && (formData.date = day.date)"
                   :class="[
@@ -291,29 +291,29 @@
                   <button type="button" @click="navMonthPrevBatchStart" class="p-2 hover:bg-gray-200 rounded-lg transition-colors">
                     <ChevronLeft class="w-5 h-5" />
                   </button>
-                  <h4 class="text-base font-semibold">{{ getMonthText(batchStart.value) }}</h4>
+                  <h4 class="text-base font-semibold">{{ getMonthText(batchStart) }}</h4>
                   <button type="button" @click="navMonthNextBatchStart" class="p-2 hover:bg-gray-200 rounded-lg transition-colors">
                     <ChevronRight class="w-5 h-5" />
                   </button>
                 </div>
                 <div class="grid grid-cols-7 gap-1">
                   <div
-                  v-for="(day, index) in getCalendarDays(batchStart.value, batchData.value.startDate)"
-                  :key="index"
-                  @click="day.date && (batchData.startDate = day.date)"
-                  :class="[
-                    'text-center py-2 cursor-pointer rounded-lg transition-all text-sm',
-                    day.isToday ? 'bg-blue-100 font-bold' : '',
-                    day.isSelected ? 'bg-blue-500 text-white hover:bg-blue-600' : 'hover:bg-gray-100',
-                    !day.date ? 'text-gray-300 cursor-default' : 'text-gray-700'
-                  ]"
-                >
-                  {{ day.day }}
-                  <div v-if="day.hasSchedule || day.hasAppointment" class="flex justify-center mt-1 gap-1">
-                    <span v-if="day.hasSchedule" class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
-                    <span v-if="day.hasAppointment" class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                    v-for="(day, index) in getCalendarDays(batchStart, batchData.startDate)"
+                    :key="index"
+                    @click="day.date && (batchData.startDate = day.date)"
+                    :class="[
+                      'text-center py-2 cursor-pointer rounded-lg transition-all text-sm',
+                      day.isToday ? 'bg-blue-100 font-bold' : '',
+                      day.isSelected ? 'bg-blue-500 text-white hover:bg-blue-600' : 'hover:bg-gray-100',
+                      !day.date ? 'text-gray-300 cursor-default' : 'text-gray-700'
+                    ]"
+                  >
+                    {{ day.day }}
+                    <div v-if="day.hasSchedule || day.hasAppointment" class="flex justify-center mt-1 gap-1">
+                      <span v-if="day.hasSchedule" class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                      <span v-if="day.hasAppointment" class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                    </div>
                   </div>
-                </div>
                 </div>
               </div>
             </div>
@@ -324,29 +324,29 @@
                   <button type="button" @click="navMonthPrevBatchEnd" class="p-2 hover:bg-gray-200 rounded-lg transition-colors">
                     <ChevronLeft class="w-5 h-5" />
                   </button>
-                  <h4 class="text-base font-semibold">{{ getMonthText(batchEnd.value) }}</h4>
+                  <h4 class="text-base font-semibold">{{ getMonthText(batchEnd) }}</h4>
                   <button type="button" @click="navMonthNextBatchEnd" class="p-2 hover:bg-gray-200 rounded-lg transition-colors">
                     <ChevronRight class="w-5 h-5" />
                   </button>
                 </div>
                 <div class="grid grid-cols-7 gap-1">
                   <div
-                  v-for="(day, index) in getCalendarDays(batchEnd.value, batchData.value.endDate)"
-                  :key="index"
-                  @click="day.date && (batchData.endDate = day.date)"
-                  :class="[
-                    'text-center py-2 cursor-pointer rounded-lg transition-all text-sm',
-                    day.isToday ? 'bg-blue-100 font-bold' : '',
-                    day.isSelected ? 'bg-blue-500 text-white hover:bg-blue-600' : 'hover:bg-gray-100',
-                    !day.date ? 'text-gray-300 cursor-default' : 'text-gray-700'
-                  ]"
-                >
-                  {{ day.day }}
-                  <div v-if="day.hasSchedule || day.hasAppointment" class="flex justify-center mt-1 gap-1">
-                    <span v-if="day.hasSchedule" class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
-                    <span v-if="day.hasAppointment" class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                    v-for="(day, index) in getCalendarDays(batchEnd, batchData.endDate)"
+                    :key="index"
+                    @click="day.date && (batchData.endDate = day.date)"
+                    :class="[
+                      'text-center py-2 cursor-pointer rounded-lg transition-all text-sm',
+                      day.isToday ? 'bg-blue-100 font-bold' : '',
+                      day.isSelected ? 'bg-blue-500 text-white hover:bg-blue-600' : 'hover:bg-gray-100',
+                      !day.date ? 'text-gray-300 cursor-default' : 'text-gray-700'
+                    ]"
+                  >
+                    {{ day.day }}
+                    <div v-if="day.hasSchedule || day.hasAppointment" class="flex justify-center mt-1 gap-1">
+                      <span v-if="day.hasSchedule" class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                      <span v-if="day.hasAppointment" class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                    </div>
                   </div>
-                </div>
                 </div>
               </div>
             </div>
@@ -446,46 +446,60 @@ const weekdaysLabel = computed(() => {
   return labels.length > 0 ? labels.join('、') : '所有天'
 })
 
-// 获取月份文本（纯函数，不依赖ref）
+// 获取月份文本（带防御性检查）
 const getMonthText = (dateValue) => {
-  const date = dateValue instanceof Date ? dateValue : new Date(dateValue)
-  return `${monthNames[date.getMonth()]} ${date.getFullYear()}`
+  try {
+    if (!dateValue) return `${monthNames[new Date().getMonth()]} ${new Date().getFullYear()}`
+    const date = dateValue instanceof Date ? dateValue : new Date(dateValue)
+    if (isNaN(date.getTime())) return `${monthNames[new Date().getMonth()]} ${new Date().getFullYear()}`
+    return `${monthNames[date.getMonth()]} ${date.getFullYear()}`
+  } catch (e) {
+    return `${monthNames[new Date().getMonth()]} ${new Date().getFullYear()}`
+  }
 }
 
-// 生成日历天数（纯函数）
+// 生成日历天数（带防御性检查）
 const getCalendarDays = (dateValue, selectedValue) => {
-  const date = dateValue instanceof Date ? dateValue : new Date(dateValue)
-  const year = date.getFullYear()
-  const month = date.getMonth()
-  const firstDay = new Date(year, month, 1).getDay()
-  const daysInMonth = new Date(year, month + 1, 0).getDate()
-  const todayStr = today
-  const selectedStr = selectedValue || null
-  const days = []
-  
-  // 计算排班和预约日期缓存
-  const datesWithSchedules = new Set(
-    schedules.value.map(s => new Date(s.date).toISOString().split('T')[0])
-  )
-  const datesWithAppointments = new Set(
-    appointments.value.map(a => new Date(a.date).toISOString().split('T')[0])
-  )
-  
-  for (let i = 0; i < firstDay; i++) {
-    days.push({ day: '', date: null, isToday: false, isSelected: false, hasSchedule: false, hasAppointment: false })
+  try {
+    if (!dateValue) dateValue = new Date()
+    const date = dateValue instanceof Date ? dateValue : new Date(dateValue)
+    if (isNaN(date.getTime())) dateValue = new Date()
+
+    const year = date.getFullYear()
+    const month = date.getMonth()
+    const firstDay = new Date(year, month, 1).getDay()
+    const daysInMonth = new Date(year, month + 1, 0).getDate()
+    const todayStr = today
+    const selectedStr = selectedValue || null
+    const days = []
+
+    // 计算排班和预约日期缓存
+    const datesWithSchedules = new Set(
+      schedules.value.map(s => new Date(s.date).toISOString().split('T')[0])
+    )
+    const datesWithAppointments = new Set(
+      appointments.value.map(a => new Date(a.date).toISOString().split('T')[0])
+    )
+
+    for (let i = 0; i < firstDay; i++) {
+      days.push({ day: '', date: null, isToday: false, isSelected: false, hasSchedule: false, hasAppointment: false })
+    }
+    for (let i = 1; i <= daysInMonth; i++) {
+      const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`
+      days.push({
+        day: i,
+        date: dateStr,
+        isToday: dateStr === todayStr,
+        isSelected: dateStr === selectedStr,
+        hasSchedule: datesWithSchedules.has(dateStr),
+        hasAppointment: datesWithAppointments.has(dateStr)
+      })
+    }
+    return days
+  } catch (e) {
+    console.error('getCalendarDays error:', e)
+    return []
   }
-  for (let i = 1; i <= daysInMonth; i++) {
-    const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`
-    days.push({
-      day: i,
-      date: dateStr,
-      isToday: dateStr === todayStr,
-      isSelected: dateStr === selectedStr,
-      hasSchedule: datesWithSchedules.has(dateStr),
-      hasAppointment: datesWithAppointments.has(dateStr)
-    })
-  }
-  return days
 }
 
 // 月份导航函数
@@ -531,8 +545,8 @@ const navMonthNextBatchEnd = () => {
 
 const departments = computed(() => [...new Set(doctors.value.map(d => d.department || d.specialty || '未分类'))].sort())
 
-const filteredSchedules = computed(() => 
-  filterDate.value ? schedules.value.filter(s => 
+const filteredSchedules = computed(() =>
+  filterDate.value ? schedules.value.filter(s =>
     new Date(s.date).toISOString().split('T')[0] === filterDate.value
   ) : schedules.value
 )
@@ -550,7 +564,7 @@ const doctorsInSchedule = computed(() => {
 
 const filteredDoctors = computed(() => {
   const grouped = {}
-  const filtered = filterDepartment.value 
+  const filtered = filterDepartment.value
     ? doctors.value.filter(d => (d.department || d.specialty || '未分类') === filterDepartment.value)
     : doctors.value
   filtered.forEach(doctor => {
