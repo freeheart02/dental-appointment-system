@@ -33,7 +33,7 @@
               <button @click="navMonthPrev" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
                 <ChevronLeft class="w-5 h-5" />
               </button>
-              <h3 class="text-lg font-semibold">{{ getMonthText(currentDate) }}</h3>
+              <h3 class="text-lg font-semibold">{{ currentMonthText }}</h3>
               <button @click="navMonthNext" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
                 <ChevronRight class="w-5 h-5" />
               </button>
@@ -45,7 +45,7 @@
             </div>
             <div class="grid grid-cols-7 gap-1">
               <div
-                v-for="(day, index) in getCalendarDays(currentDate, filterDate)"
+                v-for="(day, index) in calendarDays"
                 :key="index"
                 @click="day.date && (filterDate = day.date)"
                 :class="[
@@ -140,7 +140,7 @@
       <div class="bg-white rounded-xl p-6 w-full max-w-md">
         <div class="flex justify-between items-center mb-4">
           <h3 class="text-lg font-semibold text-gray-800">预约详情</h3>
-          <button @click="showAppointmentModal = false; selectedAppointment = null" class="text-gray-400 hover:text-gray-600">
+          <button @click="closeAppointmentModal" class="text-gray-400 hover:text-gray-600">
             <X class="w-5 h-5" />
           </button>
         </div>
@@ -167,7 +167,7 @@
           </div>
           <div class="flex gap-3">
             <button
-              @click="showAppointmentModal = false; selectedAppointment = null"
+              @click="closeAppointmentModal"
               class="flex-1 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-all"
             >
               关闭
@@ -199,11 +199,13 @@
               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
             >
               <option value="">请选择医生</option>
-              <optgroup v-for="(deptDoctors, department) in groupedDoctors" :key="department" :label="department">
-                <option v-for="doctor in deptDoctors" :key="doctor._id" :value="doctor._id">
-                  {{ doctor.name }} - {{ doctor.specialty }}
-                </option>
-              </optgroup>
+              <template v-for="(deptDoctors, department) in groupedDoctors" :key="department">
+                <optgroup :label="department">
+                  <option v-for="doctor in deptDoctors" :key="doctor._id" :value="doctor._id">
+                    {{ doctor.name }} - {{ doctor.specialty }}
+                  </option>
+                </optgroup>
+              </template>
             </select>
           </div>
           <div>
@@ -213,14 +215,14 @@
                 <button type="button" @click="navMonthPrevForm" class="p-2 hover:bg-gray-200 rounded-lg transition-colors">
                   <ChevronLeft class="w-5 h-5" />
                 </button>
-                <h4 class="text-base font-semibold">{{ getMonthText(formDate) }}</h4>
+                <h4 class="text-base font-semibold">{{ formMonthText }}</h4>
                 <button type="button" @click="navMonthNextForm" class="p-2 hover:bg-gray-200 rounded-lg transition-colors">
                   <ChevronRight class="w-5 h-5" />
                 </button>
               </div>
               <div class="grid grid-cols-7 gap-1">
                 <div
-                  v-for="(day, index) in getCalendarDays(formDate, formData.date)"
+                  v-for="(day, index) in formCalendarDays"
                   :key="index"
                   @click="day.date && (formData.date = day.date)"
                   :class="[
@@ -276,11 +278,13 @@
               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
             >
               <option value="">请选择医生</option>
-              <optgroup v-for="(deptDoctors, department) in groupedDoctors" :key="department" :label="department">
-                <option v-for="doctor in deptDoctors" :key="doctor._id" :value="doctor._id">
-                  {{ doctor.name }} - {{ doctor.specialty }}
-                </option>
-              </optgroup>
+              <template v-for="(deptDoctors, department) in groupedDoctors" :key="department">
+                <optgroup :label="department">
+                  <option v-for="doctor in deptDoctors" :key="doctor._id" :value="doctor._id">
+                    {{ doctor.name }} - {{ doctor.specialty }}
+                  </option>
+                </optgroup>
+              </template>
             </select>
           </div>
           <div class="grid grid-cols-2 gap-4">
@@ -291,14 +295,14 @@
                   <button type="button" @click="navMonthPrevBatchStart" class="p-2 hover:bg-gray-200 rounded-lg transition-colors">
                     <ChevronLeft class="w-5 h-5" />
                   </button>
-                  <h4 class="text-base font-semibold">{{ getMonthText(batchStart) }}</h4>
+                  <h4 class="text-base font-semibold">{{ batchStartMonthText }}</h4>
                   <button type="button" @click="navMonthNextBatchStart" class="p-2 hover:bg-gray-200 rounded-lg transition-colors">
                     <ChevronRight class="w-5 h-5" />
                   </button>
                 </div>
                 <div class="grid grid-cols-7 gap-1">
                   <div
-                    v-for="(day, index) in getCalendarDays(batchStart, batchData.startDate)"
+                    v-for="(day, index) in batchStartCalendarDays"
                     :key="index"
                     @click="day.date && (batchData.startDate = day.date)"
                     :class="[
@@ -324,14 +328,14 @@
                   <button type="button" @click="navMonthPrevBatchEnd" class="p-2 hover:bg-gray-200 rounded-lg transition-colors">
                     <ChevronLeft class="w-5 h-5" />
                   </button>
-                  <h4 class="text-base font-semibold">{{ getMonthText(batchEnd) }}</h4>
+                  <h4 class="text-base font-semibold">{{ batchEndMonthText }}</h4>
                   <button type="button" @click="navMonthNextBatchEnd" class="p-2 hover:bg-gray-200 rounded-lg transition-colors">
                     <ChevronRight class="w-5 h-5" />
                   </button>
                 </div>
                 <div class="grid grid-cols-7 gap-1">
                   <div
-                    v-for="(day, index) in getCalendarDays(batchEnd, batchData.endDate)"
+                    v-for="(day, index) in batchEndCalendarDays"
                     :key="index"
                     @click="day.date && (batchData.endDate = day.date)"
                     :class="[
@@ -438,7 +442,13 @@ const weekdays = [
 const formData = ref({ doctorId: '', date: '', selectedSlots: [] })
 const batchData = ref({ doctorId: '', startDate: '', endDate: '', weekdays: [1, 2, 3, 4, 5], selectedSlots: [] })
 
-// 优化weekdays显示逻辑
+const groupedDoctors = ref({})
+
+const calendarDays = ref([])
+const formCalendarDays = ref([])
+const batchStartCalendarDays = ref([])
+const batchEndCalendarDays = ref([])
+
 const weekdaysLabel = computed(() => {
   const labels = batchData.value.weekdays
     .map(v => weekdays.find(d => d.value === v)?.label)
@@ -446,7 +456,11 @@ const weekdaysLabel = computed(() => {
   return labels.length > 0 ? labels.join('、') : '所有天'
 })
 
-// 获取月份文本（带防御性检查）
+const currentMonthText = computed(() => getMonthText(currentDate.value))
+const formMonthText = computed(() => getMonthText(formDate.value))
+const batchStartMonthText = computed(() => getMonthText(batchStart.value))
+const batchEndMonthText = computed(() => getMonthText(batchEnd.value))
+
 const getMonthText = (dateValue) => {
   try {
     if (!dateValue) return `${monthNames[new Date().getMonth()]} ${new Date().getFullYear()}`
@@ -458,8 +472,7 @@ const getMonthText = (dateValue) => {
   }
 }
 
-// 生成日历天数（带防御性检查）
-const getCalendarDays = (dateValue, selectedValue) => {
+const generateCalendarDays = (dateValue, selectedValue) => {
   try {
     if (!dateValue) dateValue = new Date()
     const date = dateValue instanceof Date ? dateValue : new Date(dateValue)
@@ -473,7 +486,6 @@ const getCalendarDays = (dateValue, selectedValue) => {
     const selectedStr = selectedValue || null
     const days = []
 
-    // 计算排班和预约日期缓存
     const datesWithSchedules = new Set(
       schedules.value.map(s => new Date(s.date).toISOString().split('T')[0])
     )
@@ -497,12 +509,31 @@ const getCalendarDays = (dateValue, selectedValue) => {
     }
     return days
   } catch (e) {
-    console.error('getCalendarDays error:', e)
+    console.error('generateCalendarDays error:', e)
     return []
   }
 }
 
-// 月份导航函数
+const updateAllCalendars = () => {
+  calendarDays.value = generateCalendarDays(currentDate.value, filterDate.value)
+  formCalendarDays.value = generateCalendarDays(formDate.value, formData.value.date)
+  batchStartCalendarDays.value = generateCalendarDays(batchStart.value, batchData.value.startDate)
+  batchEndCalendarDays.value = generateCalendarDays(batchEnd.value, batchData.value.endDate)
+}
+
+const updateGroupedDoctors = () => {
+  const grouped = {}
+  const filtered = filterDepartment.value
+    ? doctors.value.filter(d => (d.department || d.specialty || '未分类') === filterDepartment.value)
+    : doctors.value
+  filtered.forEach(doctor => {
+    const dept = doctor.department || doctor.specialty || '未分类'
+    if (!grouped[dept]) grouped[dept] = []
+    grouped[dept].push(doctor)
+  })
+  groupedDoctors.value = grouped
+}
+
 const navMonthPrev = () => {
   const d = new Date(currentDate.value)
   currentDate.value = new Date(d.getFullYear(), d.getMonth() - 1, 1)
@@ -562,25 +593,6 @@ const doctorsInSchedule = computed(() => {
   })
 })
 
-// 使用 ref 存储分组医生，避免 computed 每次返回新对象
-const groupedDoctors = ref({})
-const departmentsList = ref([])
-
-// 更新分组医生的函数
-const updateGroupedDoctors = () => {
-  const grouped = {}
-  const filtered = filterDepartment.value
-    ? doctors.value.filter(d => (d.department || d.specialty || '未分类') === filterDepartment.value)
-    : doctors.value
-  filtered.forEach(doctor => {
-    const dept = doctor.department || doctor.specialty || '未分类'
-    if (!grouped[dept]) grouped[dept] = []
-    grouped[dept].push(doctor)
-  })
-  groupedDoctors.value = grouped
-  departmentsList.value = Object.keys(grouped).sort()
-}
-
 const getAppointment = (doctorId, timeSlot) => {
   const appt = appointments.value.find(a => {
     const apptDoctorId = a.doctorId._id || a.doctorId
@@ -618,18 +630,20 @@ const loadData = async () => {
     doctors.value = d.data
     appointments.value = a.data
     updateGroupedDoctors()
+    updateAllCalendars()
   } catch (err) {
     console.error('Failed to load data')
   }
 }
 
-// 监听筛选条件变化，更新分组医生
-watch(filterDepartment, updateGroupedDoctors)
-watch(doctors, updateGroupedDoctors, { deep: true })
-
 const viewAppointment = (appt) => {
   selectedAppointment.value = appt
   showAppointmentModal.value = true
+}
+
+const closeAppointmentModal = () => {
+  showAppointmentModal.value = false
+  selectedAppointment.value = null
 }
 
 const cancelAppointment = async (id) => {
@@ -638,8 +652,7 @@ const cancelAppointment = async (id) => {
     await appointmentAPI.update(id, { status: 'cancelled' })
     alert('取消成功')
     loadData()
-    showAppointmentModal.value = false
-    selectedAppointment.value = null
+    closeAppointmentModal()
   } catch (err) {
     alert(err.response?.data?.message || '取消失败')
   }
@@ -705,6 +718,16 @@ const saveBatch = async () => {
     alert(err.response?.data?.message || '批量创建失败')
   }
 }
+
+watch(currentDate, updateAllCalendars)
+watch(formDate, updateAllCalendars)
+watch(batchStart, updateAllCalendars)
+watch(batchEnd, updateAllCalendars)
+watch(filterDate, updateAllCalendars)
+watch(formData, updateAllCalendars, { deep: true })
+watch(batchData, updateAllCalendars, { deep: true })
+watch(filterDepartment, updateGroupedDoctors)
+watch(doctors, updateGroupedDoctors, { deep: true })
 
 onMounted(loadData)
 </script>
