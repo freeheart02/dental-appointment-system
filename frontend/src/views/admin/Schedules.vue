@@ -337,7 +337,12 @@
                 :key="day.value"
                 class="flex items-center gap-2 px-3 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50"
               >
-                <input type="checkbox" v-model="batchData.weekdays" :value="day.value" class="rounded text-blue-500 focus:ring-blue-500" />
+                <input
+                  type="checkbox"
+                  :checked="isWeekdaySelected(day.value)"
+                  @change="toggleWeekday(day.value)"
+                  class="rounded text-blue-500 focus:ring-blue-500"
+                />
                 <span class="text-sm">{{ day.label }}</span>
               </label>
             </div>
@@ -550,6 +555,17 @@ const getAppointmentInfo = (doctorId, slot) => {
 
 const isDoctorScheduled = (doctorId, slot) => {
   return scheduleMap.value[doctorId]?.has(slot) || false
+}
+
+const isWeekdaySelected = (val) => batchData.value.weekdays.includes(val)
+
+const toggleWeekday = (val) => {
+  const idx = batchData.value.weekdays.indexOf(val)
+  if (idx >= 0) {
+    batchData.value.weekdays.splice(idx, 1)
+  } else {
+    batchData.value.weekdays.push(val)
+  }
 }
 
 const toggleAllFormSlots = () => {
