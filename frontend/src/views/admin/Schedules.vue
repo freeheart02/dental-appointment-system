@@ -199,7 +199,7 @@
               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
             >
               <option value="">请选择医生</option>
-              <optgroup v-for="(deptDoctors, department) in filteredDoctors" :key="department" :label="department">
+              <optgroup v-for="(deptDoctors, department) in groupedDoctors" :key="department" :label="department">
                 <option v-for="doctor in deptDoctors" :key="doctor._id" :value="doctor._id">
                   {{ doctor.name }} - {{ doctor.specialty }}
                 </option>
@@ -276,7 +276,7 @@
               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
             >
               <option value="">请选择医生</option>
-              <optgroup v-for="(deptDoctors, department) in filteredDoctors" :key="department" :label="department">
+              <optgroup v-for="(deptDoctors, department) in groupedDoctors" :key="department" :label="department">
                 <option v-for="doctor in deptDoctors" :key="doctor._id" :value="doctor._id">
                   {{ doctor.name }} - {{ doctor.specialty }}
                 </option>
@@ -396,7 +396,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { Plus, Calendar, X, List, Info, ChevronRight, ChevronLeft } from 'lucide-vue-next'
 import AdminLayout from '../../components/AdminLayout.vue'
 import { scheduleAPI, doctorAPI, appointmentAPI } from '../../utils/api'
@@ -562,7 +562,12 @@ const doctorsInSchedule = computed(() => {
   })
 })
 
-const filteredDoctors = computed(() => {
+// 使用 ref 存储分组医生，避免 computed 每次返回新对象
+const groupedDoctors = ref({})
+const departmentsList = ref([])
+
+// 更新分组医生的函数
+const updateGroupedDoctors = () => {
   const grouped = {}
   const filtered = filterDepartment.value
     ? doctors.value.filter(d => (d.department || d.specialty || '未分类') === filterDepartment.value)
@@ -572,8 +577,9 @@ const filteredDoctors = computed(() => {
     if (!grouped[dept]) grouped[dept] = []
     grouped[dept].push(doctor)
   })
-  return grouped
-})
+  groupedDoctors.value = grouped
+  departmentsList.value = Object.keys(grouped).sort()
+}
 
 const getAppointment = (doctorId, timeSlot) => {
   const appt = appointments.value.find(a => {
@@ -611,10 +617,15 @@ const loadData = async () => {
     schedules.value = s.data
     doctors.value = d.data
     appointments.value = a.data
+    updateGroupedDoctors()
   } catch (err) {
     console.error('Failed to load data')
   }
 }
+
+// 监听筛选条件变化，更新分组医生
+watch(filterDepartment, updateGroupedDoctors)
+watch(doctors, updateGroupedDoctors, { deep: true })
 
 const viewAppointment = (appt) => {
   selectedAppointment.value = appt

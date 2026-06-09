@@ -37390,6 +37390,4820 @@
         }
       ],
       "createdAt": "2026-06-09T06:48:05.125Z"
+    },
+    {
+      "_id": "wib5n0u3ji",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-06-13",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.122Z"
+    },
+    {
+      "_id": "fzgvb557vhn",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-06-14",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.122Z"
+    },
+    {
+      "_id": "9gsubq8r52h",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-06-20",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.122Z"
+    },
+    {
+      "_id": "h993k4sqwvb",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-06-21",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.122Z"
+    },
+    {
+      "_id": "n5k45qjo8dm",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-06-27",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.122Z"
+    },
+    {
+      "_id": "2dkxnpll3sm",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-06-28",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.122Z"
+    },
+    {
+      "_id": "oyz1nqwib5e",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-07-04",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.122Z"
+    },
+    {
+      "_id": "nlmxjkmphkh",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-07-05",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.122Z"
+    },
+    {
+      "_id": "0vr3mjwtzsy",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-07-11",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.122Z"
+    },
+    {
+      "_id": "i9ui7wh9n3p",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-07-12",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.122Z"
+    },
+    {
+      "_id": "qhpwixaepc9",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-07-18",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.122Z"
+    },
+    {
+      "_id": "deas9nm6q0h",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-07-19",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.122Z"
+    },
+    {
+      "_id": "9bwrxp1xrnt",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-07-25",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.122Z"
+    },
+    {
+      "_id": "5hllol6bug9",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-07-26",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.122Z"
+    },
+    {
+      "_id": "dzyy2niomgn",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-08-01",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.122Z"
+    },
+    {
+      "_id": "nyra3r3b1v9",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-08-02",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.122Z"
+    },
+    {
+      "_id": "suu93to435",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-08-08",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.122Z"
+    },
+    {
+      "_id": "zbrj3hi1e9",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-08-09",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.122Z"
+    },
+    {
+      "_id": "7cehaanmbtl",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-08-15",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.123Z"
+    },
+    {
+      "_id": "ln9jcan0ek",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-08-16",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.123Z"
+    },
+    {
+      "_id": "q4dz0a00fnd",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-08-22",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.123Z"
+    },
+    {
+      "_id": "oia3kd8h8vk",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-08-23",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.123Z"
+    },
+    {
+      "_id": "7i2d6u8azcv",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-08-29",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.123Z"
+    },
+    {
+      "_id": "l4ajr2uptz",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-08-30",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.123Z"
+    },
+    {
+      "_id": "jwgmb4i3saf",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-09-05",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.123Z"
+    },
+    {
+      "_id": "6f3rurpnqdu",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-09-06",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.123Z"
+    },
+    {
+      "_id": "8ii0qqwj52f",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-09-12",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.123Z"
+    },
+    {
+      "_id": "gxuybxx3ul",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-09-13",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.123Z"
+    },
+    {
+      "_id": "p6g8kuc4wt",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-09-19",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.123Z"
+    },
+    {
+      "_id": "jgxjmf358bo",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-09-20",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.123Z"
+    },
+    {
+      "_id": "zvijss7raqi",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-09-26",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.123Z"
+    },
+    {
+      "_id": "devo2l1ny9i",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-09-27",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.123Z"
+    },
+    {
+      "_id": "zzoq0lpu5sm",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-10-03",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.123Z"
+    },
+    {
+      "_id": "kdnog2br5re",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-10-04",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.123Z"
+    },
+    {
+      "_id": "a8qw8m02znw",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-10-10",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.123Z"
+    },
+    {
+      "_id": "37t91qbjaf6",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-10-11",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.123Z"
+    },
+    {
+      "_id": "q3f8d1p99yq",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-10-17",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.123Z"
+    },
+    {
+      "_id": "ybqis6kyii",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-10-18",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.123Z"
+    },
+    {
+      "_id": "fbm64zru0ud",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-10-24",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.123Z"
+    },
+    {
+      "_id": "ehs4pap11zs",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-10-25",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.123Z"
+    },
+    {
+      "_id": "05v34f2ug9ya",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-10-31",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.123Z"
+    },
+    {
+      "_id": "inrixrouuf9",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-11-01",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.123Z"
+    },
+    {
+      "_id": "qg2f3ws9q5g",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-11-07",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.123Z"
+    },
+    {
+      "_id": "vx3k8oj9spj",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-11-08",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.123Z"
+    },
+    {
+      "_id": "a8sf355j2hk",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-11-14",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.123Z"
+    },
+    {
+      "_id": "iu1bcc04s0i",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-11-15",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.123Z"
+    },
+    {
+      "_id": "jklpzrmse8",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-11-21",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.123Z"
+    },
+    {
+      "_id": "nu1er1mdolp",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-11-22",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.123Z"
+    },
+    {
+      "_id": "t0naz3qvuy",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-11-28",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.123Z"
+    },
+    {
+      "_id": "7dxh6kqcz04",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-11-29",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.123Z"
+    },
+    {
+      "_id": "blxp8nug04q",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-12-05",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.123Z"
+    },
+    {
+      "_id": "zwxgfj3g6zg",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-12-06",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.123Z"
+    },
+    {
+      "_id": "8q320sy401q",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-12-12",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.123Z"
+    },
+    {
+      "_id": "vg83tvcb3sf",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-12-13",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.123Z"
+    },
+    {
+      "_id": "xgi027p6mx",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-12-19",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.123Z"
+    },
+    {
+      "_id": "t7hszxb6a3h",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-12-20",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.123Z"
+    },
+    {
+      "_id": "spl77ng1x9s",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-12-26",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.123Z"
+    },
+    {
+      "_id": "q8xve3ksfki",
+      "doctorId": "yb5vh0rqfj",
+      "date": "2026-12-27",
+      "timeSlots": [
+        {
+          "time": "08:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "08:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "10:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "11:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "13:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "14:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "15:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-09T07:32:44.123Z"
     }
   ],
   "appointments": [
