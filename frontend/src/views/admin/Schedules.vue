@@ -324,11 +324,14 @@ async function submitAdd() {
   if (addForm.value.slots.length === 0) { alert('请选择至少一个时间段'); return }
   try {
     const slots = addForm.value.slots.map(s => ({ time: s, available: 1, maxCapacity: 1 }))
-    await scheduleAPI.create({ doctorId: addForm.value.doctorId, date: new Date(addForm.value.date).toISOString(), timeSlots: slots })
+    await scheduleAPI.create({ doctorId: addForm.value.doctorId, date: addForm.value.date, timeSlots: slots })
     alert('添加成功')
     closeAddModal()
     loadAll()
-  } catch (e) { alert('添加失败') }
+  } catch (e) {
+    const msg = (e.response && e.response.data && e.response.data.message) || '添加失败'
+    alert(msg)
+  }
 }
 
 // ===== Batch form =====
@@ -392,16 +395,13 @@ async function submitBatch() {
   if (batchForm.value.slots.length === 0) { alert('请选择至少一个时间段'); return }
   if (batchForm.value.weekdays.length === 0) { alert('请选择至少一个出诊星期'); return }
   try {
-    const slots = batchForm.value.slots.map(s => ({ time: s, available: 1, maxCapacity: 1 }))
-    const payload = {
+    const res = await scheduleAPI.batchCreate({
       doctorId: batchForm.value.doctorId,
       startDate: batchForm.value.startDate,
       endDate: batchForm.value.endDate,
       weekdays: batchForm.value.weekdays.slice().sort(),
-      selectedSlots: batchForm.value.slots.slice(),
-      timeSlots: slots
-    }
-    const res = await scheduleAPI.batchCreate(payload)
+      timeSlots: batchForm.value.slots.slice()
+    })
     const msg = res.data.message || '批量创建成功'
     if (res.data.errors && res.data.errors.length > 0) alert(msg + '\n已跳过的日期：' + res.data.errors.slice(0, 10).join(', '))
     else alert(msg)
