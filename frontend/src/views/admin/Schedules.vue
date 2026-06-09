@@ -449,22 +449,22 @@ const weekdaysLabel = computed(() => {
 })
 
 const navMonthPrev = (dateRef) => {
-  if (dateRef.value instanceof Date) {
-    const d = new Date(dateRef.value)
-    dateRef.value = new Date(d.getFullYear(), d.getMonth() - 1, 1)
-  }
+  // 传入的是ref对象，直接修改其value
+  const currentDate = dateRef.value instanceof Date ? dateRef.value : new Date(dateRef)
+  dateRef.value = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1)
 }
 
 const navMonthNext = (dateRef) => {
-  if (dateRef.value instanceof Date) {
-    const d = new Date(dateRef.value)
-    dateRef.value = new Date(d.getFullYear(), d.getMonth() + 1, 1)
-  }
+  // 传入的是ref对象，直接修改其value
+  const currentDate = dateRef.value instanceof Date ? dateRef.value : new Date(dateRef)
+  dateRef.value = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1)
 }
 
 const calendarDays = (date, selected) => {
-  const year = date.getFullYear()
-  const month = date.getMonth()
+  // 处理ref对象或直接传入Date对象
+  const dateObj = date.value !== undefined ? date.value : date
+  const year = dateObj.getFullYear()
+  const month = dateObj.getMonth()
   const firstDay = new Date(year, month, 1).getDay()
   const daysInMonth = new Date(year, month + 1, 0).getDate()
   const todayStr = today
