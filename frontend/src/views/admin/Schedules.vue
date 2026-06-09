@@ -3,11 +3,11 @@
     <div class="bg-white rounded-xl shadow-md">
       <div class="p-4 border-b border-gray-200 flex justify-between items-center flex-wrap gap-3">
         <div class="flex gap-3 flex-wrap">
-          <button @click="showAddModal = true" class="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all">
+          <button @click="openAddModal" class="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all">
             <Plus class="w-5 h-5" />
             <span>添加排班</span>
           </button>
-          <button @click="showBatchModal = true" class="flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-all">
+          <button @click="openBatchModal" class="flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-all">
             <List class="w-5 h-5" />
             <span>批量排班</span>
           </button>
@@ -47,15 +47,10 @@
               <div
                 v-for="(day, idx) in mainCalendarDays"
                 :key="idx"
-                @click="day.date && (filterDate = day.date)"
-                :class="[
-                  'text-center py-2 cursor-pointer rounded-lg transition-all text-sm',
-                  day.isToday ? 'bg-blue-100 font-bold' : '',
-                  day.isSelected ? 'bg-blue-500 text-white hover:bg-blue-600' : 'hover:bg-gray-100',
-                  !day.date ? 'text-gray-300 cursor-default' : 'text-gray-700'
-                ]"
+                @click="handleDateClick(day)"
+                :class="getDayClass(day)"
               >
-                {{ day.day }}
+                <span>{{ day.day }}</span>
                 <div v-if="day.hasSchedule || day.hasAppointment" class="flex justify-center mt-1 gap-1">
                   <span v-if="day.hasSchedule" class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
                   <span v-if="day.hasAppointment" class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
@@ -95,23 +90,27 @@
                     :key="doctor._id + '-' + timeSlot"
                     class="border border-gray-300 px-2 py-2 text-center"
                   >
-                    <div v-if="getAppt(doctor._id, timeSlot)"
-                         class="p-2 bg-green-50 rounded-lg border border-green-200 cursor-pointer hover:bg-green-100 transition-all"
-                         @click="viewAppt(doctor._id, timeSlot)">
-                      <div class="font-medium text-green-800 text-sm">
-                        {{ getAppt(doctor._id, timeSlot).patientName }}
+                    <template v-if="getAppointmentInfo(doctor._id, timeSlot)">
+                      <div class="p-2 bg-green-50 rounded-lg border border-green-200 cursor-pointer hover:bg-green-100 transition-all"
+                           @click="openAppointmentModal(getAppointmentInfo(doctor._id, timeSlot))">
+                        <div class="font-medium text-green-800 text-sm">
+                          {{ getAppointmentInfo(doctor._id, timeSlot).patientName }}
+                        </div>
+                        <div class="text-xs text-green-600">
+                          {{ getAppointmentInfo(doctor._id, timeSlot).phone }}
+                        </div>
                       </div>
-                      <div class="text-xs text-green-600">
-                        {{ getAppt(doctor._id, timeSlot).phone }}
+                    </template>
+                    <template v-else-if="isDoctorScheduled(doctor._id, timeSlot)">
+                      <div class="p-2 bg-gray-100 rounded-lg border border-gray-200 opacity-50">
+                        <span class="text-xs text-gray-400">空闲</span>
                       </div>
-                    </div>
-                    <div v-else-if="isDoctorHasSlot(doctor._id, timeSlot)"
-                         class="p-2 bg-gray-100 rounded-lg border border-gray-200 opacity-50">
-                      <span class="text-xs text-gray-400">空闲</span>
-                    </div>
-                    <div v-else class="p-2 bg-gray-50 rounded-lg border border-gray-100 opacity-30">
-                      <span class="text-xs text-gray-300">未排班</span>
-                    </div>
+                    </template>
+                    <template v-else>
+                      <div class="p-2 bg-gray-50 rounded-lg border border-gray-100 opacity-30">
+                        <span class="text-xs text-gray-300">未排班</span>
+                      </div>
+                    </template>
                   </td>
                 </tr>
               </tbody>
@@ -128,7 +127,7 @@
           <div v-else class="p-12 text-center">
             <Calendar class="w-12 h-12 mx-auto mb-4 text-gray-300" />
             <p class="text-gray-500">当天暂无排班数据</p>
-            <button @click="showAddModal = true" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all">
+            <button @click="openAddModal" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all">
               添加排班
             </button>
           </div>
@@ -166,16 +165,10 @@
             </div>
           </div>
           <div class="flex gap-3">
-            <button
-              @click="closeAppointmentModal"
-              class="flex-1 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-all"
-            >
+            <button @click="closeAppointmentModal" class="flex-1 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-all">
               关闭
             </button>
-            <button
-              @click="cancelSelectedAppointment"
-              class="flex-1 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-all"
-            >
+            <button @click="cancelSelectedAppointment" class="flex-1 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-all">
               取消预约
             </button>
           </div>
@@ -183,15 +176,15 @@
       </div>
     </div>
 
-    <div v-if="showAddModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div v-if="showAddModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" id="add-modal">
       <div class="bg-white rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         <div class="flex justify-between items-center mb-4">
           <h3 class="text-lg font-semibold text-gray-800">{{ isEditing ? '编辑排班' : '添加排班' }}</h3>
-          <button @click="closeModal" class="text-gray-400 hover:text-gray-600">
+          <button @click="closeAddModal" class="text-gray-400 hover:text-gray-600">
             <X class="w-5 h-5" />
           </button>
         </div>
-        <form @submit.prevent="saveSchedule" class="space-y-4">
+        <form @submit.prevent="handleSaveSchedule" class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">医生</label>
             <select
@@ -223,14 +216,9 @@
                   v-for="(day, idx) in formCalendarDays"
                   :key="idx"
                   @click="day.date && (formData.date = day.date)"
-                  :class="[
-                    'text-center py-2 cursor-pointer rounded-lg transition-all text-sm',
-                    day.isToday ? 'bg-blue-100 font-bold' : '',
-                    day.isSelected ? 'bg-blue-500 text-white hover:bg-blue-600' : 'hover:bg-gray-100',
-                    !day.date ? 'text-gray-300 cursor-default' : 'text-gray-700'
-                  ]"
+                  :class="getDayClass(day)"
                 >
-                  {{ day.day }}
+                  <span>{{ day.day }}</span>
                   <div v-if="day.hasSchedule || day.hasAppointment" class="flex justify-center mt-1 gap-1">
                     <span v-if="day.hasSchedule" class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
                     <span v-if="day.hasAppointment" class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
@@ -260,7 +248,7 @@
       </div>
     </div>
 
-    <div v-if="showBatchModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div v-if="showBatchModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" id="batch-modal">
       <div class="bg-white rounded-xl p-6 w-full max-w-3xl max-h-[90vh] overflow-y-auto">
         <div class="flex justify-between items-center mb-4">
           <h3 class="text-lg font-semibold text-gray-800">批量排班</h3>
@@ -268,7 +256,7 @@
             <X class="w-5 h-5" />
           </button>
         </div>
-        <form @submit.prevent="saveBatch" class="space-y-4">
+        <form @submit.prevent="handleSaveBatch" class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">医生</label>
             <select
@@ -301,14 +289,9 @@
                     v-for="(day, idx) in batchStartCalendarDays"
                     :key="idx"
                     @click="day.date && (batchData.startDate = day.date)"
-                    :class="[
-                      'text-center py-2 cursor-pointer rounded-lg transition-all text-sm',
-                      day.isToday ? 'bg-blue-100 font-bold' : '',
-                      day.isSelected ? 'bg-blue-500 text-white hover:bg-blue-600' : 'hover:bg-gray-100',
-                      !day.date ? 'text-gray-300 cursor-default' : 'text-gray-700'
-                    ]"
+                    :class="getDayClass(day)"
                   >
-                    {{ day.day }}
+                    <span>{{ day.day }}</span>
                     <div v-if="day.hasSchedule || day.hasAppointment" class="flex justify-center mt-1 gap-1">
                       <span v-if="day.hasSchedule" class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
                       <span v-if="day.hasAppointment" class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
@@ -334,14 +317,9 @@
                     v-for="(day, idx) in batchEndCalendarDays"
                     :key="idx"
                     @click="day.date && (batchData.endDate = day.date)"
-                    :class="[
-                      'text-center py-2 cursor-pointer rounded-lg transition-all text-sm',
-                      day.isToday ? 'bg-blue-100 font-bold' : '',
-                      day.isSelected ? 'bg-blue-500 text-white hover:bg-blue-600' : 'hover:bg-gray-100',
-                      !day.date ? 'text-gray-300 cursor-default' : 'text-gray-700'
-                    ]"
+                    :class="getDayClass(day)"
                   >
-                    {{ day.day }}
+                    <span>{{ day.day }}</span>
                     <div v-if="day.hasSchedule || day.hasAppointment" class="flex justify-center mt-1 gap-1">
                       <span v-if="day.hasSchedule" class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
                       <span v-if="day.hasAppointment" class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
@@ -534,10 +512,6 @@ const appointmentMap = computed(() => {
   return map
 })
 
-const getAppt = (doctorId, slot) => {
-  return appointmentMap.value[`${doctorId}-${slot}`] || null
-}
-
 const scheduleMap = computed(() => {
   const map = {}
   filteredSchedules.value.forEach(s => {
@@ -548,16 +522,35 @@ const scheduleMap = computed(() => {
   return map
 })
 
-const isDoctorHasSlot = (doctorId, slot) => {
-  return scheduleMap.value[doctorId]?.has(slot) || false
-}
-
 const weekdaysLabel = computed(() => {
   const labels = batchData.value.weekdays
     .map(v => weekdays.find(d => d.value === v)?.label)
     .filter(Boolean)
   return labels.length > 0 ? labels.join('、') : '所有天'
 })
+
+const getDayClass = (day) => {
+  const classes = ['text-center py-2 cursor-pointer rounded-lg transition-all text-sm']
+  if (day.isToday) classes.push('bg-blue-100 font-bold')
+  if (day.isSelected) classes.push('bg-blue-500 text-white hover:bg-blue-600')
+  else if (day.date) classes.push('hover:bg-gray-100')
+  else classes.push('text-gray-300 cursor-default')
+  return classes.join(' ')
+}
+
+const handleDateClick = (day) => {
+  if (day.date) {
+    filterDate.value = day.date
+  }
+}
+
+const getAppointmentInfo = (doctorId, slot) => {
+  return appointmentMap.value[`${doctorId}-${slot}`] || null
+}
+
+const isDoctorScheduled = (doctorId, slot) => {
+  return scheduleMap.value[doctorId]?.has(slot) || false
+}
 
 const toggleAllFormSlots = () => {
   formData.value.selectedSlots = formData.value.selectedSlots.length === timeSlots.length ? [] : [...timeSlots]
@@ -622,12 +615,29 @@ const loadData = async () => {
   }
 }
 
-const viewAppt = (doctorId, slot) => {
-  const appt = getAppt(doctorId, slot)
-  if (appt) {
-    selectedAppointment.value = appt
-    showAppointmentModal.value = true
-  }
+const openAddModal = () => {
+  showAddModal.value = true
+}
+
+const closeAddModal = () => {
+  showAddModal.value = false
+  isEditing.value = false
+  editingId.value = null
+  formData.value = { doctorId: '', date: '', selectedSlots: [] }
+}
+
+const openBatchModal = () => {
+  showBatchModal.value = true
+}
+
+const closeBatchModal = () => {
+  showBatchModal.value = false
+  batchData.value = { doctorId: '', startDate: '', endDate: '', weekdays: [1, 2, 3, 4, 5], selectedSlots: [] }
+}
+
+const openAppointmentModal = (appt) => {
+  selectedAppointment.value = appt
+  showAppointmentModal.value = true
 }
 
 const closeAppointmentModal = () => {
@@ -648,19 +658,7 @@ const cancelSelectedAppointment = async () => {
   }
 }
 
-const closeModal = () => {
-  showAddModal.value = false
-  isEditing.value = false
-  editingId.value = null
-  formData.value = { doctorId: '', date: '', selectedSlots: [] }
-}
-
-const closeBatchModal = () => {
-  showBatchModal.value = false
-  batchData.value = { doctorId: '', startDate: '', endDate: '', weekdays: [1, 2, 3, 4, 5], selectedSlots: [] }
-}
-
-const saveSchedule = async () => {
+const handleSaveSchedule = async () => {
   if (!formData.value.doctorId || !formData.value.date) {
     alert('请选择医生和日期')
     return
@@ -679,13 +677,13 @@ const saveSchedule = async () => {
       alert('添加成功')
     }
     loadData()
-    closeModal()
+    closeAddModal()
   } catch (err) {
     alert(err.response?.data?.message || '操作失败')
   }
 }
 
-const saveBatch = async () => {
+const handleSaveBatch = async () => {
   if (!batchData.value.doctorId || !batchData.value.startDate || !batchData.value.endDate) {
     alert('请填写医生和日期范围')
     return
