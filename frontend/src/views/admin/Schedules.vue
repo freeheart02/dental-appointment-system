@@ -199,12 +199,11 @@
               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
             >
               <option value="">请选择医生</option>
-              <template v-for="(deptDoctors, department) in filteredDoctors" :key="department">
-                <option disabled class="text-gray-400 font-semibold">--- {{ department }} ---</option>
+              <optgroup v-for="(deptDoctors, department) in filteredDoctors" :key="department" :label="department">
                 <option v-for="doctor in deptDoctors" :key="doctor._id" :value="doctor._id">
                   {{ doctor.name }} - {{ doctor.specialty }}
                 </option>
-              </template>
+              </optgroup>
             </select>
           </div>
           <div>
@@ -277,12 +276,11 @@
               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
             >
               <option value="">请选择医生</option>
-              <template v-for="(deptDoctors, department) in filteredDoctors" :key="department">
-                <option disabled class="text-gray-400 font-semibold">--- {{ department }} ---</option>
+              <optgroup v-for="(deptDoctors, department) in filteredDoctors" :key="department" :label="department">
                 <option v-for="doctor in deptDoctors" :key="doctor._id" :value="doctor._id">
                   {{ doctor.name }} - {{ doctor.specialty }}
                 </option>
-              </template>
+              </optgroup>
             </select>
           </div>
           <div class="grid grid-cols-2 gap-4">
