@@ -73,36 +73,24 @@ exports.createSchedule = async (req, res) => {
     if (!doctorId || !date) {
       return res.status(400).json({ message: '请填写医生和日期' })
     }
-    
-    // 确保日期格式是 YYYY-MM-DD，使用本地时间
-    let normalizedDate
-    if (typeof date === 'string' && date.includes('T')) {
-      const d = new Date(date)
-      normalizedDate = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
-    } else if (typeof date === 'string') {
-      normalizedDate = date
-    } else {
-      normalizedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
-    }
-    
-    console.log('创建排班，日期:', normalizedDate)
-    
+
+    const normalizedDate = normalizeDate(date)
     const existing = getAllSchedules().find(
       s => s.doctorId === doctorId && s.date === normalizedDate
     )
-    
+
     if (existing) {
       const newTimeSlots = timeSlots || TIME_SLOTS
       const existingTimes = new Set(existing.timeSlots.map(ts => ts.time))
       let addedCount = 0
-      
+
       newTimeSlots.forEach(ts => {
         if (!existingTimes.has(ts.time)) {
           existing.timeSlots.push(ts)
           addedCount++
         }
       })
-      
+
       existing.timeSlots.sort((a, b) => a.time.localeCompare(b.time))
       saveData()
       if (addedCount === 0) {
@@ -112,11 +100,11 @@ exports.createSchedule = async (req, res) => {
       }
       return
     }
-    
-    const schedule = createSchedule({ 
-      doctorId, 
-      date: normalizedDate, 
-      timeSlots: timeSlots || TIME_SLOTS 
+
+    const schedule = createSchedule({
+      doctorId,
+      date: normalizedDate,
+      timeSlots: timeSlots || TIME_SLOTS
     })
     res.json({ success: true, message: '排班创建成功', schedule })
   } catch (err) {
