@@ -32,7 +32,7 @@
               <button @click="navMonthPrev" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
                 <ChevronLeft class="w-5 h-5" />
               </button>
-              <h3 class="text-lg font-semibold">{{ monthNames[currentDate.getMonth()] }} {{ currentDate.getFullYear() }}</h3>
+              <h3 class="text-lg font-semibold">{{ currentMonthLabel }}</h3>
               <button @click="navMonthNext" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
                 <ChevronRight class="w-5 h-5" />
               </button>
@@ -44,9 +44,9 @@
               </div>
               <div class="grid grid-cols-7 gap-1">
                 <div
-                v-for="(day, index) in calendarDays(currentDate, filterDate)"
-                :key="index"
-                @click="day.date && (filterDate = day.date)"
+                v-for="(day, index) in calendarCells"
+                :key="'cal-' + index"
+                @click="day.date && (filterDate = day.date); refreshCalendar()"
                 :class="[
                   'text-center py-2 cursor-pointer rounded-lg transition-all text-sm',
                   day.isToday ? 'bg-blue-100 font-bold' : '',
@@ -182,7 +182,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { Search, Edit, Trash2, Clock, X, ChevronRight, ChevronLeft } from 'lucide-vue-next'
 import AdminLayout from '../../components/AdminLayout.vue'
 import { appointmentAPI } from '../../utils/api'
@@ -190,12 +190,15 @@ import { appointmentAPI } from '../../utils/api'
 const appointments = ref([])
 const searchQuery = ref('')
 const filterStatus = ref('')
-const currentDate = ref(new Date())
+const currentYearMonthIdx = ref((new Date()).getFullYear() * 12 + (new Date()).getMonth())
 const today = new Date().toISOString().split('T')[0]
 const filterDate = ref(today)
 const showStatusModalFlag = ref(false)
 const editingAppointment = ref(null)
 const selectedStatus = ref('')
+const filteredAppointments = ref([])
+const calendarCells = ref([])
+const currentMonthLabel = ref('')
 
 const weekDays = ['日', '一', '二', '三', '四', '五', '六']
 const monthNames = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
@@ -208,55 +211,49 @@ const statusOptions = [
   { value: 'canceled', label: '已取消', class: 'text-gray-500' }
 ]
 
-const navMonthPrev = () => {
-  const d = new Date(currentDate.value)
-  currentDate.value = new Date(d.getFullYear(), d.getMonth() - 1, 1)
-}
+function pad2(n) { return String(n).padStart(2, '0') }
 
-const navMonthNext = () => {
-  const d = new Date(currentDate.value)
-  currentDate.value = new Date(d.getFullYear(), d.getMonth() + 1, 1)
-}
-
-const calendarDays = (date, selected) => {
-  const year = date.getFullYear()
-  const month = date.getMonth()
+function refreshCalendar() {
+  const ym = currentYearMonthIdx.value
+  const year = Math.floor(ym / 12)
+  const month = ym - year * 12
   const firstDay = new Date(year, month, 1).getDay()
   const daysInMonth = new Date(year, month + 1, 0).getDate()
   const todayStr = today
-  const selectedStr = selected || null
+  const selectedStr = filterDate.value || null
+
+  const datesWithAppointments = new Set()
+  appointments.value.forEach(a => {
+    const d = new Date(a.date)
+    datesWithAppointments.add(`${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`)
+  })
+
   const days = []
-  
-  const datesWithAppointments = new Set(
-    appointments.value.map(a => {
-      return new Date(a.date).toISOString().split('T')[0]
-    })
-  )
-  
   for (let i = 0; i < firstDay; i++) {
     days.push({ day: '', date: null, isToday: false, isSelected: false, hasAppointment: false })
   }
   for (let i = 1; i <= daysInMonth; i++) {
-    const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`
-    days.push({ 
-      day: i, 
-      date: dateStr, 
-      isToday: dateStr === todayStr, 
+    const dateStr = `${year}-${pad2(month + 1)}-${pad2(i)}`
+    days.push({
+      day: i,
+      date: dateStr,
+      isToday: dateStr === todayStr,
       isSelected: dateStr === selectedStr,
       hasAppointment: datesWithAppointments.has(dateStr)
     })
   }
-  return days
+  calendarCells.value = days
+  currentMonthLabel.value = `${monthNames[month]} ${year}`
 }
 
-const filteredAppointments = computed(() => {
-  let result = appointments.value
+function refreshFiltered() {
+  let result = appointments.value.slice()
   if (searchQuery.value) {
-    const query = searchQuery.value.toLowerCase()
+    const q = searchQuery.value.toLowerCase()
     result = result.filter(a => {
-      const patientName = getPatientName(a).toLowerCase()
-      const patientPhone = getPatientPhone(a)
-      return patientName.includes(query) || patientPhone.includes(query)
+      const name = patientName(a).toLowerCase()
+      const phone = patientPhone(a)
+      return name.includes(q) || phone.includes(q)
     })
   }
   if (filterDate.value) {
@@ -265,139 +262,112 @@ const filteredAppointments = computed(() => {
   if (filterStatus.value) {
     result = result.filter(a => a.status === filterStatus.value)
   }
-  return result.sort((a, b) => new Date(a.date) - new Date(b.date))
-})
+  result.sort((a, b) => new Date(a.date) - new Date(b.date))
+  filteredAppointments.value = result
+}
 
-const getPatientName = (appointment) => {
+function navMonthPrev() { currentYearMonthIdx.value -= 1; refreshCalendar() }
+function navMonthNext() { currentYearMonthIdx.value += 1; refreshCalendar() }
+
+function patientName(appointment) {
   if (appointment.patientId && typeof appointment.patientId === 'object') {
     return appointment.patientId?.name || appointment.patientName || ''
   }
   return appointment.patientName || ''
 }
 
-const getPatientPhone = (appointment) => {
+function patientPhone(appointment) {
   if (appointment.patientId && typeof appointment.patientId === 'object') {
     return appointment.patientId?.phone || ''
   }
   return appointment.phone || ''
 }
 
-const getDoctorName = (appointment) => {
+function doctorName(appointment) {
   if (appointment.doctorId && typeof appointment.doctorId === 'object') {
     return appointment.doctorId?.name || ''
   }
   return appointment.doctorName || ''
 }
 
-const getStatusText = (status) => {
-  const map = {
-    pending: '未就诊',
-    checked_in: '待就诊',
-    confirmed: '已确认',
-    visited: '已就诊',
-    no_show: '爽约',
-    canceled: '已取消'
-  }
+function getPatientName(a) { return patientName(a) }
+function getPatientPhone(a) { return patientPhone(a) }
+function getDoctorName(a) { return doctorName(a) }
+
+function getStatusText(status) {
+  const map = { pending: '未就诊', checked_in: '待就诊', confirmed: '已确认', visited: '已就诊', no_show: '爽约', canceled: '已取消' }
   return map[status] || status
 }
 
-const getStatusClass = (status) => {
-  const map = {
-    pending: 'bg-yellow-100 text-yellow-700',
-    checked_in: 'bg-green-100 text-green-700',
-    confirmed: 'bg-blue-100 text-blue-700',
-    visited: 'bg-indigo-100 text-indigo-700',
-    no_show: 'bg-red-100 text-red-700',
-    canceled: 'bg-gray-100 text-gray-500'
-  }
+function getStatusClass(status) {
+  const map = { pending: 'bg-yellow-100 text-yellow-700', checked_in: 'bg-green-100 text-green-700', confirmed: 'bg-blue-100 text-blue-700', visited: 'bg-indigo-100 text-indigo-700', no_show: 'bg-red-100 text-red-700', canceled: 'bg-gray-100 text-gray-500' }
   return map[status] || 'bg-gray-100 text-gray-700'
 }
 
-const formatDate = (dateStr) => {
+function formatDate(dateStr) {
   const date = new Date(dateStr)
   return date.toLocaleDateString('zh-CN')
 }
 
-const formatTime = (dateStr) => {
+function formatTime(dateStr) {
   if (!dateStr) return ''
   const date = new Date(dateStr)
-  return date.toLocaleString('zh-CN', {
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit'
-  })
+  return date.toLocaleString('zh-CN', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })
 }
 
-const loadAppointments = async () => {
+async function loadAppointments() {
   try {
     const response = await appointmentAPI.getAll()
     appointments.value = response.data
+    refreshFiltered()
+    refreshCalendar()
   } catch (error) {
     console.error('Failed to load appointments')
   }
 }
 
-const showStatusModal = (appointment) => {
+function showStatusModal(appointment) {
   editingAppointment.value = appointment
   selectedStatus.value = appointment.status
   showStatusModalFlag.value = true
 }
 
-const checkInAppointment = async (appointmentId) => {
+async function checkInAppointment(appointmentId) {
   try {
-    await appointmentAPI.update(appointmentId, {
-      status: 'checked_in',
-      checkedInAt: new Date().toISOString()
-    })
+    await appointmentAPI.update(appointmentId, { status: 'checked_in', checkedInAt: new Date().toISOString() })
     loadAppointments()
     alert('签到成功')
-  } catch (error) {
-    alert('签到失败')
-  }
+  } catch (error) { alert('签到失败') }
 }
 
-const undoCheckIn = async (appointmentId) => {
+async function undoCheckIn(appointmentId) {
   if (!confirm('确定要取消签到吗？')) return
   try {
-    await appointmentAPI.update(appointmentId, {
-      status: 'pending',
-      checkedInAt: null
-    })
+    await appointmentAPI.update(appointmentId, { status: 'pending', checkedInAt: null })
     loadAppointments()
     alert('已取消签到')
-  } catch (error) {
-    alert('取消签到失败')
-  }
+  } catch (error) { alert('取消签到失败') }
 }
 
-const updateStatus = async (status) => {
+async function updateStatus(status) {
   try {
     const updateData = { status }
-    if (status === 'checked_in') {
-      updateData.checkedInAt = new Date().toISOString()
-    }
+    if (status === 'checked_in') updateData.checkedInAt = new Date().toISOString()
     await appointmentAPI.update(editingAppointment.value._id, updateData)
     loadAppointments()
     showStatusModalFlag.value = false
     alert('状态更新成功')
-  } catch (error) {
-    alert('更新失败')
-  }
+  } catch (error) { alert('更新失败') }
 }
 
-const deleteAppointment = async (id) => {
+async function deleteAppointment(id) {
   if (!confirm('确定要删除该预约吗？')) return
   try {
     await appointmentAPI.delete(id)
     loadAppointments()
     alert('删除成功')
-  } catch (error) {
-    alert('删除失败')
-  }
+  } catch (error) { alert('删除失败') }
 }
 
-onMounted(() => {
-  loadAppointments()
-})
+onMounted(() => { loadAppointments() })
 </script>

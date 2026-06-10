@@ -6,6 +6,7 @@
           <Search class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
           <input
             v-model="searchQuery"
+            @input="rebuildFiltered"
             type="text"
             placeholder="搜索患者姓名或手机号"
             class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
@@ -151,12 +152,13 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { Search, Plus, Edit, Trash2, Users, X } from 'lucide-vue-next'
 import AdminLayout from '../../components/AdminLayout.vue'
 import { patientAPI } from '../../utils/api'
 
 const patients = ref([])
+const filteredPatients = ref([])
 const searchQuery = ref('')
 const showAddModal = ref(false)
 const isEditing = ref(false)
@@ -171,58 +173,51 @@ const formData = ref({
   age: ''
 })
 
-const sortBy = (field) => {
+function rebuildFiltered() {
+  let result = patients.value.slice()
+  if (searchQuery.value) {
+    const q = searchQuery.value.toLowerCase()
+    result = result.filter(p => p.name.toLowerCase().includes(q) || p.phone.includes(q))
+  }
+  const field = sortField.value
+  result.sort((a, b) => {
+    const cmp = String(a[field] || '').localeCompare(String(b[field] || ''), 'zh-CN')
+    return sortOrder.value === 'asc' ? cmp : -cmp
+  })
+  filteredPatients.value = result
+}
+
+function sortBy(field) {
   if (sortField.value === field) {
     sortOrder.value = sortOrder.value === 'asc' ? 'desc' : 'asc'
   } else {
     sortField.value = field
     sortOrder.value = 'asc'
   }
+  rebuildFiltered()
 }
 
-const filteredPatients = computed(() => {
-  let result = patients.value
-  
-  if (searchQuery.value) {
-    const query = searchQuery.value.toLowerCase()
-    result = result.filter(p => 
-      p.name.toLowerCase().includes(query) || 
-      p.phone.includes(query)
-    )
-  }
-  
-  result = [...result].sort((a, b) => {
-    const field = sortField.value
-    let aVal = a[field]
-    let bVal = b[field]
-    
-    const comparison = String(aVal || '').localeCompare(String(bVal || ''), 'zh-CN')
-    return sortOrder.value === 'asc' ? comparison : -comparison
-  })
-  
-  return result
-})
-
-const getGenderText = (gender) => {
+function getGenderText(gender) {
   const map = { male: '男', female: '女', other: '其他' }
   return map[gender] || '-'
 }
 
-const formatDate = (dateStr) => {
+function formatDate(dateStr) {
   const date = new Date(dateStr)
   return date.toLocaleDateString('zh-CN')
 }
 
-const loadPatients = async () => {
+async function loadPatients() {
   try {
     const response = await patientAPI.getAll()
     patients.value = response.data
+    rebuildFiltered()
   } catch (error) {
     console.error('Failed to load patients')
   }
 }
 
-const addPatient = async () => {
+async function addPatient() {
   try {
     await patientAPI.create(formData.value)
     loadPatients()
@@ -233,7 +228,7 @@ const addPatient = async () => {
   }
 }
 
-const editPatient = (patient) => {
+function editPatient(patient) {
   isEditing.value = true
   editingId.value = patient._id
   formData.value = {
@@ -245,7 +240,7 @@ const editPatient = (patient) => {
   showAddModal.value = true
 }
 
-const updatePatient = async () => {
+async function updatePatient() {
   try {
     await patientAPI.update(editingId.value, {
       name: formData.value.name,
@@ -260,15 +255,12 @@ const updatePatient = async () => {
   }
 }
 
-const savePatient = () => {
-  if (isEditing.value) {
-    updatePatient()
-  } else {
-    addPatient()
-  }
+function savePatient() {
+  if (isEditing.value) updatePatient()
+  else addPatient()
 }
 
-const addNoShow = async (patientId) => {
+async function addNoShow(patientId) {
   try {
     await patientAPI.update(patientId, { incrementNoShow: true })
     loadPatients()
@@ -278,7 +270,7 @@ const addNoShow = async (patientId) => {
   }
 }
 
-const resetNoShow = async (patientId) => {
+async function resetNoShow(patientId) {
   try {
     await patientAPI.update(patientId, { resetNoShow: true })
     loadPatients()
@@ -288,7 +280,7 @@ const resetNoShow = async (patientId) => {
   }
 }
 
-const deletePatient = async (id) => {
+async function deletePatient(id) {
   if (!confirm('确定要删除该患者吗？')) return
   try {
     await patientAPI.delete(id)
@@ -299,14 +291,12 @@ const deletePatient = async (id) => {
   }
 }
 
-const closeModal = () => {
+function closeModal() {
   showAddModal.value = false
   isEditing.value = false
   editingId.value = null
   formData.value = { name: '', phone: '', gender: '', age: '' }
 }
 
-onMounted(() => {
-  loadPatients()
-})
+onMounted(() => { loadPatients() })
 </script>

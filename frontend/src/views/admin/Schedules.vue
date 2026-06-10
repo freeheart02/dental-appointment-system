@@ -42,14 +42,14 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="slot in timeSlotList" :key="slot" class="hover:bg-gray-50">
-                <td class="border border-gray-300 px-4 py-3 font-medium text-gray-700 bg-gray-50 sticky left-0 z-10">{{ slot }}</td>
-                <td v-for="doc in visibleDoctors" :key="doc._id + '-' + slot" class="border border-gray-300 px-2 py-2 text-center">
-                  <div v-if="viewApptCell(doc._id, slot)" @click="showAppt(viewApptCell(doc._id, slot))" class="p-2 bg-green-50 rounded-lg border border-green-200 cursor-pointer hover:bg-green-100 transition-all">
-                    <div class="font-medium text-green-800 text-sm">{{ viewApptCell(doc._id, slot).patientName }}</div>
-                    <div class="text-xs text-green-600">{{ viewApptCell(doc._id, slot).phone }}</div>
+              <tr v-for="row in tableRows" :key="'row-' + row.slot" class="hover:bg-gray-50">
+                <td class="border border-gray-300 px-4 py-3 font-medium text-gray-700 bg-gray-50 sticky left-0 z-10">{{ row.slot }}</td>
+                <td v-for="cell in row.cells" :key="'cell-' + row.slot + '-' + cell.doctorId" class="border border-gray-300 px-2 py-2 text-center">
+                  <div v-if="cell.kind === 'appt'" @click="showAppt(cell.data)" class="p-2 bg-green-50 rounded-lg border border-green-200 cursor-pointer hover:bg-green-100 transition-all">
+                    <div class="font-medium text-green-800 text-sm">{{ cell.data.patientName }}</div>
+                    <div class="text-xs text-green-600">{{ cell.data.phone }}</div>
                   </div>
-                  <div v-else-if="viewSchedCell(doc._id, slot)" class="p-2 bg-gray-100 rounded-lg border border-gray-200 opacity-50">
+                  <div v-else-if="cell.kind === 'sched'" class="p-2 bg-gray-100 rounded-lg border border-gray-200 opacity-50">
                     <span class="text-xs text-gray-400">空闲</span>
                   </div>
                   <div v-else class="p-2 bg-gray-50 rounded-lg border border-gray-100 opacity-30">
@@ -284,6 +284,7 @@ const filterDepartment = ref('')
 const visibleDoctors = ref([])
 const apptLookup = ref({})  // key: doctorId-slot -> { patientName, phone, doctorName, date, timeSlot }
 const schedLookup = ref({}) // key: doctorId-slot -> true
+const tableRows = ref([])
 
 // ===== Add form =====
 const addModalVisible = ref(false)
@@ -496,6 +497,29 @@ function buildViewState() {
     }
   })
   schedLookup.value = sl
+
+  // Build table rows (precomputed cells - no per-render function calls)
+  const rows = []
+  const vDocs = visibleDoctors.value
+  const aLook = al
+  const sLook = sl
+  for (let si = 0; si < timeSlotList.length; si++) {
+    const slot = timeSlotList[si]
+    const cells = []
+    for (let di = 0; di < vDocs.length; di++) {
+      const doc = vDocs[di]
+      const key = doc._id + '-' + slot
+      if (aLook[key]) {
+        cells.push({ doctorId: doc._id, kind: 'appt', data: aLook[key] })
+      } else if (sLook[key]) {
+        cells.push({ doctorId: doc._id, kind: 'sched' })
+      } else {
+        cells.push({ doctorId: doc._id, kind: 'none' })
+      }
+    }
+    rows.push({ slot: slot, cells: cells })
+  }
+  tableRows.value = rows
 }
 
 async function loadAll() {
