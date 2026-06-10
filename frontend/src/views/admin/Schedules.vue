@@ -45,13 +45,13 @@
               <tr v-for="slot in timeSlotList" :key="'t-'+slot" class="hover:bg-gray-50">
                 <td class="border border-gray-300 px-4 py-2 font-medium text-gray-700 bg-gray-50">{{ slot }}</td>
                 <td v-for="doc in visibleDoctors" :key="'c-'+slot+'-'+doc._id" class="border border-gray-300 px-2 py-2 text-center">
-                  <div v-if="cellHasAppt(slot, doc._id)" @click="openApptDetail(slot, doc._id)" class="p-2 bg-green-50 rounded-lg border border-green-200 cursor-pointer hover:bg-green-100 transition-all">
-                    <div class="font-medium text-green-800 text-sm">{{ cellApptName(slot, doc._id) }}</div>
+                  <div v-if="cellHasAppt(slot, doc._id)" @click="openApptDetail(slot, doc._id)" class="p-2 bg-red-100 rounded-lg border-2 border-red-500 cursor-pointer hover:bg-red-200 transition-all">
+                    <div class="font-bold text-red-700 text-sm">{{ cellApptName(slot, doc._id) }}</div>
                   </div>
-                  <div v-else-if="cellHasSchedule(slot, doc._id)" @click="openAppointmentModal(doc, slot)" class="p-2 bg-blue-50 rounded-lg border border-blue-200 cursor-pointer hover:bg-blue-100 transition-all">
-                    <span class="text-xs text-blue-600">可预约</span>
+                  <div v-else-if="cellHasSchedule(slot, doc._id)" @click="openAppointmentModal(doc, slot)" class="p-2 bg-emerald-50 rounded-lg border-2 border-emerald-400 cursor-pointer hover:bg-emerald-100 transition-all">
+                    <span class="text-xs font-semibold text-emerald-700">可预约</span>
                   </div>
-                  <div v-else class="p-2 bg-gray-50 rounded-lg border border-gray-100">
+                  <div v-else class="p-2 bg-gray-50 rounded-lg border border-gray-200">
                     <span class="text-xs text-gray-400">未排班</span>
                   </div>
                 </td>
