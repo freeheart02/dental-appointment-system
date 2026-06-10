@@ -6,14 +6,16 @@
           <div class="relative flex-1 min-w-[250px]">
             <Search class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
             <input
-              v-model="searchQuery"
-              type="text"
-              placeholder="搜索患者姓名或手机号"
-              class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none w-full"
-            />
+            v-model="searchQuery"
+            @input="refreshFiltered"
+            type="text"
+            placeholder="搜索患者姓名或手机号"
+            class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none w-full"
+          />
           </div>
           <select
             v-model="filterStatus"
+            @change="refreshFiltered"
             class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
           >
             <option value="">全部状态</option>
@@ -46,7 +48,7 @@
                 <div
                 v-for="(day, index) in calendarCells"
                 :key="'cal-' + index"
-                @click="day.date && (filterDate = day.date); refreshCalendar()"
+                @click="day.date && (filterDate = day.date); refreshFiltered(); refreshCalendar()"
                 :class="[
                   'text-center py-2 cursor-pointer rounded-lg transition-all text-sm',
                   day.isToday ? 'bg-blue-100 font-bold' : '',
@@ -61,10 +63,10 @@
               </div>
               </div>
               <div class="mt-4 flex gap-2">
-                <button @click="filterDate = ''" class="flex-1 px-3 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-all text-sm">
+                <button @click="filterDate = ''; refreshFiltered(); refreshCalendar()" class="flex-1 px-3 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-all text-sm">
                   清除日期
                 </button>
-                <button @click="filterDate = today" class="flex-1 px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all text-sm">
+                <button @click="filterDate = today; refreshFiltered(); refreshCalendar()" class="flex-1 px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all text-sm">
                   回到今天
                 </button>
               </div>
@@ -335,8 +337,8 @@ function showStatusModal(appointment) {
 async function checkInAppointment(appointmentId) {
   try {
     await appointmentAPI.update(appointmentId, { status: 'checked_in', checkedInAt: new Date().toISOString() })
-    loadAppointments()
     alert('签到成功')
+    window.location.href = window.location.href
   } catch (error) { alert('签到失败') }
 }
 
@@ -344,8 +346,8 @@ async function undoCheckIn(appointmentId) {
   if (!confirm('确定要取消签到吗？')) return
   try {
     await appointmentAPI.update(appointmentId, { status: 'pending', checkedInAt: null })
-    loadAppointments()
     alert('已取消签到')
+    window.location.href = window.location.href
   } catch (error) { alert('取消签到失败') }
 }
 
@@ -354,9 +356,9 @@ async function updateStatus(status) {
     const updateData = { status }
     if (status === 'checked_in') updateData.checkedInAt = new Date().toISOString()
     await appointmentAPI.update(editingAppointment.value._id, updateData)
-    loadAppointments()
     showStatusModalFlag.value = false
     alert('状态更新成功')
+    window.location.href = window.location.href
   } catch (error) { alert('更新失败') }
 }
 
@@ -364,8 +366,8 @@ async function deleteAppointment(id) {
   if (!confirm('确定要删除该预约吗？')) return
   try {
     await appointmentAPI.delete(id)
-    loadAppointments()
     alert('删除成功')
+    window.location.href = window.location.href
   } catch (error) { alert('删除失败') }
 }
 

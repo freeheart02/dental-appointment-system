@@ -6,6 +6,7 @@
           <Search class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
           <input
             v-model="searchQuery"
+            @input="onSearchInput"
             type="text"
             placeholder="搜索医生姓名"
             class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
@@ -123,8 +124,10 @@ const formSpecialty = ref('')
 const formDescription = ref('')
 const formSlotInterval = ref(30)
 
-// ==== 计算显示列表（纯函数，computed，只依赖简单 ref）====
-const displayList = computed(() => {
+// ==== 计算显示列表（纯函数 + ref，避免 computed 带来的潜在循环更新）====
+const displayList = ref([])
+
+function rebuildDisplayList() {
   const q = searchQuery.value.trim().toLowerCase()
   let list = doctors.value.slice()
   if (q) {
@@ -137,8 +140,8 @@ const displayList = computed(() => {
     const cmp = av.localeCompare(bv, 'zh-CN')
     return sortAsc.value ? cmp : -cmp
   })
-  return list
-})
+  displayList.value = list
+}
 
 function toggleSort(field) {
   if (sortField.value === field) {
@@ -147,6 +150,7 @@ function toggleSort(field) {
     sortField.value = field
     sortAsc.value = true
   }
+  rebuildDisplayList()
 }
 
 // ==== 数据加载（只在 onMounted 调用一次）====
@@ -154,9 +158,15 @@ async function loadDoctors() {
   try {
     const response = await doctorAPI.getAll()
     doctors.value = response.data || []
+    rebuildDisplayList()
   } catch (error) {
     console.error('Failed to load doctors')
   }
+}
+
+// 搜索框变化时刷新列表
+function onSearchInput() {
+  rebuildDisplayList()
 }
 
 // ==== 模态框操作 ====

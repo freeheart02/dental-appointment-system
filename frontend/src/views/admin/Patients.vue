@@ -220,9 +220,8 @@ async function loadPatients() {
 async function addPatient() {
   try {
     await patientAPI.create(formData.value)
-    loadPatients()
-    closeModal()
     alert('添加成功')
+    window.location.href = window.location.href
   } catch (error) {
     alert('添加失败')
   }
@@ -247,9 +246,8 @@ async function updatePatient() {
       gender: formData.value.gender,
       age: formData.value.age ? parseInt(formData.value.age) : undefined
     })
-    loadPatients()
-    closeModal()
     alert('修改成功')
+    window.location.href = window.location.href
   } catch (error) {
     alert('修改失败')
   }
@@ -263,8 +261,8 @@ function savePatient() {
 async function addNoShow(patientId) {
   try {
     await patientAPI.update(patientId, { incrementNoShow: true })
-    loadPatients()
     alert('爽约次数已更新')
+    window.location.href = window.location.href
   } catch (error) {
     alert('更新失败')
   }
@@ -273,8 +271,8 @@ async function addNoShow(patientId) {
 async function resetNoShow(patientId) {
   try {
     await patientAPI.update(patientId, { resetNoShow: true })
-    loadPatients()
     alert('爽约次数已重置')
+    window.location.href = window.location.href
   } catch (error) {
     alert('重置失败')
   }
@@ -284,8 +282,8 @@ async function deletePatient(id) {
   if (!confirm('确定要删除该患者吗？')) return
   try {
     await patientAPI.delete(id)
-    loadPatients()
     alert('删除成功')
+    window.location.href = window.location.href
   } catch (error) {
     alert('删除失败')
   }
