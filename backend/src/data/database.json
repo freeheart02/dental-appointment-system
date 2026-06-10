@@ -14223,6 +14223,11 @@
           "time": "11:30",
           "available": 1,
           "maxCapacity": 1
+        },
+        {
+          "time": "17:00",
+          "available": 1,
+          "maxCapacity": 1
         }
       ],
       "createdAt": "2026-05-22T01:33:15.820Z"
@@ -18098,6 +18103,11 @@
         },
         {
           "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "17:00",
           "available": 1,
           "maxCapacity": 1
         }

@@ -105,7 +105,11 @@ exports.createSchedule = async (req, res) => {
       
       existing.timeSlots.sort((a, b) => a.time.localeCompare(b.time))
       saveData()
-      res.json({ success: true, message: `已添加 ${addedCount} 个新时段到已有排班`, schedule: existing })
+      if (addedCount === 0) {
+        res.json({ success: true, message: '所选时段已排班，无需重复添加', schedule: existing })
+      } else {
+        res.json({ success: true, message: `已添加 ${addedCount} 个新时段到已有排班`, schedule: existing })
+      }
       return
     }
     

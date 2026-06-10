@@ -48,11 +48,11 @@
                   <div v-if="cellHasAppt(slot, doc._id)" @click="openApptDetail(slot, doc._id)" class="p-2 bg-green-50 rounded-lg border border-green-200 cursor-pointer hover:bg-green-100 transition-all">
                     <div class="font-medium text-green-800 text-sm">{{ cellApptName(slot, doc._id) }}</div>
                   </div>
-                  <div v-else-if="cellHasSchedule(slot, doc._id)" class="p-2 bg-gray-100 rounded-lg border border-gray-200">
-                    <span class="text-xs text-gray-500">空闲</span>
+                  <div v-else-if="cellHasSchedule(slot, doc._id)" class="p-2 bg-blue-50 rounded-lg border border-blue-200">
+                    <span class="text-xs text-blue-600">可预约</span>
                   </div>
                   <div v-else class="p-2 bg-gray-50 rounded-lg border border-gray-100">
-                    <span class="text-xs text-gray-300">-</span>
+                    <span class="text-xs text-gray-400">未排班</span>
                   </div>
                 </td>
               </tr>
