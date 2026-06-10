@@ -114,11 +114,11 @@
         <form @submit.prevent="onSubmitAppointment" class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">患者手机号 *</label>
-            <input id="patientPhoneInput" v-model="patientPhone" type="tel" placeholder="输入手机号自动匹配已登记患者" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" @input="autoFillPatient($event)" />
+            <input id="patientPhoneInput" v-model="patientPhone" type="tel" placeholder="输入手机号自动匹配已登记患者" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" @blur="autoFillPatient($event)" />
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">患者姓名 *</label>
-            <input id="patientNameInput" v-model="patientName" type="text" placeholder="输入姓名自动匹配已登记患者" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" @input="autoFillPatient($event)" />
+            <input id="patientNameInput" v-model="patientName" type="text" placeholder="输入姓名自动匹配已登记患者" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" @blur="autoFillPatient($event)" />
           </div>
           <div class="grid grid-cols-2 gap-4">
             <div>
