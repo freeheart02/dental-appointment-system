@@ -6,45 +6,44 @@
           <Search class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
           <input
             v-model="searchQuery"
-            @input="onSearchInput"
             type="text"
             placeholder="搜索医生姓名"
             class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
           />
         </div>
-        <button @click="showAddModal = true" class="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all">
+        <button @click="openAddModal" class="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all">
           <Plus class="w-5 h-5" />
           <span>添加医生</span>
         </button>
       </div>
-      
+
       <div class="overflow-x-auto">
         <table class="w-full">
           <thead>
             <tr class="bg-gray-50">
-              <th @click="sortBy('name')" class="px-6 py-3 text-left text-sm font-medium text-gray-600 cursor-pointer hover:text-gray-800">
-                姓名
-                <span v-if="sortField === 'name'" class="text-xs text-gray-400 ml-1">{{ sortOrder === 'asc' ? '↑' : '↓' }}</span>
+              <th @click="toggleSort('name')" class="px-6 py-3 text-left text-sm font-medium text-gray-600 cursor-pointer hover:text-gray-800">
+                姓名 <span class="text-xs text-gray-400">{{ sortField === 'name' ? (sortAsc ? '↑' : '↓') : '' }}</span>
               </th>
-              <th @click="sortBy('department')" class="px-6 py-3 text-left text-sm font-medium text-gray-600 cursor-pointer hover:text-gray-800">
-                科室
-                <span v-if="sortField === 'department'" class="text-xs text-gray-400 ml-1">{{ sortOrder === 'asc' ? '↑' : '↓' }}</span>
+              <th @click="toggleSort('specialty')" class="px-6 py-3 text-left text-sm font-medium text-gray-600 cursor-pointer hover:text-gray-800">
+                科室/专业 <span class="text-xs text-gray-400">{{ sortField === 'specialty' ? (sortAsc ? '↑' : '↓') : '' }}</span>
               </th>
               <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">简介</th>
+              <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">出诊间隔</th>
               <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">操作</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="doctor in filteredDoctors" :key="doctor._id" class="border-b border-gray-100 hover:bg-gray-50">
+            <tr v-for="doctor in displayList" :key="doctor._id" class="border-b border-gray-100 hover:bg-gray-50">
               <td class="px-6 py-4 text-sm text-gray-800 align-middle">{{ doctor.name }}</td>
-              <td class="px-6 py-4 text-sm text-gray-600 align-middle">{{ doctor.department || doctor.specialty }}</td>
+              <td class="px-6 py-4 text-sm text-gray-600 align-middle">{{ doctor.specialty }}</td>
               <td class="px-6 py-4 text-sm text-gray-600 max-w-xs truncate align-middle">{{ doctor.description || '-' }}</td>
+              <td class="px-6 py-4 text-sm text-gray-600 align-middle">{{ doctor.slotInterval }} 分钟</td>
               <td class="px-6 py-4 align-middle">
                 <div class="flex gap-2">
-                  <button @click="editDoctor(doctor)" class="text-blue-500 hover:text-blue-600">
+                  <button @click="openEditModal(doctor)" class="text-blue-500 hover:text-blue-600">
                     <Edit class="w-4 h-4" />
                   </button>
-                  <button @click="deleteDoctor(doctor._id)" class="text-red-500 hover:text-red-600">
+                  <button @click="handleDelete(doctor)" class="text-red-500 hover:text-red-600">
                     <Trash2 class="w-4 h-4" />
                   </button>
                 </div>
@@ -53,56 +52,39 @@
           </tbody>
         </table>
       </div>
-      
-      <div v-if="doctors.length === 0" class="p-12 text-center">
+
+      <div v-if="displayList.length === 0" class="p-12 text-center">
         <User class="w-12 h-12 mx-auto mb-4 text-gray-300" />
         <p class="text-gray-500">暂无医生数据</p>
       </div>
     </div>
 
-    <div v-if="showAddModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <!-- 添加/编辑 模态框 -->
+    <div v-if="modalVisible" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div class="bg-white rounded-xl p-6 w-full max-w-md">
         <div class="flex justify-between items-center mb-4">
-          <h3 class="text-lg font-semibold text-gray-800">{{ isEditing ? '编辑医生' : '添加医生' }}</h3>
+          <h3 class="text-lg font-semibold text-gray-800">{{ modalEditing ? '编辑医生' : '添加医生' }}</h3>
           <button @click="closeModal" class="text-gray-400 hover:text-gray-600">
             <X class="w-5 h-5" />
           </button>
         </div>
-        
-        <form @submit.prevent="saveDoctor" class="space-y-4">
+
+        <form @submit.prevent="handleSubmit" class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">姓名</label>
-            <input
-              v-model="formData.name"
-              type="text"
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-              placeholder="请输入姓名"
-            />
+            <input v-model="formName" type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="请输入姓名" required />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">专业</label>
-            <input
-              v-model="formData.specialty"
-              type="text"
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-              placeholder="请输入专业领域"
-            />
+            <label class="block text-sm font-medium text-gray-700 mb-1">专业/科室</label>
+            <input v-model="formSpecialty" type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="如：牙周科" required />
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">简介</label>
-            <textarea
-              v-model="formData.description"
-              rows="3"
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none resize-none"
-              placeholder="请输入医生简介"
-            ></textarea>
+            <textarea v-model="formDescription" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none resize-none" placeholder="请输入医生简介"></textarea>
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">出诊时间段间隔（分钟）</label>
-            <select
-              v-model="formData.slotInterval"
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-            >
+            <select v-model.number="formSlotInterval" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
               <option :value="15">15分钟</option>
               <option :value="20">20分钟</option>
               <option :value="30">30分钟</option>
@@ -111,12 +93,8 @@
               <option :value="60">60分钟</option>
             </select>
           </div>
-          
-          <button
-            type="submit"
-            class="w-full py-3 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 transition-all"
-          >
-            {{ isEditing ? '保存修改' : '添加医生' }}
+          <button type="submit" class="w-full py-3 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 transition-all">
+            {{ modalEditing ? '保存修改' : '添加医生' }}
           </button>
         </form>
       </div>
@@ -130,125 +108,115 @@ import { Search, Plus, Edit, Trash2, User, X } from 'lucide-vue-next'
 import AdminLayout from '../../components/AdminLayout.vue'
 import { doctorAPI } from '../../utils/api'
 
+// ==== 列表数据 ====
 const doctors = ref([])
-const filteredDoctors = ref([])
 const searchQuery = ref('')
-const showAddModal = ref(false)
-const isEditing = ref(false)
-const editingId = ref(null)
 const sortField = ref('name')
-const sortOrder = ref('asc')
+const sortAsc = ref(true)
 
-const formData = ref({
-  name: '',
-  specialty: '',
-  description: '',
-  slotInterval: 30
-})
+// ==== 模态框状态 ====
+const modalVisible = ref(false)
+const modalEditing = ref(false)
+const modalId = ref('')
+const formName = ref('')
+const formSpecialty = ref('')
+const formDescription = ref('')
+const formSlotInterval = ref(30)
 
-function rebuildFiltered() {
-  let result = doctors.value.slice()
-  if (searchQuery.value) {
-    const q = searchQuery.value.toLowerCase()
-    result = result.filter(d => d.name.toLowerCase().includes(q))
+// ==== 计算显示列表（纯函数，computed，只依赖简单 ref）====
+const displayList = computed(() => {
+  const q = searchQuery.value.trim().toLowerCase()
+  let list = doctors.value.slice()
+  if (q) {
+    list = list.filter(d => String(d.name).toLowerCase().includes(q))
   }
   const field = sortField.value
-  const getVal = (d) => field === 'department' ? (d.department || d.specialty) : d[field]
-  result.sort((a, b) => {
-    const cmp = String(getVal(a) || '').localeCompare(String(getVal(b) || ''), 'zh-CN')
-    return sortOrder.value === 'asc' ? cmp : -cmp
+  list.sort((a, b) => {
+    const av = String(a[field] || (field === 'specialty' ? a.department : '') || '')
+    const bv = String(b[field] || (field === 'specialty' ? b.department : '') || '')
+    const cmp = av.localeCompare(bv, 'zh-CN')
+    return sortAsc.value ? cmp : -cmp
   })
-  filteredDoctors.value = result
-}
+  return list
+})
 
-function sortBy(field) {
+function toggleSort(field) {
   if (sortField.value === field) {
-    sortOrder.value = sortOrder.value === 'asc' ? 'desc' : 'asc'
+    sortAsc.value = !sortAsc.value
   } else {
     sortField.value = field
-    sortOrder.value = 'asc'
+    sortAsc.value = true
   }
-  rebuildFiltered()
 }
 
-function onSearchInput() {
-  rebuildFiltered()
-}
-
+// ==== 数据加载（只在 onMounted 调用一次）====
 async function loadDoctors() {
   try {
     const response = await doctorAPI.getAll()
-    doctors.value = response.data
-    rebuildFiltered()
+    doctors.value = response.data || []
   } catch (error) {
     console.error('Failed to load doctors')
   }
 }
 
-async function addDoctor() {
-  try {
-    await doctorAPI.create({
-      ...formData.value,
-      slotInterval: parseInt(formData.value.slotInterval)
-    })
-    loadDoctors()
-    closeModal()
-    alert('添加成功')
-  } catch (error) {
-    alert('添加失败')
-  }
+// ==== 模态框操作 ====
+function openAddModal() {
+  modalEditing.value = false
+  modalId.value = ''
+  formName.value = ''
+  formSpecialty.value = ''
+  formDescription.value = ''
+  formSlotInterval.value = 30
+  modalVisible.value = true
 }
 
-function editDoctor(doctor) {
-  isEditing.value = true
-  editingId.value = doctor._id
-  formData.value = {
-    name: doctor.name,
-    specialty: doctor.specialty,
-    description: doctor.description || '',
-    slotInterval: doctor.slotInterval || 30
-  }
-  showAddModal.value = true
-}
-
-async function updateDoctor() {
-  try {
-    await doctorAPI.update(editingId.value, {
-      ...formData.value,
-      slotInterval: parseInt(formData.value.slotInterval)
-    })
-    loadDoctors()
-    closeModal()
-    alert('修改成功')
-  } catch (error) {
-    alert('修改失败')
-  }
-}
-
-function saveDoctor() {
-  if (isEditing.value) {
-    updateDoctor()
-  } else {
-    addDoctor()
-  }
-}
-
-async function deleteDoctor(id) {
-  if (!confirm('确定要删除该医生吗？')) return
-  try {
-    await doctorAPI.delete(id)
-    loadDoctors()
-    alert('删除成功')
-  } catch (error) {
-    alert('删除失败')
-  }
+function openEditModal(doctor) {
+  modalEditing.value = true
+  modalId.value = doctor._id
+  formName.value = doctor.name || ''
+  formSpecialty.value = doctor.specialty || doctor.department || ''
+  formDescription.value = doctor.description || ''
+  formSlotInterval.value = doctor.slotInterval || 30
+  modalVisible.value = true
 }
 
 function closeModal() {
-  showAddModal.value = false
-  isEditing.value = false
-  editingId.value = null
-  formData.value = { name: '', specialty: '', description: '', slotInterval: 30 }
+  modalVisible.value = false
+}
+
+// ==== 关键：提交后刷新页面，避免响应式循环 ====
+async function handleSubmit() {
+  try {
+    const payload = {
+      name: formName.value,
+      specialty: formSpecialty.value,
+      description: formDescription.value,
+      slotInterval: Number(formSlotInterval.value)
+    }
+    if (modalEditing.value) {
+      await doctorAPI.update(modalId.value, payload)
+      alert('修改成功')
+    } else {
+      await doctorAPI.create(payload)
+      alert('添加成功')
+    }
+    // 成功后刷新页面，而不是更新响应式数据
+    window.location.href = window.location.href
+  } catch (error) {
+    alert('操作失败，请重试')
+  }
+}
+
+async function handleDelete(doctor) {
+  if (!confirm('确定要删除该医生吗？')) return
+  try {
+    await doctorAPI.delete(doctor._id)
+    alert('删除成功')
+    // 成功后刷新页面
+    window.location.href = window.location.href
+  } catch (error) {
+    alert('删除失败')
+  }
 }
 
 onMounted(() => {
