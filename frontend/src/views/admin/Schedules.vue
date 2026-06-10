@@ -310,10 +310,27 @@ function autoFillPatient(event) {
   const phone = patientPhone.value.trim()
   const name = patientName.value.trim()
   
+  const inputId = event?.target?.id || ''
+  
+  // 如果姓名输入框内容被清空，则清空其他字段
+  if (inputId === 'patientNameInput' && name === '') {
+    patientPhone.value = ''
+    patientAge.value = ''
+    patientGender.value = 'male'
+    return
+  }
+  
+  // 如果电话输入框内容被清空，则清空其他字段
+  if (inputId === 'patientPhoneInput' && phone === '') {
+    patientName.value = ''
+    patientAge.value = ''
+    patientGender.value = 'male'
+    return
+  }
+  
   if (!phone && !name) return
   
   let matched = null
-  const inputId = event?.target?.id || ''
   
   // 根据输入来源决定匹配逻辑
   if (inputId === 'patientPhoneInput' && phone) {
