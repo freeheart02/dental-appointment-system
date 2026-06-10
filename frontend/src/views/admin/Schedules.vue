@@ -48,7 +48,7 @@
                   <div v-if="cellHasAppt(slot, doc._id)" @click="openApptDetail(slot, doc._id)" class="p-2 bg-green-50 rounded-lg border border-green-200 cursor-pointer hover:bg-green-100 transition-all">
                     <div class="font-medium text-green-800 text-sm">{{ cellApptName(slot, doc._id) }}</div>
                   </div>
-                  <div v-else-if="cellHasSchedule(slot, doc._id)" class="p-2 bg-blue-50 rounded-lg border border-blue-200">
+                  <div v-else-if="cellHasSchedule(slot, doc._id)" @click="openAppointmentModal(doc, slot)" class="p-2 bg-blue-50 rounded-lg border border-blue-200 cursor-pointer hover:bg-blue-100 transition-all">
                     <span class="text-xs text-blue-600">可预约</span>
                   </div>
                   <div v-else class="p-2 bg-gray-50 rounded-lg border border-gray-100">
@@ -94,6 +94,49 @@
             <button @click="onCancelAppt" :disabled="actionLoading" class="flex-1 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-all disabled:opacity-50">取消预约</button>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- 为患者预约模态框 -->
+    <div v-if="appointmentModalVisible" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div class="bg-white rounded-xl p-6 w-full max-w-md">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-lg font-semibold text-gray-800">为患者预约</h3>
+          <button @click="appointmentModalVisible = false" class="text-gray-400 hover:text-gray-600"><X class="w-5 h-5" /></button>
+        </div>
+        <div class="mb-4 p-3 bg-blue-50 rounded-lg">
+          <div class="text-sm">
+            <div><span class="text-gray-500">医生:</span> <span class="font-medium">{{ currentDoctor?.name }} - {{ currentDoctor?.specialty }}</span></div>
+            <div><span class="text-gray-500">日期:</span> <span class="font-medium">{{ viewDate }}</span></div>
+            <div><span class="text-gray-500">时间:</span> <span class="font-medium">{{ currentTimeSlot }}</span></div>
+          </div>
+        </div>
+        <form @submit.prevent="onSubmitAppointment" class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">患者手机号 *</label>
+            <input v-model="patientPhone" type="tel" placeholder="请输入患者手机号" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">患者姓名 *</label>
+            <input v-model="patientName" type="text" placeholder="请输入患者姓名" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">性别</label>
+              <select v-model="patientGender" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                <option value="male">男</option>
+                <option value="female">女</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">年龄</label>
+              <input v-model="patientAge" type="number" placeholder="年龄" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
+            </div>
+          </div>
+          <button type="submit" :disabled="actionLoading" class="w-full py-3 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 transition-all disabled:opacity-50">
+            {{ actionLoading ? '预约中...' : '确认预约' }}
+          </button>
+        </form>
       </div>
     </div>
 
@@ -234,12 +277,64 @@ function showToast(msg, type) {
 
 const actionLoading = ref(false)
 
+// ========== 预约患者模态框 ==========
+const appointmentModalVisible = ref(false)
+const currentDoctor = ref(null)
+const currentTimeSlot = ref('')
+const patientPhone = ref('')
+const patientName = ref('')
+const patientGender = ref('male')
+const patientAge = ref('')
+
 // ========== 单元格查询 ==========
 function cellHasAppt(slot, docId) { return !!apptMap.value[docId + '-' + slot] }
 function cellHasSchedule(slot, docId) { return !!schedMap.value[docId + '-' + slot] }
 function cellApptName(slot, docId) {
   const a = apptMap.value[docId + '-' + slot]
   return a ? a.patientName : ''
+}
+
+// ========== 预约患者方法 ==========
+function openAppointmentModal(doctor, slot) {
+  currentDoctor.value = doctor
+  currentTimeSlot.value = slot
+  patientPhone.value = ''
+  patientName.value = ''
+  patientGender.value = 'male'
+  patientAge.value = ''
+  appointmentModalVisible.value = true
+}
+
+async function onSubmitAppointment() {
+  if (!patientPhone.value.trim()) {
+    showToast('请输入患者手机号', 'error')
+    return
+  }
+  if (!patientName.value.trim()) {
+    showToast('请输入患者姓名', 'error')
+    return
+  }
+  actionLoading.value = true
+  try {
+    await appointmentAPI.create({
+      patientPhone: patientPhone.value,
+      patientName: patientName.value,
+      patientGender: patientGender.value,
+      patientAge: patientAge.value,
+      doctorId: currentDoctor.value._id,
+      date: viewDate.value,
+      timeSlot: currentTimeSlot.value,
+      type: '门诊'
+    })
+    showToast('预约成功', 'success')
+    appointmentModalVisible.value = false
+    await loadAll()
+  } catch (e) {
+    const msg = (e.response && e.response.data && e.response.data.message) || '预约失败'
+    showToast(msg, 'error')
+  } finally {
+    actionLoading.value = false
+  }
 }
 
 // ========== 添加排班 表单 ==========
