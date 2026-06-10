@@ -312,17 +312,28 @@ function autoFillPatient() {
   
   if (!phone && !name) return
   
-  const matched = patientList.value.find(p => {
-    const matchPhone = phone && p.phone && p.phone.includes(phone)
-    const matchName = name && p.name && p.name.includes(name)
-    return matchPhone || matchName
-  })
+  let matched = null
+  
+  // 优先精确匹配姓名
+  if (name) {
+    matched = patientList.value.find(p => p.name === name)
+  }
+  
+  // 如果没有精确匹配，尝试模糊匹配姓名
+  if (!matched && name) {
+    matched = patientList.value.find(p => p.name && p.name.includes(name))
+  }
+  
+  // 如果没有姓名匹配，尝试电话匹配
+  if (!matched && phone) {
+    matched = patientList.value.find(p => p.phone && p.phone.includes(phone))
+  }
   
   if (matched) {
-    if (!patientPhone.value) patientPhone.value = matched.phone || ''
-    if (!patientName.value) patientName.value = matched.name || ''
-    if (!patientAge.value) patientAge.value = matched.age || ''
-    if (!patientGender.value) patientGender.value = matched.gender || 'male'
+    patientPhone.value = patientPhone.value || matched.phone || ''
+    patientName.value = patientName.value || matched.name || ''
+    patientAge.value = patientAge.value || matched.age || ''
+    patientGender.value = patientGender.value || matched.gender || 'male'
   }
 }
 
