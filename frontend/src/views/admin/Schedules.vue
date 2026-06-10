@@ -114,11 +114,11 @@
         <form @submit.prevent="onSubmitAppointment" class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">患者手机号 *</label>
-            <input v-model="patientPhone" type="tel" placeholder="请输入患者手机号" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
+            <input v-model="patientPhone" type="tel" placeholder="输入手机号自动匹配已登记患者" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" @input="autoFillPatient" />
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">患者姓名 *</label>
-            <input v-model="patientName" type="text" placeholder="请输入患者姓名" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
+            <input v-model="patientName" type="text" placeholder="输入姓名自动匹配已登记患者" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" @input="autoFillPatient" />
           </div>
           <div class="grid grid-cols-2 gap-4">
             <div>
@@ -237,7 +237,7 @@
 import { ref, onMounted } from 'vue'
 import { Plus, Calendar, X, List } from 'lucide-vue-next'
 import AdminLayout from '../../components/AdminLayout.vue'
-import { scheduleAPI, doctorAPI, appointmentAPI } from '../../utils/api.js'
+import { scheduleAPI, doctorAPI, appointmentAPI, patientAPI } from '../../utils/api.js'
 
 // ========== 常量 ==========
 const timeSlotList = ['08:00','08:30','09:00','09:30','10:00','10:30','11:00','11:30','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00']
@@ -252,6 +252,7 @@ function todayStr() {
 const scheduleList = ref([])
 const doctorList = ref([])
 const appointmentList = ref([])
+const patientList = ref([])
 const deptList = ref([])
 const loading = ref(false)
 
@@ -303,6 +304,26 @@ function openAppointmentModal(doctor, slot) {
   patientGender.value = 'male'
   patientAge.value = ''
   appointmentModalVisible.value = true
+}
+
+function autoFillPatient() {
+  const phone = patientPhone.value.trim()
+  const name = patientName.value.trim()
+  
+  if (!phone && !name) return
+  
+  const matched = patientList.value.find(p => {
+    const matchPhone = phone && p.phone && p.phone.includes(phone)
+    const matchName = name && p.name && p.name.includes(name)
+    return matchPhone || matchName
+  })
+  
+  if (matched) {
+    if (!patientPhone.value) patientPhone.value = matched.phone || ''
+    if (!patientName.value) patientName.value = matched.name || ''
+    if (!patientAge.value) patientAge.value = matched.age || ''
+    if (!patientGender.value) patientGender.value = matched.gender || 'male'
+  }
 }
 
 async function onSubmitAppointment() {
@@ -541,14 +562,16 @@ function rebuildDisplay() {
 async function loadAll() {
   loading.value = true
   try {
-    const [s, d, a] = await Promise.all([
+    const [s, d, a, p] = await Promise.all([
       scheduleAPI.getAll(),
       doctorAPI.getAll(),
-      appointmentAPI.getAll()
+      appointmentAPI.getAll(),
+      patientAPI.getAll()
     ])
     scheduleList.value = s.data || []
     doctorList.value = d.data || []
     appointmentList.value = a.data || []
+    patientList.value = p.data || []
 
     const set = new Set()
     doctorList.value.forEach(doc => { if (doc.specialty) set.add(doc.specialty) })

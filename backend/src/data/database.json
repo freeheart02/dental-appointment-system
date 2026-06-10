@@ -73,7 +73,8 @@
       "name": "患者4",
       "gender": "female",
       "age": 44,
-      "createdAt": "2026-05-29T15:12:00.749Z"
+      "createdAt": "2026-05-29T15:12:00.749Z",
+      "updatedAt": "2026-06-10T07:15:36.324Z"
     },
     {
       "_id": "47yo7rz04ue",
