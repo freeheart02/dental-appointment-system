@@ -165,6 +165,7 @@ exports.createSchedule = (data) => {
     createdAt: new Date().toISOString()
   }
   store.schedules.push(schedule)
+  saveData()
   return schedule
 }
 
