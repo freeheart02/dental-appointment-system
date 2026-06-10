@@ -1,8 +1,8 @@
-const { getAllSchedules, getSchedulesByDoctor, createSchedule, updateSchedule, deleteSchedule, getAllDoctors } = require('../utils/fileStore')
+const { getAllSchedules, getSchedulesByDoctor, createSchedule, updateSchedule, deleteSchedule, getAllDoctors, saveData } = require('../utils/fileStore')
 
 const TIME_SLOTS = [
   '08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30',
-  '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30'
+  '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00'
 ]
 
 const normalizeDate = (date) => {
@@ -77,14 +77,11 @@ exports.createSchedule = async (req, res) => {
     // 确保日期格式是 YYYY-MM-DD，使用本地时间
     let normalizedDate
     if (typeof date === 'string' && date.includes('T')) {
-      // 如果是 ISO 格式字符串，先转换
       const d = new Date(date)
       normalizedDate = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
     } else if (typeof date === 'string') {
-      // 已经是 YYYY-MM-DD 格式
       normalizedDate = date
     } else {
-      // Date 对象
       normalizedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
     }
     
@@ -93,8 +90,23 @@ exports.createSchedule = async (req, res) => {
     const existing = getAllSchedules().find(
       s => s.doctorId === doctorId && s.date === normalizedDate
     )
+    
     if (existing) {
-      return res.status(400).json({ message: '该医生当天已有排班' })
+      const newTimeSlots = timeSlots || TIME_SLOTS
+      const existingTimes = new Set(existing.timeSlots.map(ts => ts.time))
+      let addedCount = 0
+      
+      newTimeSlots.forEach(ts => {
+        if (!existingTimes.has(ts.time)) {
+          existing.timeSlots.push(ts)
+          addedCount++
+        }
+      })
+      
+      existing.timeSlots.sort((a, b) => a.time.localeCompare(b.time))
+      saveData()
+      res.json({ success: true, message: `已添加 ${addedCount} 个新时段到已有排班`, schedule: existing })
+      return
     }
     
     const schedule = createSchedule({ 

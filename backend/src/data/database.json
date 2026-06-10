@@ -1463,7 +1463,7 @@
           "maxCapacity": 1
         },
         {
-          "time": "16:30",
+          "time": "15:30",
           "available": 1,
           "maxCapacity": 1
         },
@@ -1473,7 +1473,12 @@
           "maxCapacity": 1
         },
         {
-          "time": "15:30",
+          "time": "16:30",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "17:00",
           "available": 1,
           "maxCapacity": 1
         }
