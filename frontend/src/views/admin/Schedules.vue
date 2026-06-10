@@ -114,11 +114,11 @@
         <form @submit.prevent="onSubmitAppointment" class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">患者手机号 *</label>
-            <input v-model="patientPhone" type="tel" placeholder="输入手机号自动匹配已登记患者" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" @input="autoFillPatient" />
+            <input id="patientPhoneInput" v-model="patientPhone" type="tel" placeholder="输入手机号自动匹配已登记患者" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" @input="autoFillPatient($event)" />
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">患者姓名 *</label>
-            <input v-model="patientName" type="text" placeholder="输入姓名自动匹配已登记患者" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" @input="autoFillPatient" />
+            <input id="patientNameInput" v-model="patientName" type="text" placeholder="输入姓名自动匹配已登记患者" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" @input="autoFillPatient($event)" />
           </div>
           <div class="grid grid-cols-2 gap-4">
             <div>
@@ -306,34 +306,41 @@ function openAppointmentModal(doctor, slot) {
   appointmentModalVisible.value = true
 }
 
-function autoFillPatient() {
+function autoFillPatient(event) {
   const phone = patientPhone.value.trim()
   const name = patientName.value.trim()
   
   if (!phone && !name) return
   
   let matched = null
+  const inputId = event?.target?.id || ''
   
-  // 优先精确匹配姓名
-  if (name) {
-    matched = patientList.value.find(p => p.name === name)
-  }
-  
-  // 如果没有精确匹配，尝试模糊匹配姓名
-  if (!matched && name) {
-    matched = patientList.value.find(p => p.name && p.name.includes(name))
-  }
-  
-  // 如果没有姓名匹配，尝试电话匹配
-  if (!matched && phone) {
+  // 根据输入来源决定匹配逻辑
+  if (inputId === 'patientPhoneInput' && phone) {
+    // 用户输入电话，用电话匹配
     matched = patientList.value.find(p => p.phone && p.phone.includes(phone))
+  } else if (inputId === 'patientNameInput' && name) {
+    // 用户输入姓名，用姓名匹配
+    matched = patientList.value.find(p => p.name === name)
+    if (!matched) {
+      matched = patientList.value.find(p => p.name && p.name.includes(name))
+    }
+  } else if (phone) {
+    // 没有姓名输入但有电话，用电话匹配
+    matched = patientList.value.find(p => p.phone && p.phone.includes(phone))
+  } else if (name) {
+    // 没有电话输入但有姓名，用姓名匹配
+    matched = patientList.value.find(p => p.name === name)
+    if (!matched) {
+      matched = patientList.value.find(p => p.name && p.name.includes(name))
+    }
   }
   
   if (matched) {
-    patientPhone.value = patientPhone.value || matched.phone || ''
-    patientName.value = patientName.value || matched.name || ''
-    patientAge.value = patientAge.value || matched.age || ''
-    patientGender.value = patientGender.value || matched.gender || 'male'
+    patientPhone.value = matched.phone || ''
+    patientName.value = matched.name || ''
+    patientAge.value = matched.age || ''
+    patientGender.value = matched.gender || 'male'
   }
 }
 
