@@ -58,8 +58,9 @@
                   ]"
                 >
                   {{ cell.day }}
-                  <div v-if="cell.hasAppointment" class="flex justify-center mt-1">
-                    <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                  <div v-if="cell.hasAppointment || cell.hasSchedule" class="flex justify-center mt-1 gap-1">
+                    <span v-if="cell.hasSchedule" class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                    <span v-if="cell.hasAppointment" class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
                   </div>
                 </div>
               </div>
@@ -227,11 +228,12 @@
 import { ref, onMounted } from 'vue'
 import { Search, Edit, Trash2, X, ChevronRight, ChevronLeft } from 'lucide-vue-next'
 import AdminLayout from '../../components/AdminLayout.vue'
-import { appointmentAPI } from '../../utils/api'
+import { appointmentAPI, scheduleAPI } from '../../utils/api'
 
 // ========== 列表数据 ==========
 const rawList = ref([])
 const displayList = ref([])
+const scheduleList = ref([])
 const searchQuery = ref('')
 const filterStatus = ref('')
 const filterDate = ref('')
@@ -325,8 +327,14 @@ function rebuildCalendar() {
     datesWithAppt.add(d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()))
   })
 
+  const datesWithSchedule = new Set()
+  scheduleList.value.forEach(s => {
+    const d = new Date(s.date)
+    datesWithSchedule.add(d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()))
+  })
+
   const cells = []
-  for (let i = 0; i < firstDay; i++) cells.push({ day: '', date: null, isToday: false, isSelected: false, hasAppointment: false })
+  for (let i = 0; i < firstDay; i++) cells.push({ day: '', date: null, isToday: false, isSelected: false, hasAppointment: false, hasSchedule: false })
   for (let i = 1; i <= daysInMonth; i++) {
     const ds = year + '-' + pad2(month + 1) + '-' + pad2(i)
     cells.push({
@@ -334,7 +342,8 @@ function rebuildCalendar() {
       date: ds,
       isToday: ds === todayStr,
       isSelected: ds === filterDate.value,
-      hasAppointment: datesWithAppt.has(ds)
+      hasAppointment: datesWithAppt.has(ds),
+      hasSchedule: datesWithSchedule.has(ds)
     })
   }
   calendarCells.value = cells
@@ -377,12 +386,17 @@ function rebuildDisplay() {
 async function loadAll() {
   loading.value = true
   try {
-    const res = await appointmentAPI.getAll()
-    rawList.value = Array.isArray(res.data) ? res.data : []
+    const [apptRes, schedRes] = await Promise.all([
+      appointmentAPI.getAll(),
+      scheduleAPI.getAll()
+    ])
+    rawList.value = Array.isArray(apptRes.data) ? apptRes.data : []
+    scheduleList.value = Array.isArray(schedRes.data) ? schedRes.data : []
     rebuildDisplay()
   } catch (e) {
     rawList.value = []
     displayList.value = []
+    scheduleList.value = []
     showToast('加载失败', 'error')
   } finally {
     loading.value = false
