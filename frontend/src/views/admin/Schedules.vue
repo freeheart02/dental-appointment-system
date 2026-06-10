@@ -393,7 +393,7 @@ function rebuildDisplay() {
   const dept = viewDept.value
 
   const todaySchedules = scheduleList.value.filter(s => {
-    const d = new Date(s.date).toISOString().split('T')[0]
+    const d = typeof s.date === 'string' ? s.date : new Date(s.date).toISOString().split('T')[0]
     return d === vd
   })
 
