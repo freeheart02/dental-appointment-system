@@ -278,16 +278,18 @@ async function onSubmitAdd() {
   actionLoading.value = true
   try {
     const slots = addFormSlots.value.map(s => ({ time: s, available: 1, maxCapacity: 1 }))
-    await scheduleAPI.create({
+    const res = await scheduleAPI.create({
       doctorId: addFormDoctor.value,
       date: addFormDate.value,
       timeSlots: slots
     })
-    showToast('添加成功', 'success')
+    const msg = (res.data && res.data.message) || '添加成功'
+    showToast(msg, 'success')
     addModalVisible.value = false
     await loadAll()
   } catch (e) {
-    showToast('添加失败', 'error')
+    const msg = (e.response && e.response.data && e.response.data.message) || (e.message || '添加失败')
+    showToast(msg, 'error')
   } finally {
     actionLoading.value = false
   }

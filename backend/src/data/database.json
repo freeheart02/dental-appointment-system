@@ -118679,6 +118679,24 @@
         }
       ],
       "createdAt": "2026-06-10T02:16:10.431Z"
+    },
+    {
+      "_id": "6l2ify13ziq",
+      "doctorId": "b33zik5vn5",
+      "date": "2027-01-01",
+      "timeSlots": [
+        {
+          "time": "09:00",
+          "available": 1,
+          "maxCapacity": 1
+        },
+        {
+          "time": "09:30",
+          "available": 1,
+          "maxCapacity": 1
+        }
+      ],
+      "createdAt": "2026-06-10T03:41:14.172Z"
     }
   ],
   "appointments": [
