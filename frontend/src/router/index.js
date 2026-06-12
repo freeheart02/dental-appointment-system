@@ -82,6 +82,12 @@ const routes = [
     meta: { requiresAuth: true, requiresAdmin: true }
   },
   {
+    path: '/admin/backup',
+    name: 'Backup',
+    component: () => import('../views/admin/Backup.vue'),
+    meta: { requiresAuth: true, requiresAdmin: true }
+  },
+  {
     path: '/queue-display',
     name: 'QueueDisplay',
     component: () => import('../views/public/QueueDisplay.vue')

@@ -3,6 +3,8 @@ const path = require('path')
 
 const DATA_DIR = path.join(__dirname, '../data')
 const DATA_FILE = path.join(DATA_DIR, 'database.json')
+const BACKUP_DIR = path.join(__dirname, '../backups')
+const MAX_BACKUPS = 10 // 保留最近备份数量
 
 let store = {
   users: [],
@@ -48,6 +50,83 @@ const saveData = () => {
 
 loadData()
 
+// ==================== 备份功能 ====================
+const ensureBackupDir = () => {
+  if (!fs.existsSync(BACKUP_DIR)) {
+    fs.mkdirSync(BACKUP_DIR, { recursive: true })
+  }
+}
+
+const getBackupList = () => {
+  ensureBackupDir()
+  try {
+    const files = fs.readdirSync(BACKUP_DIR)
+      .filter(f => f.startsWith('backup_') && f.endsWith('.json'))
+      .map(f => {
+        const stats = fs.statSync(path.join(BACKUP_DIR, f))
+        return {
+          filename: f,
+          size: stats.size,
+          createdAt: stats.mtime.toISOString()
+        }
+      })
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+    return files
+  } catch (err) {
+    console.error('Error getting backup list:', err.message)
+    return []
+  }
+}
+
+const createBackup = () => {
+  ensureBackupDir()
+  const timestamp = new Date().toISOString().replace(/[:.]/g, '-')
+  const filename = `backup_${timestamp}.json`
+  const backupPath = path.join(BACKUP_DIR, filename)
+  
+  try {
+    fs.writeFileSync(backupPath, JSON.stringify(store, null, 2))
+    console.log(`Backup created: ${filename}`)
+    
+    // 清理旧备份，保留最近 MAX_BACKUPS 份
+    const backups = getBackupList()
+    if (backups.length > MAX_BACKUPS) {
+      const toDelete = backups.slice(MAX_BACKUPS)
+      toDelete.forEach(b => {
+        fs.unlinkSync(path.join(BACKUP_DIR, b.filename))
+        console.log(`Old backup removed: ${b.filename}`)
+      })
+    }
+    
+    return { success: true, filename, message: '备份成功' }
+  } catch (err) {
+    console.error('Error creating backup:', err.message)
+    return { success: false, message: '备份失败: ' + err.message }
+  }
+}
+
+const restoreBackup = (filename) => {
+  const backupPath = path.join(BACKUP_DIR, filename)
+  if (!fs.existsSync(backupPath)) {
+    return { success: false, message: '备份文件不存在' }
+  }
+  try {
+    const content = fs.readFileSync(backupPath, 'utf-8')
+    const data = JSON.parse(content)
+    store = { ...store, ...data }
+    saveData()
+    return { success: true, message: '恢复成功' }
+  } catch (err) {
+    return { success: false, message: '恢复失败: ' + err.message }
+  }
+}
+
+// 自动备份：每小时一次
+setInterval(() => {
+  createBackup()
+}, 60 * 60 * 1000)
+
+// 每5秒保存一次数据
 setInterval(() => {
   saveData()
 }, 5000)
@@ -448,3 +527,7 @@ exports.getCallHistory = () => {
 }
 
 exports.saveData = saveData
+exports.createBackup = createBackup
+exports.getBackupList = getBackupList
+exports.restoreBackup = restoreBackup
+exports.BACKUP_DIR = BACKUP_DIR

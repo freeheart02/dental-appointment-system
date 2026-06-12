@@ -9,6 +9,7 @@ const scheduleRoutes = require('./routes/schedules')
 const appointmentRoutes = require('./routes/appointments')
 const statisticsRoutes = require('./routes/statistics')
 const queueRoutes = require('./routes/queue')
+const backupRoutes = require('./routes/backup')
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -33,6 +34,7 @@ app.use('/api/schedules', scheduleRoutes)
 app.use('/api/appointments', appointmentRoutes)
 app.use('/api/statistics', statisticsRoutes)
 app.use('/api/queue', queueRoutes)
+app.use('/api/backup', backupRoutes)
 
 app.get('/', (req, res) => {
   res.json({ message: '口腔诊所患者预约登记系统 API' })

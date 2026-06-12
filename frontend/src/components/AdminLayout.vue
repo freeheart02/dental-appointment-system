@@ -96,6 +96,18 @@
               <span>统计报表</span>
             </button>
           </li>
+          <li>
+            <button
+              @click="navigate('/admin/backup')"
+              :class="[
+                'w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all',
+                currentPath === '/admin/backup' ? 'bg-blue-600 text-white' : 'text-gray-300 hover:bg-gray-700'
+              ]"
+            >
+              <Database class="w-5 h-5" />
+              <span>数据备份</span>
+            </button>
+          </li>
         </ul>
       </nav>
     </aside>
@@ -122,7 +134,7 @@
 <script setup>
 import { computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { Smile, LayoutDashboard, Users, User, Calendar, Clock, Megaphone, BarChart, LogOut } from 'lucide-vue-next'
+import { Smile, LayoutDashboard, Users, User, Calendar, Clock, Megaphone, BarChart, LogOut, Database } from 'lucide-vue-next'
 import { useAuthStore } from '../stores/auth'
 
 const router = useRouter()
