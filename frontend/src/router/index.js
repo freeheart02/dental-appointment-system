@@ -35,11 +35,6 @@ const routes = [
     component: () => import('../views/admin/Login.vue')
   },
   {
-    path: '/test-login',
-    name: 'TestLogin',
-    component: () => import('../views/admin/TestLogin.vue')
-  },
-  {
     path: '/admin/dashboard',
     name: 'Dashboard',
     component: () => import('../views/admin/Dashboard.vue'),
@@ -103,20 +98,11 @@ router.beforeEach((to, from, next) => {
   const authStore = useAuthStore()
   authStore.initUser()
   
-  console.log('Route:', to.path)
-  console.log('Requires auth:', to.meta.requiresAuth)
-  console.log('Requires admin:', to.meta.requiresAdmin)
-  console.log('Token exists:', authStore.token ? 'yes' : 'no')
-  console.log('User:', authStore.user)
-  console.log('Is admin:', authStore.isAdmin())
-  
   if (to.meta.requiresAuth) {
     if (!authStore.token) {
-      console.log('Redirecting to /login')
       return next('/login')
     }
     if (to.meta.requiresAdmin && !authStore.isAdmin()) {
-      console.log('Redirecting to / because not admin')
       return next('/')
     }
   }

@@ -24,25 +24,14 @@ export const useAuthStore = defineStore('auth', () => {
 
   const adminLogin = async (username, password) => {
     try {
-      console.log('Admin login request:', { username, password })
       const response = await authAPI.adminLogin({ username, password })
-      console.log('Admin login response:', response.data)
       if (response.data.success) {
-        console.log('Setting token and user...')
         token.value = response.data.token
         user.value = response.data.user
-        console.log('Token set:', token.value ? 'yes' : 'no')
-        console.log('User set:', user.value ? 'yes' : 'no')
-        
-        console.log('Saving to localStorage...')
         localStorage.setItem('token', token.value)
         localStorage.setItem('user', JSON.stringify(user.value))
-        console.log('localStorage saved successfully')
-        
-        console.log('Returning success...')
         return { success: true }
       }
-      console.log('Returning failure:', response.data.message)
       return { success: false, message: response.data.message }
     } catch (error) {
       console.error('Admin login error:', error)

@@ -50,12 +50,7 @@ exports.verifyCode = async (req, res) => {
 
 exports.adminLogin = async (req, res) => {
   try {
-    console.log('Admin login request received:', req.body)
     const { username, password } = req.body
-    console.log('Username:', username)
-    console.log('Password:', password)
-    console.log('Expected password:', process.env.ADMIN_PASSWORD)
-    console.log('Match:', username === 'admin' && password === process.env.ADMIN_PASSWORD)
     
     if (username === 'admin' && password === process.env.ADMIN_PASSWORD) {
       const token = jwt.sign(
@@ -63,10 +58,8 @@ exports.adminLogin = async (req, res) => {
         process.env.JWT_SECRET,
         { expiresIn: '24h' }
       )
-      console.log('Login successful')
       res.json({ success: true, message: '登录成功', token, user: { username, role: 'admin' } })
     } else {
-      console.log('Login failed: Invalid credentials')
       res.json({ success: false, message: '用户名或密码错误' })
     }
   } catch (err) {

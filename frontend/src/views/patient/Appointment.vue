@@ -369,15 +369,6 @@ const confirmAppointment = async () => {
   isSubmitting.value = true
   try {
     const patientInfo = JSON.parse(localStorage.getItem('user') || '{}')
-    console.log('预约信息:', {
-      patientId: patientInfo.patientId,
-      name: patientInfo.name,
-      phone: patientInfo.phone,
-      doctorId: selectedDoctor.value._id,
-      date: selectedDate.value.date,
-      timeSlot: selectedTimeSlot.value.time,
-      type: selectedType.value
-    })
     
     const response = await appointmentAPI.create({
       patientId: patientInfo.patientId || '650000000000000000000001',
@@ -389,8 +380,6 @@ const confirmAppointment = async () => {
       type: selectedType.value
     })
     
-    console.log('预约响应:', response.data)
-    
     if (response.data.success) {
       showSuccess.value = true
     } else {
@@ -398,7 +387,6 @@ const confirmAppointment = async () => {
     }
   } catch (error) {
     console.error('预约失败:', error)
-    console.error('错误响应:', error.response?.data)
     alert(error.response?.data?.message || '预约失败，请重试')
   }
   isSubmitting.value = false
